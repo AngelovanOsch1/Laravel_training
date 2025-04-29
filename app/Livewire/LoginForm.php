@@ -4,16 +4,13 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\Validate;
+use App\Livewire\Forms\LoginFormValidation;
+use Illuminate\Support\Facades\Auth;
 
 #[Layout('layouts.app')]
 class LoginForm extends Component
 {
-    #[Validate('required|email')]
-    public string $email = '';
-
-    #[Validate('required')]
-    public string $password = '';
+    public LoginFormValidation $form;
 
     public function render()
     {
@@ -22,12 +19,15 @@ class LoginForm extends Component
 
     public function submit()
     {
-        $this->validate();
+        $this->form->validate();
 
-        if ($this->LoginService->login($this->email, $this->password)) {
-            return redirect()->route('dashboard');
-        }
+        Auth::attempt([
+        'email' => $this->form->email,
+        'password' => $this->form->password,
+        ]);
 
-        $this->addError('email', 'Invalid credentials.');
+        session()->regenerate();
+
+        return redirect()->route('dashboard');
     }
 }

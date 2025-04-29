@@ -13,11 +13,11 @@
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
   {{-- Optional shared header --}}
-  @include('components.header')
-
+  @livewire('header')
+  
   {{-- This is where each page’s content goes --}}
   <main class="flex-1 container mx-auto p-4">
-    {{ $slot }}  {{-- ✅ this is what Livewire's #[Layout] uses --}}
+    {{ $slot }}
   </main>
 
   {{-- Livewire scripts --}}

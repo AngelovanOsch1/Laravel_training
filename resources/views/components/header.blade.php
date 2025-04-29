@@ -19,20 +19,30 @@
       <div class="md:flex md:items-center md:gap-12">
         <div class="flex items-center gap-4">
           <div class="sm:flex sm:gap-4">
-            <x-nav-link
-                href="{{ route('login') }}"
-                text="Login"
-                :active="Route::is('login')"
-                class="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
-              />
-            <div class="hidden sm:flex">
+            @auth
               <x-nav-link
-                href="{{ route('register') }}"
-                text="Register"
-                :active="Route::is('register')"
-                class="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
-              />
-            </div>
+                  href="{{ route('login') }}"
+                  text="Logout"
+                  class="rounded-md bg-red-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-700 dark:bg-red-500 dark:text-white dark:hover:bg-red-600"
+                  wire:click="logout"
+                />
+            @endauth
+            @guest           
+              <x-nav-link
+                  href="{{ route('login') }}"
+                  text="Login"
+                  :active="Route::is('login')"
+                  class="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
+                />
+              <div class="hidden sm:flex">
+                <x-nav-link
+                  href="{{ route('register') }}"
+                  text="Register"
+                  :active="Route::is('register')"
+                  class="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
+                />
+              </div>
+            @endguest
           </div>
         </div>
       </div>

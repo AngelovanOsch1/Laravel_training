@@ -6,9 +6,10 @@
       />
       <x-form-input
         id="email" 
-        name="email"
+        name="form.email"
         placeholder="email..."
         :required="true"
+        model="form.email"
       />
     </div>
     <div class="mb-5">
@@ -19,9 +20,10 @@
       <x-form-input
         type="password" 
         id="password" 
-        name="password"
+        name="form.password"
         placeholder="password..."
         :required="true"
+        model="form.password"
       />
     </div>
     <x-primary-button
