@@ -8,7 +8,6 @@
         id="email" 
         name="form.email"
         placeholder="email..."
-        :required="true"
         model="form.email"
       />
     </div>
@@ -22,7 +21,6 @@
         id="password" 
         name="form.password"
         placeholder="password..."
-        :required="true"
         model="form.password"
       />
     </div>
