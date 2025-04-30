@@ -22,7 +22,7 @@ class RegisterForm extends Component
 
     public function submit()
     {
-        Log::info('Form submission', (array) $this->form);
+        $this->form->validate();
 
         $user = User::create([
             'first_name' => $this->form->firstName,

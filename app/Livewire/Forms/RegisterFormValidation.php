@@ -3,7 +3,6 @@
 namespace App\Livewire\Forms;
 
 use Livewire\Form;
-use Illuminate\Validation\Rules\Password;
 
 class RegisterFormValidation extends Form
 {
@@ -19,13 +18,13 @@ class RegisterFormValidation extends Form
     protected function rules()
     {
         return [
-            'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', Password::defaults(), 'confirmed'],
-            'firstName' => ['required', 'string', 'max:50'],
-            'lastName' => ['required', 'string', 'max:50'],
-            'country' => ['required', 'string', 'max:50'],
+            'email' => ['required', 'email', 'unique:authentication,email'],
+            'password' => ['required', 'min:8', 'confirmed'],
+            'firstName' => ['required'],
+            'lastName' => ['required'],
+            'country' => ['required'],
             'gender' => ['required'],
-            'birthYear' => ['required', 'date_format:m/d/Y'],
+            'birthYear' => ['required'],
         ];
     }
 }

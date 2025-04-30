@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('date_of_birth');
             $table->string('country');
             $table->enum('gender', ['male', 'female', 'other']);
-            $table->string('profile_photo')->default('test');
+            $table->string('profile_photo')->default('');
             $table->timestamps();
         });
 

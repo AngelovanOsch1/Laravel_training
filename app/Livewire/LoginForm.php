@@ -21,10 +21,12 @@ class LoginForm extends Component
     {
         $this->form->validate();
 
-        Auth::attempt([
-        'email' => $this->form->email,
-        'password' => $this->form->password,
-        ]);
+        if (!Auth::attempt([
+            'email' => $this->form->email,
+            'password' => $this->form->password,
+        ])) {
+            return $this->form->addError('email', 'Incorrect credentials');
+        }
 
         session()->regenerate();
 
