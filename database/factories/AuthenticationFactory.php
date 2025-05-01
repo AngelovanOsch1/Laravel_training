@@ -18,7 +18,7 @@ class AuthenticationFactory extends Factory
             'password' => Hash::make('Password123!'),
             'role' => fake()->randomElement(['user', 'mod', 'superUser']),
             'is_online' => false,
-            'user_id' => User::factory()->create(),  // Use the created user's ID
+            'user_id' => User::factory()->create(),
         ];
     }
 }

@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Authentication;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -88,13 +87,13 @@ class RegisterFormTest extends TestCase
     /** @test */
     public function it_requires_password_confirmation_to_match_password()
     {
-        $mismatchedData = array_replace($this->baseFormData, [
+        $passwordDontMatch = array_replace($this->baseFormData, [
             'form.password' => 'Password123!',
             'form.password_confirmation' => 'DifferentPassword!',
         ]);
 
         Livewire::test(RegisterForm::class)
-            ->set($mismatchedData)
+            ->set($passwordDontMatch)
             ->call('submit')
             ->assertHasErrors([
                 'form.password' => 'confirmed',
@@ -135,16 +134,14 @@ class RegisterFormTest extends TestCase
     /** @test */
     public function it_requires_email_to_be_unique()
     {
-        $user = User::factory()->create();
+        $auth = Authentication::factory()->create();
 
-        Authentication::create([
-            'email' => $this->baseFormData['form.email'],
-            'password' => 'Password123!',
-            'user_id' => $user->id
+        $notUniqueEmailData = array_merge($this->baseFormData, [
+            'form.email' => $auth->email,
         ]);
 
         Livewire::test(RegisterForm::class)
-            ->set($this->baseFormData)
+            ->set($notUniqueEmailData)
             ->call('submit')
             ->assertHasErrors([
                 'form.email' => 'unique',
