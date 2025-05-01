@@ -13,10 +13,8 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: training_project
-          MYSQL_USER: root
-          MYSQL_PASSWORD: wachtwoord123
+          MYSQL_ROOT_PASSWORD: wachtwoord123   # Set the root password here
+          MYSQL_DATABASE: training_project      # The database you want to create
         ports:
           - 3306:3306
         options: >-
