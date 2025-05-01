@@ -8,6 +8,7 @@ use Livewire\Livewire;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Hash;
 use App\Livewire\RegisterForm;
+use PHPUnit\Framework\Attributes\Test;
 
 class RegisterFormTest extends TestCase
 {
@@ -19,12 +20,12 @@ class RegisterFormTest extends TestCase
     {
         parent::setUp();
 
-        $password = fake()->password();
+        $fakePassword = fake()->password(8);
 
         $this->baseFormData = [
             'form.email' => fake()->unique()->safeEmail(),
-            'form.password' => $password,
-            'form.password_confirmation' => $password,
+            'form.password' => $fakePassword,
+            'form.password_confirmation' => $fakePassword,
             'form.firstName' => fake()->firstName(),
             'form.lastName' => fake()->lastName(),
             'form.country' => fake()->country(),
@@ -33,7 +34,7 @@ class RegisterFormTest extends TestCase
         ];
     }
 
-    /** @test */
+    #[Test]
     public function it_registers_a_user_and_authentication_record()
     {
         Livewire::test(RegisterForm::class)
@@ -57,7 +58,7 @@ class RegisterFormTest extends TestCase
         $this->assertTrue(Hash::check($this->baseFormData['form.password'], $auth->password));
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_required_fields()
     {
         $invalidData = array_replace($this->baseFormData, [
@@ -84,7 +85,7 @@ class RegisterFormTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_requires_password_confirmation_to_match_password()
     {
         $passwordDontMatch = array_replace($this->baseFormData, [
@@ -100,7 +101,7 @@ class RegisterFormTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_requires_password_to_be_at_least_8_characters_long()
     {
         $shortPasswordData = array_replace($this->baseFormData, [
@@ -116,7 +117,7 @@ class RegisterFormTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_requires_a_valid_email_address()
     {
         $invalidEmailData = array_replace($this->baseFormData, [
@@ -131,7 +132,7 @@ class RegisterFormTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_requires_email_to_be_unique()
     {
         $auth = Authentication::factory()->create();

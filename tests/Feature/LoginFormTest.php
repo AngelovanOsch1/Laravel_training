@@ -7,12 +7,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
 use App\Livewire\LoginForm;
+use PHPUnit\Framework\Attributes\Test;
 
 class LoginFormTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function it_logs_in_with_correct_credentials()
     {
         $auth = Authentication::factory()->create();
@@ -30,7 +31,7 @@ class LoginFormTest extends TestCase
         $this->assertAuthenticated();
     }
 
-    /** @test */
+    #[Test]
     public function it_shows_error_for_invalid_credentials()
     {
         $invalidCredentials = [
@@ -41,13 +42,12 @@ class LoginFormTest extends TestCase
         Livewire::test(LoginForm::class)
             ->set($invalidCredentials)
             ->call('submit')
-            ->assertHasErrors(['form.email'])
-            ->assertHasErrors(['form.email' => ['Incorrect credentials']]);;
+            ->assertHasErrors(['form.email' => ['Incorrect credentials']]);
 
         $this->assertGuest();
     }
 
-    /** @test */
+    #[Test]
     public function it_requires_email_and_password()
     {
         $invalidCredentials = [

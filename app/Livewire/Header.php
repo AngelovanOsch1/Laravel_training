@@ -17,6 +17,6 @@ class Header extends Component
         Auth::logout();
         session()->invalidate();
         session()->regenerateToken();
-        // return redirect()->route('dashboard');
+        return redirect()->route('dashboard');
     }
 }
