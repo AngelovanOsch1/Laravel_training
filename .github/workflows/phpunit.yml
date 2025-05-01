@@ -39,9 +39,9 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
-      - name: Set up .env for testing
+      - name: Set up .env
         run: |
-          cp .env.testing .env
+          cp .env.example .env
           php artisan key:generate
           sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=mysql/' .env
           sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
