@@ -136,7 +136,7 @@ class RegisterFormTest extends TestCase
     {
         $auth = Authentication::factory()->create();
 
-        $notUniqueEmailData = array_merge($this->baseFormData, [
+        $notUniqueEmailData = array_replace($this->baseFormData, [
             'form.email' => $auth->email,
         ]);
 
