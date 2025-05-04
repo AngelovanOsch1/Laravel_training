@@ -3,7 +3,7 @@
 namespace Tests\Feature\Livewire;
 
 use App\Livewire\Header;
-use App\Models\Authentication;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -16,10 +16,10 @@ class LogoutFormTest extends TestCase
     #[Test]
     public function it_user_can_logout()
     {
-        $auth = Authentication::factory()->create();
-        $this->actingAs($auth);
+        $user = User::factory()->create();
+        $this->actingAs($user);
 
-        $this->assertAuthenticatedAs($auth);
+        $this->assertAuthenticatedAs($user);
 
         Livewire::test(Header::class)
             ->call('logout')

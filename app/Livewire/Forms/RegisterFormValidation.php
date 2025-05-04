@@ -18,7 +18,7 @@ class RegisterFormValidation extends Form
     protected function rules()
     {
         return [
-            'email' => ['required', 'email', 'unique:authentication,email'],
+            'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'min:8', 'confirmed'],
             'firstName' => ['required'],
             'lastName' => ['required'],

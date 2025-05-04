@@ -6,9 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use App\Livewire\Forms\RegisterFormValidation;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Authentication;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
 
 #[Layout('layouts.app')]
 class RegisterForm extends Component
@@ -24,18 +22,14 @@ class RegisterForm extends Component
     {
         $this->form->validate();
 
-        $user = User::create([
+        User::create([
+            'email' => $this->form->email,
+            'password' => Hash::make($this->form->password),
             'first_name' => $this->form->firstName,
             'last_name' => $this->form->lastName,
             'country' => $this->form->country,
             'date_of_birth' => $this->form->birthYear,
             'gender' => $this->form->gender,
-        ]);
-
-        Authentication::create([
-            'email' => $this->form->email,
-            'password' => Hash::make($this->form->password),
-            'user_id' => $user->id,
         ]);
 
         return redirect()->route('dashboard');

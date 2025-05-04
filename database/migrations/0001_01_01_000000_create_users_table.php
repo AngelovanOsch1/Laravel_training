@@ -14,23 +14,14 @@ return new class extends Migration
         // Creating the users table
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('email')->unique();
+            $table->string('password');
             $table->string('first_name');
             $table->string('last_name');
             $table->date('date_of_birth');
             $table->string('country');
             $table->enum('gender', ['male', 'female', 'other']);
             $table->string('profile_photo')->default('');
-            $table->timestamps();
-        });
-
-        // Creating the authentication table
-        Schema::create('authentication', function (Blueprint $table) {
-            $table->id();
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->enum('role', ['user', 'mod', 'superUser'])->default('user');
-            $table->boolean('is_online')->default(false);
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -60,7 +51,6 @@ return new class extends Migration
         // Dropping tables in reverse order
         Schema::dropIfExists('sessions');
         Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('authentication');
         Schema::dropIfExists('users');
     }
 };

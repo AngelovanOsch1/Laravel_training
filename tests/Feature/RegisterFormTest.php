@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Models\Authentication;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Hash;
 use App\Livewire\RegisterForm;
+use App\Models\User;
 use PHPUnit\Framework\Attributes\Test;
 
 class RegisterFormTest extends TestCase
@@ -43,6 +43,7 @@ class RegisterFormTest extends TestCase
             ->assertRedirect(route('dashboard'));
 
         $this->assertDatabaseHas('users', [
+            'email' => $this->baseFormData['form.email'],
             'first_name' => $this->baseFormData['form.firstName'],
             'last_name' => $this->baseFormData['form.lastName'],
             'country' => $this->baseFormData['form.country'],
@@ -50,12 +51,8 @@ class RegisterFormTest extends TestCase
             'gender' => $this->baseFormData['form.gender'],
         ]);
 
-        $this->assertDatabaseHas('authentication', [
-            'email' => $this->baseFormData['form.email'],
-        ]);
-
-        $auth = Authentication::where('email', $this->baseFormData['form.email'])->first();
-        $this->assertTrue(Hash::check($this->baseFormData['form.password'], $auth->password));
+        $user = User::where('email', $this->baseFormData['form.email'])->first();
+        $this->assertTrue(Hash::check($this->baseFormData['form.password'], $user->password));
     }
 
     #[Test]
@@ -89,8 +86,8 @@ class RegisterFormTest extends TestCase
     public function it_requires_password_confirmation_to_match_password()
     {
         $passwordDontMatch = array_replace($this->baseFormData, [
-            'form.password' => 'Password123!',
-            'form.password_confirmation' => 'DifferentPassword!',
+            'form.password' => fake()->unique()->password(8),
+            'form.password_confirmation' => fake()->unique()->password(8),
         ]);
 
         Livewire::test(RegisterForm::class)
@@ -104,9 +101,11 @@ class RegisterFormTest extends TestCase
     #[Test]
     public function it_requires_password_to_be_at_least_8_characters_long()
     {
+        $fakePassword = fake()->unique()->password(5);
+
         $shortPasswordData = array_replace($this->baseFormData, [
-            'form.password' => 'Short1',
-            'form.password_confirmation' => 'Short1',
+            'form.password' => $fakePassword,
+            'form.password_confirmation' => $fakePassword,
         ]);
 
         Livewire::test(RegisterForm::class)
@@ -121,7 +120,7 @@ class RegisterFormTest extends TestCase
     public function it_requires_a_valid_email_address()
     {
         $invalidEmailData = array_replace($this->baseFormData, [
-            'form.email' => 'invalidEmail',
+            'form.email' => fake()->firstName(),
         ]);
 
         Livewire::test(RegisterForm::class)
@@ -135,10 +134,10 @@ class RegisterFormTest extends TestCase
     #[Test]
     public function it_requires_email_to_be_unique()
     {
-        $auth = Authentication::factory()->create();
+        $user = User::factory()->create();
 
         $notUniqueEmailData = array_replace($this->baseFormData, [
-            'form.email' => $auth->email,
+            'form.email' => $user->email,
         ]);
 
         Livewire::test(RegisterForm::class)

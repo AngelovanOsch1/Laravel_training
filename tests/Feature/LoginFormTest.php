@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Models\Authentication;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
 use Tests\TestCase;
+use App\Models\User;
+use Livewire\Livewire;
 use App\Livewire\LoginForm;
 use PHPUnit\Framework\Attributes\Test;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class LoginFormTest extends TestCase
 {
@@ -16,10 +16,10 @@ class LoginFormTest extends TestCase
     #[Test]
     public function it_logs_in_with_correct_credentials()
     {
-        $auth = Authentication::factory()->create();
+        $user = User::factory()->create();
 
         $validCredentials = [
-            'form.email' => $auth->email,
+            'form.email' => $user->email,
             'form.password' => 'Password123!',
         ];
 
