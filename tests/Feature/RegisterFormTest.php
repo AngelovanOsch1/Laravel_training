@@ -2,13 +2,14 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Hash;
-use App\Livewire\RegisterForm;
 use App\Models\User;
+use Livewire\Livewire;
+use Illuminate\Support\Str;
+use App\Livewire\RegisterForm;
+use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RegisterFormTest extends TestCase
 {
@@ -101,7 +102,7 @@ class RegisterFormTest extends TestCase
     #[Test]
     public function it_requires_password_to_be_at_least_8_characters_long()
     {
-        $fakePassword = fake()->password(5);
+        $fakePassword = Str::random(5);
 
         $shortPasswordData = array_replace($this->baseFormData, [
             'form.password' => $fakePassword,
