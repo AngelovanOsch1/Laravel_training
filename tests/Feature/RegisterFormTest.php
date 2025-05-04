@@ -101,7 +101,7 @@ class RegisterFormTest extends TestCase
     #[Test]
     public function it_requires_password_to_be_at_least_8_characters_long()
     {
-        $fakePassword = fake()->unique()->password(5);
+        $fakePassword = fake()->password(5);
 
         $shortPasswordData = array_replace($this->baseFormData, [
             'form.password' => $fakePassword,
