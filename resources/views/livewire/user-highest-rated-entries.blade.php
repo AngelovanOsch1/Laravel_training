@@ -1,4 +1,4 @@
-<div class="my-10 w-full rounded-xl border bg-white px-6 py-6 shadow-lg shadow-[#e0e0e0] hover:shadow-[#c0c0c0] transition-all duration-300">
+<div class="my-10 w-full rounded-xl bg-white px-6 py-6 shadow-lg shadow-[#e0e0e0]">
     <h3 class="text-xl font-bold mb-4">Top Rated Anime</h3>
 
     <div class="flex flex-wrap gap-4">

@@ -1,4 +1,4 @@
-<div class="my-10 flex max-w-sm flex-col items-center rounded-xl border bg-white px-6 py-6 text-center md:max-w-md shadow-lg shadow-[#e0e0e0] hover:shadow-[#c0c0c0] transition-all duration-300">
+<div class="my-10 flex max-w-sm flex-col items-center rounded-xl bg-white px-6 py-6 text-center md:max-w-md shadow-lg shadow-[#e0e0e0]">
   <div class="mb-4">
     <img class="h-56 w-56 rounded-lg object-cover shadow-lg shadow-[#e0e0e0] hover:shadow-[#c0c0c0]" src="https://pbs.twimg.com/profile_images/1158585353974013952/Tk0tCi8y_400x400.jpg" alt="" />
   </div>

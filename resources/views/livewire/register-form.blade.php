@@ -1,4 +1,4 @@
-<div class="max-w-4xl mx-auto p-6 rounded-xl bg-white shadow-lg shadow-[#e0e0e0] hover:shadow-[#c0c0c0] transition-all duration-300">
+<div class="max-w-4xl mx-auto p-6 rounded-xl bg-white shadow-lg shadow-[#e0e0e0]">
     <h2 class="text-xl font-bold text-left mb-6">Sign Up</h2>
     
     <form wire:submit.prevent="submit">

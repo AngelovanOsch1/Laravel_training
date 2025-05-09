@@ -3,7 +3,7 @@
     title="Edit Profile"
     description="Please fill in the form to update your profile details."
     closeButtonText="Cancel"
-    saveButtonText="Save Changes"
+    saveButtonText="Save"
     submitForm="submit"
 >
 <hr class="my-6 border-t border-gray-300" />

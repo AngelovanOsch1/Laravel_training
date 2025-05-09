@@ -19,7 +19,7 @@
         x-on:click="$event.target === $refs.modal && $refs.modal.close()"
         class="backdrop:bg-black/50 rounded-lg p-6 max-w-md w-full m-auto"
     >
-        <form class="flex flex-col gap-4" wire:submit.prevent="{{ $submitForm }}">
+        <form class="flex flex-col" wire:submit.prevent="{{ $submitForm }}">
             <h2 class="text-lg font-semibold">{{ $title }}</h2>
             <p>{{ $description }}</p>
 

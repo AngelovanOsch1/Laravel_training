@@ -1,4 +1,4 @@
-<div class="my-10 flex w-full flex-col rounded-xl bg-white px-6 py-6 text-center shadow-lg shadow-[#c0c0c0] transition-all duration-300">
+<div class="my-10 flex w-full flex-col rounded-xl bg-white px-6 py-6 text-center shadow-lg shadow-[#c0c0c0]">
     <h3 class="text-xl font-bold mb-4 text-left">Anime Statistics</h3>
       <div class="grid grid-cols-1 gap-y-3 text-sm text-gray-700 w-full max-w-md">
       <div class="flex justify-between items-center">
@@ -58,6 +58,13 @@
       <div class="flex justify-between">
         <span>Total weeks</span>
         <span>10.3</span>
+      </div>
+          
+<div class="flex justify-between mt-5">
+      <x-nav-link
+        href="serie-list"
+        text="Update list"
+      />
       </div>
     </div>
   </div>
