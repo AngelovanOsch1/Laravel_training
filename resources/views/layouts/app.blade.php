@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
   <livewire:header /> 
-  <main class="flex-1 container mx-auto p-4 mt-12">
+  <main class="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 max-w-screen-xl mt-12">
     {{ $slot }}
   </main>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>

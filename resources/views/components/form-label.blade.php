@@ -1,6 +1,6 @@
 @props([
-    'for',
-    'text',
+    'for' => '',
+    'text' => '',
     'class' => 'block mb-2 text-sm font-bold'
 ])
 

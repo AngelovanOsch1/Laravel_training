@@ -87,6 +87,9 @@
           </div>
         </div>        
       </div>
-      <x-primary-button text='Sign up' />
+      <x-primary-button 
+        text='Sign up' 
+        xclick="submit" 
+      />
     </form>
-  </div>  
+  </div>

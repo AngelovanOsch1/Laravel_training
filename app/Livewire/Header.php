@@ -3,9 +3,11 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
+#[Layout('layouts.app')]
 class Header extends Component
 {
     public function render()

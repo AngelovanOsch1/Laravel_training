@@ -10,9 +10,14 @@ use Illuminate\Support\Facades\Route;
 // Public
 Route::get('/', Dashboard::class)->name('dashboard');
 
-// Auth
-Route::get('login', LoginForm::class)->name('login');
-Route::get('register', RegisterForm::class)->name('register');
+// Guest-only routes
+Route::middleware('guest')->group(function () {
+    Route::get('login', LoginForm::class)->name('login');
+    Route::get('register', RegisterForm::class)->name('register');
+});
 
-Route::get('profile', Profile::class)->name('profile');
-Route::get('serie-list', UserSeriesList::class)->name('serie-list');
+// Authenticated-only routes
+Route::middleware('auth')->group(function () {
+    Route::get('profile', Profile::class)->name('profile');
+    Route::get('serie-list', UserSeriesList::class)->name('serie-list');
+});
