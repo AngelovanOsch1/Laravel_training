@@ -29,7 +29,6 @@ class LoginForm extends Component
         }
 
         session()->regenerate();
-
         return redirect()->route('dashboard');
     }
 }

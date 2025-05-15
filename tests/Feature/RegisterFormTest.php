@@ -31,7 +31,7 @@ class RegisterFormTest extends TestCase
             'form.lastName' => fake()->lastName(),
             'form.country' => fake()->country(),
             'form.birthYear' => fake()->date('Y-m-d', '2000-01-01'),
-            'form.gender' => fake()->randomElement(['male', 'female', 'other']),
+            'form.gender' => fake()->randomElement(['Male', 'Female', 'Other']),
         ];
     }
 

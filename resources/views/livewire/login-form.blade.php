@@ -28,7 +28,6 @@
     </div>
     <x-primary-button
       text='Login'
-      xclick="submit"  
     />
   </form>
 </div>

@@ -1,59 +1,92 @@
-<x-modal 
-    buttonText="Edit Profile"
-    title="Edit Profile"
-    description="Please fill in the form to update your profile details."
-    closeButtonText="Cancel"
-    saveButtonText="Save"
-    submitForm="submit"
->
-<hr class="my-6 border-t border-gray-300" />
-    <div class="mb-5">
-        <x-form-label for="firstName" text="Your first name" />
-        <x-form-input
-        id="firstName" 
-        name="form.firstName"
-        placeholder="first name..."
-        model="form.firstName"
-        />
-    </div>
-    <div class="mb-5">
-        <x-form-label for="lastName" text="Your last name" />
-        <x-form-input
-          id="lastName" 
-          name="form.lastName"
-          placeholder="last name..."
-          model="form.lastName"
-        />
-    </div>
-    <div class="mb-5">
-        <x-form-label for="country" text="Your country" />
-        <x-form-input
-          id="country" 
-          name="form.country"
-          placeholder="country..."
-          model="form.country"
-        />
-    </div>
-    <div class="mb-5">
-        <x-form-label for="gender" text="Your gender" />
-        <x-form-select
-          id="gender"
-          name="form.gender"
-          model="form.gender"
-        >
-          <x-form-option value="" text="Select your gender" />
-          <x-form-option value="Male" text="Male" />
-          <x-form-option value="Female" text="Female" />
-          <x-form-option value="Other" text="Other" />
-        </x-form-select>
-    </div>
-    <div class="mb-5">
-        <x-form-label for="birthYear" text="Your date of birth" />
-        <x-form-input
-          type="date"
-          id="birthYear"
-          name="form.birthYear"
-          model="form.birthYear"
-        />
-    </div>
-</x-modal>
+<div>
+    @if($show)
+        <div class="fixed inset-0 flex justify-center items-center z-50 bg-gray-800/25">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <form class="flex flex-col" wire:submit.prevent="submit">
+                    <h2 class="text-lg font-semibold">Edit Profile</h2>
+                    <p>Please fill in the form to update your profile details.</p>
+
+                    <hr class="my-6 border-t border-gray-300" />
+
+                    <div class="mb-5">
+                        <x-form-label for="firstName" text="Your first name" />
+                        <x-form-input
+                            id="firstName" 
+                            name="form.firstName"
+                            placeholder="first name..."
+                            model="form.firstName"
+                        />
+                    </div>
+                    <div class="mb-5">
+                        <x-form-label for="lastName" text="Your last name" />
+                        <x-form-input
+                            id="lastName" 
+                            name="form.lastName"
+                            placeholder="last name..."
+                            model="form.lastName"
+                        />
+                    </div>
+                    <div class="mb-5">
+                        <x-form-label for="country" text="Your country" />
+                        <x-form-input
+                            id="country" 
+                            name="form.country"
+                            placeholder="country..."
+                            model="form.country"
+                        />
+                    </div>
+
+                    <div class="mb-5">
+                        <x-form-label for="gender" text="Your gender" />
+                        <x-form-select
+                            id="gender"
+                            name="form.gender"
+                            model="form.gender"
+                        >
+                            <x-form-option value="" text="Select your gender" />
+                            <x-form-option value="Male" text="Male" />
+                            <x-form-option value="Female" text="Female" />
+                            <x-form-option value="Other" text="Other" />
+                        </x-form-select>
+                    </div>
+
+                    <div class="mb-5">
+                        <x-form-label for="birthYear" text="Your date of birth" />
+                        <x-form-input
+                            type="date"
+                            id="birthYear"
+                            name="form.birthYear"
+                            model="form.birthYear"
+                        />
+                    </div>
+
+                    <div class="mb-5">
+                        <x-form-label for="description" text="Your description" />
+                        <x-form-textarea
+                            id="description"
+                            name="form.description"
+                            placeholder="Enter up to 100 characters..."
+                            model="form.description"
+                            rows="4"
+                            maxCharacters="100"
+                        />
+                    </div>
+                    <div class="flex justify-between mt-4">
+                        <x-primary-button
+                            type="button"
+                            text="Cancel"
+                            class="text-gray-700 bg-gray-200 hover:bg-gray-300
+                                   focus:outline-none focus:ring-2 focus:ring-gray-400
+                                   font-medium rounded-lg text-sm
+                                   px-5 py-2.5 w-full sm:w-auto text-center
+                                   dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 dark:focus:ring-gray-500
+                                   shadow-sm transition-colors duration-150"
+                            click="closeModal"
+                        />
+                        <x-primary-button text="Save" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
+</div>

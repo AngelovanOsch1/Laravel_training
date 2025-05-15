@@ -3,16 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  @vite('resources/css/app.css')
+  
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
   @livewireStyles
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
-  <livewire:header /> 
-  <main class="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 max-w-screen-xl mt-12">
+  <livewire:header />
+      <livewire:warning-modal />
+ 
+  <main class="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 max-w-screen-2xl mt-12">
     {{ $slot }}
   </main>
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   @livewireScripts
-  @vite('resources/js/app.js')
 </body>
 </html>

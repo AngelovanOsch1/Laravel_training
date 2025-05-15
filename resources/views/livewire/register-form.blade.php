@@ -7,6 +7,7 @@
           <div class="mb-5">
             <x-form-label for="email" text="Your email" />
             <x-form-input
+              type="email"
               id="email" 
               name="form.email"
               placeholder="email..."
@@ -88,8 +89,7 @@
         </div>        
       </div>
       <x-primary-button 
-        text='Sign up' 
-        xclick="submit" 
+        text='Sign up'  
       />
     </form>
   </div>

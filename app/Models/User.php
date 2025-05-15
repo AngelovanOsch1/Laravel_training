@@ -18,7 +18,9 @@ class User extends Authenticatable
         'date_of_birth',
         'country',
         'gender',
-        'profile_photo'
+        'description',
+        'profile_photo',
+        'profile_banner',
     ];
 
     protected function casts(): array

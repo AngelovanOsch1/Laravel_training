@@ -20,8 +20,10 @@ return new class extends Migration
             $table->string('last_name');
             $table->date('date_of_birth');
             $table->string('country');
-            $table->enum('gender', ['male', 'female', 'other']);
-            $table->string('profile_photo')->default('');
+            $table->enum('gender', ['Male', 'Female', 'Other']);
+            $table->text('description')->nullable();
+            $table->text('profile_photo')->nullable();
+            $table->text('profile_banner')->nullable();
             $table->timestamps();
         });
 

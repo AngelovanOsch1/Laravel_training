@@ -9,17 +9,19 @@ class EditProfileFormValidation extends Form
     public $firstName = '';
     public $lastName = '';
     public $country = '';
-    public $birthYear = '';
     public $gender = '';
+    public $birthYear = '';
+    public $description = '';
 
     protected function rules()
     {
         return [
-            'firstName' => ['required'],
-            'lastName' => ['required'],
-            'country' => ['required'],
-            'gender' => ['required'],
-            'birthYear' => ['required'],
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'country' => 'required',
+            'gender' => 'required',
+            'birthYear' => 'required',
+            'description' => 'max:100',
         ];
     }
 }

@@ -1,28 +1,32 @@
-<div class="my-10 flex max-w-sm flex-col items-center rounded-xl bg-white px-6 py-6 text-center md:max-w-md shadow-lg shadow-[#e0e0e0]">
+@props([
+    'user' => null,
+])
+
+<div class="my-10 flex flex-col items-center rounded-xl bg-white px-6 py-6 text-center md:max-w-md shadow-lg shadow-[#e0e0e0]">
   <div class="mb-4">
-    <img class="h-56 w-56 rounded-lg object-cover shadow-lg shadow-[#e0e0e0] hover:shadow-[#c0c0c0]" src="https://pbs.twimg.com/profile_images/1158585353974013952/Tk0tCi8y_400x400.jpg" alt="" />
+    <livewire:profile-photo :profilePhoto="$user->profile_photo" />
   </div>
   <div>
-    <h2 class="text-xl font-bold text-gray-800">John Doe</h2>
+    <h2 class="text-xl font-bold text-gray-800">{{ $user->first_name . ' ' . $user->last_name }}</h2>
     <span class="inline-block mt-1 rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-700">User</span>
-    <p class="mt-2 text-gray-600">Software Developer at Acme Inc.</p>
+    <p class="mt-2 text-gray-600 w-[200px] mx-auto text-center break-words">{{ $user->description }}</p>
     <hr class="my-6 border-t border-gray-300" />
         <div class="w-full space-y-4 mt-4">
       <div class="flex justify-between text-sm text-gray-700">
         <span>Date of Birth</span>
-        <span>October 2, 1990</span>
+        <span>{{ $user->date_of_birth->format('F j, Y') }}</span>
       </div>
       <div class="flex justify-between text-sm text-gray-700">
         <span>Gender</span>
-        <span>Male</span>
+        <span>{{ $user->gender }}</span>
       </div>
       <div class="flex justify-between text-sm text-gray-700">
         <span>Country</span>
-        <span>Netherlands</span>
+        <span>{{ $user->country }}</span>
       </div>
       <div class="flex justify-between text-sm text-gray-700">
         <span>Joined</span>
-        <span>October 19, 1990</span>
+        <span>{{ $user->created_at->format('F j, Y') }}</span>
       </div>
     </div>
     <hr class="my-6 border-t border-gray-300" />

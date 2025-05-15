@@ -6,8 +6,8 @@ use Livewire\Form;
 
 class LoginFormValidation extends Form
 {
-    public $email = 'angelo.van.osch@hotmail.com';
-    public $password = 'wachtwoord123';
+    public $email = '';
+    public $password = '';
 
     protected function rules()
     {
