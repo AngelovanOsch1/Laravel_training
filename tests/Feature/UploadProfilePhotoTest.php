@@ -40,6 +40,7 @@ class UploadProfilePhotoTest extends TestCase
     public function it_dispatches_warning_modal_when_invalid_mimes_is_uploaded()
     {
         $photo = UploadedFile::fake()->create('document.pdf', 100, 'application/pdf');
+
         Livewire::test(ProfilePhoto::class, ['profilePhoto' => null])
             ->set('form.photo', $photo)
             ->call('handleFormUpdate')
