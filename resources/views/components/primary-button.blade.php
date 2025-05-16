@@ -10,7 +10,7 @@
 
 <button 
     type="{{ $type }}"
-    {{-- @if ($click) wire:click="{{ $click }}" @endif --}}
+    @if ($click) wire:click="{{ $click }}" @endif
     @if ($xclick) x-on:click="{{ $xclick }}" @endif
     class="{{ $class }}"
     style="flex-direction: {{ $iconPosition === 'right' ? 'row-reverse' : 'row' }}"
