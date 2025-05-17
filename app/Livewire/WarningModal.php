@@ -8,12 +8,12 @@ use Livewire\Attributes\On;
 class WarningModal extends Component
 {
     public $show = false;
-    public $errors = [];
+    public $error;
 
     #[On('openWarningModal')]
     public function openModal($data)
     {
-        $this->errors = $data;
+        $this->error = $data;
         $this->show = true;
     }
 

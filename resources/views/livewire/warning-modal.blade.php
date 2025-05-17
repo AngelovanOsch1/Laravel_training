@@ -4,9 +4,7 @@
             <div class="bg-white p-6 rounded-lg shadow-lg">
                 <h2 class="text-lg font-semibold">Warning</h2>
                 <hr class="my-6 border-t border-gray-300" />
-                @foreach($errors as $error)
-                    <p class="text-sm text-red-600">{{ $error }}</p>
-                @endforeach
+                <p class="text-sm text-red-600">{{ $error }}</p>
                 <div class="mt-4">
                     <x-primary-button 
                     type="button"

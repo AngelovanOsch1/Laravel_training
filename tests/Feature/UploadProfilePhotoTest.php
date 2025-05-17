@@ -25,9 +25,7 @@ class UploadProfilePhotoTest extends TestCase
         $photo = UploadedFile::fake()->create('image.jpg', 100, 'image/jpeg');
 
         Livewire::test(ProfilePhoto::class, ['profilePhoto' => null])
-            ->set('form.photo', $photo)
-            ->call('handleFormUpdate')
-            ->assertRedirect(route('profile'));
+            ->set('form.photo', $photo);
 
         $filePath = 'photos/' . $photo->hashName();
         $this->assertTrue(Storage::disk('public')->exists($filePath));
@@ -43,9 +41,8 @@ class UploadProfilePhotoTest extends TestCase
 
         Livewire::test(ProfilePhoto::class, ['profilePhoto' => null])
             ->set('form.photo', $photo)
-            ->call('handleFormUpdate')
-            ->assertDispatched('openWarningModal', function ($event, $params) {
-                return $params[0][0] === "Unsupported file format. Only JPEG, PNG, WEBP and JPG formats are supported.";
+            ->assertDispatched('openWarningModal', function ($event, $param) {
+                return $param[0] === "Unsupported file format. Only JPEG, PNG, WEBP and JPG formats are supported.";
             });
     }
 
@@ -56,9 +53,8 @@ class UploadProfilePhotoTest extends TestCase
 
         Livewire::test(ProfilePhoto::class, ['profilePhoto' => null])
             ->set('form.photo', $photo)
-            ->call('handleFormUpdate')
-            ->assertDispatched('openWarningModal', function ($event, $params) {
-                return $params[0][0] === "The file size is too large. Maximum size is 10MB.";
+            ->assertDispatched('openWarningModal', function ($event, $param) {
+                return $param[0] === "The file size is too large. Maximum size is 10MB.";
             });
     }
 }

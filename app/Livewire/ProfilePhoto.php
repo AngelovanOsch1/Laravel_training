@@ -7,6 +7,7 @@ use App\Support\GlobalHelper;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 use App\Livewire\Forms\PhotoFormValidation;
+use Illuminate\Validation\ValidationException;
 
 class ProfilePhoto extends Component
 {
@@ -27,22 +28,19 @@ class ProfilePhoto extends Component
 
     public function updatedForm()
     {
-        $this->handleFormUpdate();
-    }
+        try {
+            $this->validate();
 
-    public function handleFormUpdate()
-    {
-        $errorMessage = $this->form->submit();
-        if (!$errorMessage) {
             $path = Storage::disk('public')->put('photos', $this->form->photo);
 
             $user = GlobalHelper::getLoggedInUser();
             $user->update([
                 'profile_photo' => $path,
             ]);
-            return redirect()->route('profile');
-        } else {
-            $this->dispatch('openWarningModal', $errorMessage);
+
+            $this->profilePhoto = $path;
+        } catch (ValidationException $e) {
+            $this->dispatch('openWarningModal', $e->getMessage());
         }
     }
 }

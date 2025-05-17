@@ -3,8 +3,6 @@
 namespace App\Livewire\Forms;
 
 use Livewire\Form;
-use Illuminate\Validation\ValidationException;
-use App\ErrorMessages\ErrorMessages;
 
 class PhotoFormValidation extends Form
 {
@@ -17,14 +15,11 @@ class PhotoFormValidation extends Form
         ];
     }
 
-    public function submit()
+    protected function messages()
     {
-        try {
-            $this->validate();
-        } catch (ValidationException $e) {
-            $failedRules = $e->validator->failed();
-            $failedKey = array_keys($failedRules['form.photo']);
-            return ErrorMessages::getErrorMessage($failedKey);
-        }
+        return [
+            'photo.mimes' => 'Unsupported file format. Only JPEG, PNG, WEBP and JPG formats are supported.',
+            'photo.max' => 'The file size is too large. Maximum size is 10MB.',
+        ];
     }
 }

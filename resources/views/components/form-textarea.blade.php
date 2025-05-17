@@ -11,31 +11,20 @@
            focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none',
 ])
 
-<div 
-    x-data="{ 
-        description: @entangle($model), 
-        max: {{ $maxCharacters }} 
-    }" 
-    class="relative"
+<textarea
+    id="{{ $id }}" 
+    name="{{ $name }}"
+    placeholder="{{ $placeholder }}"
+    wire:model="{{ $model }}"
+    rows="{{ $rows }}"
+    class="{{ $class }}"
+></textarea>
+<p 
+    class="text-right text-sm mt-2 text-gray-500"
+    :class="{ 'text-red-500': $wire.{{ $model }}.length > {{ $maxCharacters }} }"
 >
-    <textarea
-        id="{{ $id }}" 
-        name="{{ $name }}"
-        placeholder="{{ $placeholder }}"
-        wire:model="{{ $model }}"
-        rows="{{ $rows }}"
-        x-model="{{ $id }}"
-        class="{{ $class }}"
-    ></textarea>
-
+    <span x-text="$wire.{{ $model }}.length"></span> / {{ $maxCharacters }}
+</p>
 @error($name)
     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
 @enderror
-
-    <div class="text-sm text-right mt-2">
-        <span 
-            :class="{{ $id }}.length > max ? 'text-red-600 font-semibold' : 'text-gray-500'" 
-            x-text="`${description.length} / ${max}`"
-        ></span>
-    </div>
-</div>

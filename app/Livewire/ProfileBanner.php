@@ -7,6 +7,7 @@ use App\Support\GlobalHelper;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 use App\Livewire\Forms\PhotoFormValidation;
+use Illuminate\Validation\ValidationException;
 
 class ProfileBanner extends Component
 {
@@ -27,14 +28,9 @@ class ProfileBanner extends Component
 
     public function updatedForm()
     {
-        $this->handleFormUpdate();
-    }
+        try {
+            $this->validate();
 
-    public function handleFormUpdate()
-    {
-        $errorMessage = $this->form->submit();
-
-        if (!$errorMessage) {
             $path = Storage::disk('public')->put('banners', $this->form->photo);
 
             $user = GlobalHelper::getLoggedInUser();
@@ -42,9 +38,9 @@ class ProfileBanner extends Component
                 'profile_banner' => $path,
             ]);
 
-            return redirect()->route('profile');
-        } else {
-            $this->dispatch('openWarningModal', $errorMessage);
+            $this->profileBanner = $path;
+        } catch (ValidationException $e) {
+            $this->dispatch('openWarningModal', $e->getMessage());
         }
     }
 }

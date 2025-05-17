@@ -42,7 +42,7 @@ jobs:
           cp .env.example .env
           php artisan key:generate
           sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=mysql/' .env
-          sed -i 's/DB_HOST=.*/DB_HOST=mysql/' .env    # Change to 'mysql' to match service name
+          sed -i 's/DB_HOST=.*/DB_HOST=mysql/' .env
           sed -i 's/DB_PORT=.*/DB_PORT=3306/' .env
           sed -i 's/DB_DATABASE=.*/DB_DATABASE=training_project/' .env
           sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
@@ -52,4 +52,4 @@ jobs:
         run: php artisan migrate --force --env=testing
 
       - name: Run PHPUnit tests
-        run: php artisan test --env=testing
+        run: php artisan test
