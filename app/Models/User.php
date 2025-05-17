@@ -16,7 +16,7 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'date_of_birth',
-        'country',
+        'country_id',
         'gender',
         'description',
         'profile_photo',
@@ -29,5 +29,10 @@ class User extends Authenticatable
             'date_of_birth' => 'date',
             'password' => 'hashed',
         ];
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
     }
 }

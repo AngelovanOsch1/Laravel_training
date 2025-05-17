@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\User;
 use Livewire\Livewire;
+use App\Models\Country;
 use Illuminate\Support\Str;
 use App\Livewire\RegisterForm;
 use Illuminate\Support\Facades\Hash;
@@ -29,7 +30,7 @@ class RegisterFormTest extends TestCase
             'form.password_confirmation' => $fakePassword,
             'form.firstName' => fake()->firstName(),
             'form.lastName' => fake()->lastName(),
-            'form.country' => fake()->country(),
+            'form.country' => Country::factory()->create()->id,
             'form.birthYear' => fake()->date('Y-m-d', '2000-01-01'),
             'form.gender' => fake()->randomElement(['Male', 'Female', 'Other']),
         ];
@@ -47,7 +48,7 @@ class RegisterFormTest extends TestCase
             'email' => $this->baseFormData['form.email'],
             'first_name' => $this->baseFormData['form.firstName'],
             'last_name' => $this->baseFormData['form.lastName'],
-            'country' => $this->baseFormData['form.country'],
+            'country_id' => $this->baseFormData['form.country'],
             'date_of_birth' => $this->baseFormData['form.birthYear'],
             'gender' => $this->baseFormData['form.gender'],
         ]);

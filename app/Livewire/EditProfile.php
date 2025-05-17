@@ -47,7 +47,7 @@ class EditProfile extends Component
         $user->update([
             'first_name' => $this->form->firstName,
             'last_name' => $this->form->lastName,
-            'country' => $this->form->country,
+            'country_id' => $this->form->country,
             'date_of_birth' => $this->form->birthYear,
             'gender' => $this->form->gender,
             'description' => $this->form->description,

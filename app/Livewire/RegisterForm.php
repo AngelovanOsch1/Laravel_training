@@ -2,16 +2,23 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
+use App\Models\Country;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
-use App\Livewire\Forms\RegisterFormValidation;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use App\Livewire\Forms\RegisterFormValidation;
 
 #[Layout('layouts.app')]
 class RegisterForm extends Component
 {
     public RegisterFormValidation $form;
+    public $countries;
+
+    public function mount()
+    {
+        $this->countries = Country::all();
+    }
 
     public function render()
     {
@@ -27,7 +34,7 @@ class RegisterForm extends Component
             'password' => Hash::make($this->form->password),
             'first_name' => $this->form->firstName,
             'last_name' => $this->form->lastName,
-            'country' => $this->form->country,
+            'country_id' => $this->form->country,
             'date_of_birth' => $this->form->birthYear,
             'gender' => $this->form->gender,
         ]);

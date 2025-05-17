@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User;
 use Livewire\Livewire;
+use App\Models\Country;
 use Illuminate\Support\Str;
 use App\Livewire\EditProfile;
 use PHPUnit\Framework\Attributes\Test;
@@ -27,7 +28,7 @@ class EditProfileTest extends TestCase
         $this->baseFormData = [
             'form.firstName' => fake()->firstName(),
             'form.lastName' => fake()->lastName(),
-            'form.country' => fake()->country(),
+            'form.country' => Country::factory()->create()->id,
             'form.birthYear' => fake()->date('Y-m-d', '2000-01-01'),
             'form.gender' => fake()->randomElement(['Male', 'Female', 'Other']),
             'form.description' => Str::random(50)
@@ -47,7 +48,7 @@ class EditProfileTest extends TestCase
 
         $this->assertEquals($formData['form.firstName'], $this->user->first_name);
         $this->assertEquals($formData['form.lastName'], $this->user->last_name);
-        $this->assertEquals($formData['form.country'], $this->user->country);
+        $this->assertEquals($formData['form.country'], $this->user->country_id);
         $this->assertEquals($formData['form.birthYear'], Carbon::parse($this->user->date_of_birth)->toDateString());
         $this->assertEquals($formData['form.gender'], $this->user->gender);
         $this->assertEquals($formData['form.description'], $this->user->description);
