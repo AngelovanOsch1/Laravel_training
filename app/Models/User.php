@@ -40,4 +40,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Gender::class, 'gender_id');
     }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
 }

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Gender;
 use Livewire\Livewire;
@@ -22,6 +23,10 @@ class RegisterFormTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        Role::insert([
+            ['id' => 1, 'name' => 'User', 'created_at' => now(), 'updated_at' => now()],
+        ]);
 
         $fakePassword = fake()->password(8);
 
