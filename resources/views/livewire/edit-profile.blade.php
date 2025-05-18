@@ -28,12 +28,15 @@
                     </div>
                     <div class="mb-5">
                         <x-form-label for="country" text="Your country" />
-                        <x-form-input
-                            id="country" 
+                        <x-form-select
+                            id="country"
                             name="form.country"
-                            placeholder="country..."
                             model="form.country"
-                        />
+                        >
+                                @foreach($countries as $country)
+                                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                @endforeach
+                        </x-form-select>
                     </div>
 
                     <div class="mb-5">
@@ -42,11 +45,10 @@
                             id="gender"
                             name="form.gender"
                             model="form.gender"
-                        >
-                            <x-form-option value="" text="Select your gender" />
-                            <x-form-option value="Male" text="Male" />
-                            <x-form-option value="Female" text="Female" />
-                            <x-form-option value="Other" text="Other" />
+                            >
+                            @foreach($genders as $gender)
+                            <option value="{{ $gender->id }}">{{ $gender->name }}</option>
+                            @endforeach
                         </x-form-select>
                     </div>
 

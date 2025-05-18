@@ -17,7 +17,7 @@ class User extends Authenticatable
         'last_name',
         'date_of_birth',
         'country_id',
-        'gender',
+        'gender_id',
         'description',
         'profile_photo',
         'profile_banner',
@@ -34,5 +34,10 @@ class User extends Authenticatable
     public function country()
     {
         return $this->belongsTo(Country::class, 'country_id');
+    }
+
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class, 'gender_id');
     }
 }

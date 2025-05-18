@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use App\Models\Gender;
 use App\Models\Country;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
@@ -14,10 +15,12 @@ class RegisterForm extends Component
 {
     public RegisterFormValidation $form;
     public $countries;
+    public $genders;
 
     public function mount()
     {
         $this->countries = Country::all();
+        $this->genders = Gender::all();
     }
 
     public function render()
@@ -36,7 +39,7 @@ class RegisterForm extends Component
             'last_name' => $this->form->lastName,
             'country_id' => $this->form->country,
             'date_of_birth' => $this->form->birthYear,
-            'gender' => $this->form->gender,
+            'gender_id' => $this->form->gender,
         ]);
 
         return redirect()->route('dashboard');

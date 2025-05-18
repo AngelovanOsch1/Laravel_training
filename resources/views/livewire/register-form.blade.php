@@ -42,10 +42,10 @@
               model="form.gender"
             >
               <x-form-option value="" text="Select your gender" />
-              <x-form-option value="Male" text="Male" />
-              <x-form-option value="Female" text="Female" />
-              <x-form-option value="Other" text="Other" />
-            </x-form-select>
+                @foreach($genders as $gender)
+                  <option value="{{ $gender->id }}">{{ $gender->name }}</option>
+                @endforeach
+              </x-form-select>
           </div>                        
         </div>
   

@@ -18,11 +18,11 @@
       </div>
       <div class="flex justify-between text-sm text-gray-700">
         <span>Gender</span>
-        <span>{{ $user->gender }}</span>
+        <span>{{ $user->gender->name }}</span>
       </div>
       <div class="flex justify-between text-sm text-gray-700">
         <span>Country</span>
-        <span>{{ $user->country }}</span>
+        <span>{{ $user->country->name }}</span>
       </div>
       <div class="flex justify-between text-sm text-gray-700">
         <span>Joined</span>

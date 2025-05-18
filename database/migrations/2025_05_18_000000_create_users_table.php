@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->date('date_of_birth');
             $table->foreignId('country_id')->constrained('countries')->onDelete('cascade');
-            $table->enum('gender', ['Male', 'Female', 'Other']);
+            $table->foreignId('gender_id')->constrained('genders')->onDelete('cascade');
             $table->text('description')->nullable();
             $table->text('profile_photo')->nullable();
             $table->text('profile_banner')->nullable();

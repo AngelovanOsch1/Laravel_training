@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Gender;
 use App\Models\Country;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -18,7 +19,7 @@ class UserFactory extends Factory
             'last_name' => fake()->lastName(),
             'date_of_birth' => fake()->date('Y-m-d', '2000-01-01'),
             'country_id' => Country::factory(),
-            'gender' => fake()->randomElement(['male', 'female', 'other']),
+            'gender_id' => Gender::factory(),
             'profile_photo' => null,
             'profile_banner' => null,
         ];

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Gender;
 use Livewire\Livewire;
 use App\Models\Country;
 use Illuminate\Support\Str;
@@ -32,7 +33,7 @@ class RegisterFormTest extends TestCase
             'form.lastName' => fake()->lastName(),
             'form.country' => Country::factory()->create()->id,
             'form.birthYear' => fake()->date('Y-m-d', '2000-01-01'),
-            'form.gender' => fake()->randomElement(['Male', 'Female', 'Other']),
+            'form.gender' => Gender::factory()->create()->id,
         ];
     }
 
@@ -50,7 +51,7 @@ class RegisterFormTest extends TestCase
             'last_name' => $this->baseFormData['form.lastName'],
             'country_id' => $this->baseFormData['form.country'],
             'date_of_birth' => $this->baseFormData['form.birthYear'],
-            'gender' => $this->baseFormData['form.gender'],
+            'gender_id' => $this->baseFormData['form.gender'],
         ]);
 
         $user = User::where('email', $this->baseFormData['form.email'])->first();
