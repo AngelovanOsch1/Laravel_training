@@ -7,8 +7,8 @@ use Livewire\Attributes\On;
 
 class WarningModal extends Component
 {
-    public $show = false;
-    public $error;
+    public bool $show = false;
+    public string $error;
 
     #[On('openWarningModal')]
     public function openModal($data)

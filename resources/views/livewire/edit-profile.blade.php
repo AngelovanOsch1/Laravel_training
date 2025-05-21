@@ -78,11 +78,10 @@
                             type="button"
                             text="Cancel"
                             class="text-gray-700 bg-gray-200 hover:bg-gray-300
-                                   focus:outline-none focus:ring-2 focus:ring-gray-400
                                    font-medium rounded-lg text-sm
                                    px-5 py-2.5 w-full sm:w-auto text-center
-                                   dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 dark:focus:ring-gray-500
-                                   shadow-sm transition-colors duration-150"
+                                   dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600
+                                   shadow-sm transition-colors duration-150 cursor-pointer"
                             click="closeModal"
                         />
                         <x-primary-button text="Save" />

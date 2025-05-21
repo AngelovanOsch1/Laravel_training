@@ -6,9 +6,7 @@
     'model' => null,
     'rows' => "5",
     'maxCharacters' => 250,
-    'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5
-           dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-           focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none',
+    'class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white resize-none',
 ])
 
 <textarea

@@ -4,8 +4,10 @@
         <x-primary-button
             type="button"
             text='Add'
-            class="px-6 py-2 bg-green-300 text-white font-semibold rounded-md shadow-md shadow-[#e0e0e0] hover:shadow-[#c0c0c0] hover:bg-green-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-50"
+            click='openAddSeriesToYourListModal'
+            class="px-6 py-2 bg-green-300 text-white font-semibold rounded-md shadow-md shadow-[#e0e0e0] hover:shadow-[#c0c0c0] hover:bg-green-400 cursor-pointer"
         />
+        <livewire:add-series-to-your-list />
     </div>
     <div class="overflow-x-auto">
     <table class="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg">

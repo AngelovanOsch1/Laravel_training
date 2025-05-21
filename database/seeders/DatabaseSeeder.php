@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Genre;
 use App\Models\Gender;
+use App\Models\Series;
 use App\Models\Country;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -30,5 +32,14 @@ class DatabaseSeeder extends Seeder
             'profile_photo' => null,
             'profile_banner' => null,
         ]);
+
+        $genres = Genre::factory()->count(5)->create();
+        $series = Series::factory()->count(10)->create();
+
+        $series->each(function ($serie) use ($genres) {
+            $serie->genres()->attach(
+                $genres->random(rand(1, 3))->pluck('id')->toArray()
+            );
+        });
     }
 }

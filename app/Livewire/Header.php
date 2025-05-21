@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Header extends Component
 {
-    public $profilePhoto;
+    public string $profilePhoto;
 
     public function mount()
     {

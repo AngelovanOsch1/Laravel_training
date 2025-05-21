@@ -8,15 +8,16 @@ use App\Models\Country;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Support\GlobalHelper;
+use Illuminate\Support\Collection;
 use App\Livewire\Forms\EditProfileFormValidation;
 
 class EditProfile extends Component
 {
     public EditProfileFormValidation $form;
-    public $show = false;
+    public bool $show = false;
 
-    public $countries;
-    public $genders;
+    public Collection $countries;
+    public Collection $genders;
 
     public function mount()
     {

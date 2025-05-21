@@ -2,15 +2,16 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
+use Livewire\Component;
 use App\Support\GlobalHelper;
 use Livewire\Attributes\Layout;
-use Livewire\Component;
 
 
 #[Layout('layouts.app')]
 class Profile extends Component
 {
-    public $user;
+    public User $user;
 
     public function mount()
     {

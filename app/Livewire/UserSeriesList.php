@@ -12,4 +12,9 @@ class UserSeriesList extends Component
     {
         return view('livewire.user-series-list');
     }
+
+    public function openAddSeriesToYourListModal()
+    {
+        $this->dispatch('openAddSeriesToYourListModal');
+    }
 }

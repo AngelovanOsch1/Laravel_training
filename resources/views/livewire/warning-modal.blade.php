@@ -5,7 +5,7 @@
                 <h2 class="text-lg font-semibold">Warning</h2>
                 <hr class="my-6 border-t border-gray-300" />
                 <p class="text-sm text-red-600">{{ $error }}</p>
-                <div class="mt-4">
+                <div class="mt-6">
                     <x-primary-button 
                     type="button"
                     click="closeModal"

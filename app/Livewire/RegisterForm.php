@@ -9,13 +9,14 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Hash;
 use App\Livewire\Forms\RegisterFormValidation;
+use Illuminate\Support\Collection;
 
 #[Layout('layouts.app')]
 class RegisterForm extends Component
 {
     public RegisterFormValidation $form;
-    public $countries;
-    public $genders;
+    public Collection $countries;
+    public Collection $genders;
 
     public function mount()
     {

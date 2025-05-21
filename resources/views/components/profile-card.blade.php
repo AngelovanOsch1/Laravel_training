@@ -36,14 +36,14 @@
         text='Like'
         icon='heart'
         iconPosition='right'
-        class="flex-1 px-6 py-2 bg-pink-300 text-white font-semibold rounded-md shadow-md shadow-[#e0e0e0] hover:shadow-[#c0c0c0] hover:bg-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-opacity-50 inline-flex items-center gap-3"
+        class="flex-1 px-6 py-2 bg-pink-300 text-white font-semibold rounded-md shadow-md shadow-[#e0e0e0] hover:shadow-[#c0c0c0] hover:bg-pink-400 inline-flex items-center gap-3 cursor-pointer"
       />
       <x-primary-button
         type="button"
         text='Chat'
         icon='comments'
         iconPosition='right'
-        class="flex-1 px-6 py-2 bg-green-300 text-white font-semibold rounded-md shadow-md shadow-[#e0e0e0] hover:shadow-[#c0c0c0] hover:bg-green-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-50 inline-flex items-center gap-3"
+        class="flex-1 px-6 py-2 bg-green-300 text-white font-semibold rounded-md shadow-md shadow-[#e0e0e0] hover:shadow-[#c0c0c0] hover:bg-green-400 inline-flex items-center gap-3 cursor-pointer"
       />
     </div>
   </div>
