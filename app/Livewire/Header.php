@@ -9,11 +9,17 @@ use Illuminate\Support\Facades\Auth;
 class Header extends Component
 {
     public string $profilePhoto;
+    protected $listeners = ['profilePhotoUpdated' => 'refreshProfilePhoto'];
 
     public function mount()
     {
-        $user = GlobalHelper::getLoggedInUser();
+        $user = GlobalHelper::getLoggedInUser()->fresh();
         $this->profilePhoto = $user->profile_photo ?? 'images/default_profile_photo.png';
+    }
+
+    public function refreshProfilePhoto($newPhotoPath)
+    {
+        $this->profilePhoto = $newPhotoPath;
     }
 
     public function render()

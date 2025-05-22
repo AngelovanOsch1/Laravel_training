@@ -9,7 +9,7 @@
       <x-form-input
         id="email" 
         name="form.email"
-        placeholder="email..."
+        placeholder="Email..."
         model="form.email"
       />
     </div>
@@ -22,7 +22,7 @@
         type="password" 
         id="password" 
         name="form.password"
-        placeholder="password..."
+        placeholder="Password..."
         model="form.password"
       />
     </div>

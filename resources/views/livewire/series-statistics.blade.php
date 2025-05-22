@@ -62,7 +62,7 @@
           
 <div class="flex justify-between mt-5">
       <x-nav-link
-        href="serie-list"
+        href="series-list"
         text="Update list"
       />
       </div>

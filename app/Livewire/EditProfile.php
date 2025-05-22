@@ -40,7 +40,7 @@ class EditProfile extends Component
         $this->form->lastName = $user->last_name;
         $this->form->country = $user->country['id'];
         $this->form->gender = $user->gender['id'];
-        $this->form->birthYear = Carbon::parse($user->date_of_birth)->toDateString();
+        $this->form->date_of_birth = Carbon::parse($user->date_of_birth)->toDateString();
         $this->form->description = $user->description;
 
         $this->show = true;
@@ -62,7 +62,7 @@ class EditProfile extends Component
             'first_name' => $this->form->firstName,
             'last_name' => $this->form->lastName,
             'country_id' => $this->form->country,
-            'date_of_birth' => $this->form->birthYear,
+            'date_of_birth' => $this->form->date_of_birth,
             'gender_id' => $this->form->gender,
             'description' => $this->form->description,
         ]);

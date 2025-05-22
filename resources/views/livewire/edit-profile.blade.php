@@ -13,7 +13,7 @@
                         <x-form-input
                             id="firstName" 
                             name="form.firstName"
-                            placeholder="first name..."
+                            placeholder="First name..."
                             model="form.firstName"
                         />
                     </div>
@@ -22,7 +22,7 @@
                         <x-form-input
                             id="lastName" 
                             name="form.lastName"
-                            placeholder="last name..."
+                            placeholder="Last name..."
                             model="form.lastName"
                         />
                     </div>
@@ -53,12 +53,12 @@
                     </div>
 
                     <div class="mb-5">
-                        <x-form-label for="birthYear" text="Your date of birth" />
+                        <x-form-label for="date_of_birth" text="Your date of birth" />
                         <x-form-input
                             type="date"
-                            id="birthYear"
-                            name="form.birthYear"
-                            model="form.birthYear"
+                            id="date_of_birth"
+                            name="form.date_of_birth"
+                            model="form.date_of_birth"
                         />
                     </div>
 

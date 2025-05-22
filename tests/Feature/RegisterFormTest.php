@@ -37,7 +37,7 @@ class RegisterFormTest extends TestCase
             'form.firstName' => fake()->firstName(),
             'form.lastName' => fake()->lastName(),
             'form.country' => Country::factory()->create()->id,
-            'form.birthYear' => fake()->date('Y-m-d', '2000-01-01'),
+            'form.date_of_birth' => fake()->date('Y-m-d', '2000-01-01'),
             'form.gender' => Gender::factory()->create()->id,
         ];
     }
@@ -55,7 +55,7 @@ class RegisterFormTest extends TestCase
             'first_name' => $this->baseFormData['form.firstName'],
             'last_name' => $this->baseFormData['form.lastName'],
             'country_id' => $this->baseFormData['form.country'],
-            'date_of_birth' => $this->baseFormData['form.birthYear'],
+            'date_of_birth' => $this->baseFormData['form.date_of_birth'],
             'gender_id' => $this->baseFormData['form.gender'],
         ]);
 
@@ -72,7 +72,7 @@ class RegisterFormTest extends TestCase
             'form.firstName' => '',
             'form.lastName' => '',
             'form.country' => '',
-            'form.birthYear' => '',
+            'form.date_of_birth' => '',
             'form.gender' => '',
         ]);
 
@@ -85,7 +85,7 @@ class RegisterFormTest extends TestCase
                 'form.firstName' => 'required',
                 'form.lastName' => 'required',
                 'form.country' => 'required',
-                'form.birthYear' => 'required',
+                'form.date_of_birth' => 'required',
                 'form.gender' => 'required',
             ]);
     }

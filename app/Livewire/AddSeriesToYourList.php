@@ -7,7 +7,6 @@ use App\Models\Series;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 
 class AddSeriesToYourList extends Component
 {

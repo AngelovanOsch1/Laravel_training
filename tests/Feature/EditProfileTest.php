@@ -30,7 +30,7 @@ class EditProfileTest extends TestCase
             'form.firstName' => fake()->firstName(),
             'form.lastName' => fake()->lastName(),
             'form.country' => Country::factory()->create()->id,
-            'form.birthYear' => fake()->date('Y-m-d', '2000-01-01'),
+            'form.date_of_birth' => fake()->date('Y-m-d', '2000-01-01'),
             'form.gender' => Gender::factory()->create()->id,
             'form.description' => Str::random(50)
         ];
@@ -50,7 +50,7 @@ class EditProfileTest extends TestCase
         $this->assertEquals($formData['form.firstName'], $this->user->first_name);
         $this->assertEquals($formData['form.lastName'], $this->user->last_name);
         $this->assertEquals($formData['form.country'], $this->user->country_id);
-        $this->assertEquals($formData['form.birthYear'], Carbon::parse($this->user->date_of_birth)->toDateString());
+        $this->assertEquals($formData['form.date_of_birth'], Carbon::parse($this->user->date_of_birth)->toDateString());
         $this->assertEquals($formData['form.gender'], $this->user->gender_id);
         $this->assertEquals($formData['form.description'], $this->user->description);
     }
@@ -62,7 +62,7 @@ class EditProfileTest extends TestCase
             'form.firstName' => '',
             'form.lastName' => '',
             'form.country' => '',
-            'form.birthYear' => '',
+            'form.date_of_birth' => '',
             'form.gender' => '',
         ]);
 
@@ -73,7 +73,7 @@ class EditProfileTest extends TestCase
                 'form.firstName' => 'required',
                 'form.lastName' => 'required',
                 'form.country' => 'required',
-                'form.birthYear' => 'required',
+                'form.date_of_birth' => 'required',
                 'form.gender' => 'required',
             ]);
     }

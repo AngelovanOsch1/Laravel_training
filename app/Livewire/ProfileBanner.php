@@ -14,7 +14,7 @@ class ProfileBanner extends Component
     use WithFileUploads;
 
     public PhotoFormValidation $form;
-    public $profileBanner;
+    public string|null $profileBanner;
 
     public function mount($profileBanner)
     {
@@ -40,7 +40,8 @@ class ProfileBanner extends Component
 
             $this->profileBanner = $path;
         } catch (ValidationException $e) {
-            $this->dispatch('openWarningModal', $e->getMessage());
+            $errorMessage = $e->getMessage();
+            $this->dispatch('openWarningModal', $errorMessage);
         }
     }
 }

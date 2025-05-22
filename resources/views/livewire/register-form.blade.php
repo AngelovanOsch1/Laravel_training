@@ -10,7 +10,7 @@
               type="email"
               id="email" 
               name="form.email"
-              placeholder="email..."
+              placeholder="Email..."
               model="form.email"
             />
           </div>
@@ -20,7 +20,7 @@
               type="password" 
               id="password" 
               name="form.password"
-              placeholder="password..."
+              placeholder="Password..."
               model="form.password"
             />
           </div>
@@ -30,7 +30,7 @@
               type="password" 
               id="password_confirmation" 
               name="form.password"
-              placeholder="confirm password..."
+              placeholder="Confirm password..."
               model="form.password_confirmation"
             />
           </div>
@@ -55,7 +55,7 @@
             <x-form-input
               id="firstName" 
               name="form.firstName"
-              placeholder="first name..."
+              placeholder="First name..."
               model="form.firstName"
             />
           </div>
@@ -64,7 +64,7 @@
             <x-form-input
               id="lastName" 
               name="form.lastName"
-              placeholder="last name..."
+              placeholder="Last name..."
               model="form.lastName"
             />
           </div>
@@ -82,12 +82,12 @@
               </x-form-select>
           </div>
           <div class="mb-5">
-            <x-form-label for="birthYear" text="Your date of birth" />
+            <x-form-label for="date_of_birth" text="Your date of birth" />
             <x-form-input
               type="date"
-              id="birthYear"
-              name="form.birthYear"
-              model="form.birthYear"
+              id="date_of_birth"
+              name="form.date_of_birth"
+              model="form.date_of_birth"
             />
           </div>
         </div>        

@@ -3,10 +3,11 @@
 namespace App\Livewire\Forms;
 
 use Livewire\Form;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class PhotoFormValidation extends Form
 {
-    public $photo;
+    public TemporaryUploadedFile $photo;
 
     protected function rules()
     {

@@ -14,7 +14,7 @@ class ProfilePhoto extends Component
     use WithFileUploads;
 
     public PhotoFormValidation $form;
-    public $profilePhoto;
+    public string|null $profilePhoto;
 
     public function mount($profilePhoto)
     {
@@ -39,8 +39,10 @@ class ProfilePhoto extends Component
             ]);
 
             $this->profilePhoto = $path;
+            $this->dispatch('profilePhotoUpdated', $this->profilePhoto);
         } catch (ValidationException $e) {
-            $this->dispatch('openWarningModal', $e->getMessage());
+            $errorMessage = $e->getMessage();
+            $this->dispatch('openWarningModal', $errorMessage);
         }
     }
 }

@@ -39,7 +39,7 @@ class RegisterForm extends Component
             'first_name' => $this->form->firstName,
             'last_name' => $this->form->lastName,
             'country_id' => $this->form->country,
-            'date_of_birth' => $this->form->birthYear,
+            'date_of_birth' => $this->form->date_of_birth,
             'gender_id' => $this->form->gender,
         ]);
 

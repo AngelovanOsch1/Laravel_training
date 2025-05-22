@@ -3,7 +3,7 @@
     <div class="flex justify-between w-full gap-x-25">
         <x-profile-card :user="$user" />      
         <div class="flex-grow">
-            <livewire:serie-statistics />
+            <livewire:series-statistics />
             <div class="mt-6">
                 <livewire:user-highest-rated-entries />
             </div>
