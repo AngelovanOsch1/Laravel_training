@@ -13,7 +13,7 @@ class Header extends Component
 
     public function mount()
     {
-        $user = GlobalHelper::getLoggedInUser()->fresh();
+        $user = GlobalHelper::getLoggedInUser();
         $this->profilePhoto = $user->profile_photo ?? 'images/default_profile_photo.png';
     }
 
