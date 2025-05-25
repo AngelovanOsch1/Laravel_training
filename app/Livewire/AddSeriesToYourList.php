@@ -2,11 +2,15 @@
 
 namespace App\Livewire;
 
-use App\Livewire\Forms\SeriesFormValidation;
+use App\Models\User;
 use App\Models\Series;
 use Livewire\Component;
+use App\Models\SeriesUser;
 use Livewire\Attributes\On;
+use App\Models\SeriesStatus;
+use App\Support\GlobalHelper;
 use Illuminate\Support\Collection;
+use App\Livewire\Forms\SeriesFormValidation;
 
 class AddSeriesToYourList extends Component
 {
@@ -16,13 +20,39 @@ class AddSeriesToYourList extends Component
     public Collection $results;
     public array|null $selectedSeries = null;
     public SeriesFormValidation $form;
+    public Collection $series_statuses;
+    public User $user;
+    public array $excludedSeriesIds;
+
+    public function mount()
+    {
+        $this->user = GlobalHelper::getLoggedInUser();
+        $this->excludedSeriesIds = SeriesUser::where('user_id', $this->user->id)
+            ->pluck('series_id')
+            ->toArray();
+        $this->series_statuses = SeriesStatus::all();
+    }
 
     public function render()
     {
         return view('livewire.add-series-to-your-list');
     }
 
-    private function submit() {}
+    public function submit()
+    {
+        $this->form->validate();
+
+        SeriesUser::create([
+            'start_date' => $this->form->start_date,
+            'end_date' => $this->form->end_date,
+            'episodes' => $this->form->episodes,
+            'score' => $this->form->score,
+            'user_id' => $this->user->id,
+            'series_id' => $this->selectedSeries['id'],
+            'series_status_id' => $this->form->series_status,
+        ]);
+        return redirect()->route('series-list');
+    }
 
     public function setSelectedIndex($index)
     {
@@ -55,6 +85,7 @@ class AddSeriesToYourList extends Component
     {
         if (strlen($this->query) > 2) {
             $this->results = Series::where('title', 'like', "%{$this->query}%")
+                ->whereNotIn('id', $this->excludedSeriesIds)
                 ->orderBy('score', 'desc')
                 ->get();
         } else {

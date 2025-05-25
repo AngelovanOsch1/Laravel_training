@@ -8,6 +8,8 @@ use App\Models\Genre;
 use App\Models\Gender;
 use App\Models\Series;
 use App\Models\Country;
+use App\Models\SeriesUser;
+use App\Models\SeriesStatus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -19,7 +21,7 @@ class DatabaseSeeder extends Seeder
         $gender = Gender::factory()->count(3)->create();
         $role = Role::factory()->count(3)->create();
 
-        User::create([
+        $user = User::create([
             'email' => 'Angelo.van.osch@hotmail.com',
             'password' => Hash::make('wachtwoord123'),
             'role_id' => $role->random()->id,
@@ -35,11 +37,20 @@ class DatabaseSeeder extends Seeder
 
         $genres = Genre::factory()->count(5)->create();
         $series = Series::factory()->count(10)->create();
+        $series_statuses = SeriesStatus::factory()->count(4)->create();
 
         $series->each(function ($serie) use ($genres) {
             $serie->genres()->attach(
                 $genres->random(rand(1, 3))->pluck('id')->toArray()
             );
+        });
+
+        $series->each(function ($serie) use ($user, $series_statuses) {
+            SeriesUser::factory()->create([
+                'user_id' => $user->id,
+                'series_id' => $serie->id,
+                'series_status_id' => $series_statuses->random()->id,
+            ]);
         });
     }
 }

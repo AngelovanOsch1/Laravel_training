@@ -23,4 +23,9 @@ class Series extends Model
     {
         return $this->belongsToMany(Genre::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

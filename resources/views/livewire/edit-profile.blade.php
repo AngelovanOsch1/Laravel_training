@@ -33,9 +33,9 @@
                             name="form.country"
                             model="form.country"
                         >
-                                @foreach($countries as $country)
-                                <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                @endforeach
+                            @foreach($countries as $country)
+                            <x-form-option value="{{ $country->id }}" text="{{ $country->name }}" />
+                            @endforeach
                         </x-form-select>
                     </div>
 
@@ -47,7 +47,7 @@
                             model="form.gender"
                             >
                             @foreach($genders as $gender)
-                            <option value="{{ $gender->id }}">{{ $gender->name }}</option>
+                            <x-form-option value="{{ $gender->id }}" text="{{ $gender->name }}" />
                             @endforeach
                         </x-form-select>
                     </div>

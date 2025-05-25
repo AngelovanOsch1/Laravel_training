@@ -10,16 +10,16 @@ class SeriesFormValidation extends Form
     public $start_date;
     public $end_date;
     public $score;
-    public $serie_status;
+    public $series_status;
 
     protected function rules()
     {
         return [
-            'episodes' => 'integer',
-            'start_date' => 'date',
-            'end_date' => 'date|after_or_equal:start_date',
-            'score' => 'numeric|between:0,10',
-            'series_status' => 'exists:series_statuses,name',
+            'episodes' => 'nullable|integer',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'score' => 'nullable|integer|min:0|max:10',
+            'series_status' => 'required|exists:series_statuses,id',
         ];
     }
 }

@@ -54,7 +54,7 @@
                     @else
                         <div class="flex gap-8 flex-col md:flex-row">
                             <div class="w-full md:w-2/3 bg-white p-6 shadow-lg rounded-xl">
-                                <form>
+                                <form wire:submit.prevent="submit">
                                     <div class="flex flex-col gap-6">
                                         <div>
                                             <x-form-label for="title" text="Series Title" />
@@ -76,30 +76,45 @@
                                         </div>
                                         <div>
                                             <x-form-label for="series_status" text="Series status" />
-                                            <x-form-input
+                                            <x-form-select
                                                 id="series_status"
-                                                placeholder="Series status.."
                                                 name="form.series_status"
                                                 model="form.series_status"
-                                            />
+                                            >
+                                                <x-form-option text="Select a series status" />
+                                                    @foreach($series_statuses as $series_status)
+                                                    <x-form-option value="{{ $series_status->id }}" text="{{ $series_status->name }}" />
+                                                    @endforeach
+                                            </x-form-select>
                                         </div>
                                         <div class="flex flex-col md:flex-row gap-4">
                                             <div class="w-full md:w-1/2">
                                                 <x-form-label for="episodes" text="Episodes" />
-                                                <x-form-input
+                                                <x-form-select
                                                     id="episodes"
-                                                    placeholder="0/{{ $selectedSeries['episodes'] }}"
                                                     name="form.episodes"
+                                                    :disabled="$selectedSeries['aired_start_date'] > now()"
                                                     model="form.episodes"
-                                                />
+                                                >
+                                                    <x-form-option text="Select episodes" />
+                                                    @foreach(range(0, $selectedSeries['episodes']) as $episode)
+                                                        <x-form-option value="{{ $episode }}" text="{{ $episode }}" />
+                                                    @endforeach
+                                                </x-form-select>
                                             </div>
                                             <div class="w-full md:w-1/2">
                                                 <x-form-label for="score" text="Score" />
-                                                <x-form-input
-                                                    placeholder="Score.."
+                                                <x-form-select
+                                                    id="score"
                                                     name="form.score"
+                                                    :disabled="$selectedSeries['aired_start_date'] > now()"
                                                     model="form.score"
-                                                />
+                                                >
+                                                    <x-form-option text="Select your score" />
+                                                    @foreach(range(0, 10) as $score)
+                                                        <x-form-option value="{{ $score }}" text="{{ $score }}" />
+                                                    @endforeach
+                                                </x-form-select>
                                             </div>
                                         </div>
                                         <div class="flex flex-col md:flex-row gap-4">
@@ -109,6 +124,7 @@
                                                     id="start_date"
                                                     type="date"
                                                     name="form.start_date"
+                                                    :readOnly="$selectedSeries['aired_start_date'] > now()"
                                                     model="form.start_date"
                                                 />
                                             </div>
@@ -118,6 +134,8 @@
                                                     id="end_date"
                                                     type="date"
                                                     name="form.end_date"
+                                                    :readOnly="$selectedSeries['aired_start_date'] > now()"
+                                                    
                                                     model="form.end_date"
                                                 />
                                             </div>
