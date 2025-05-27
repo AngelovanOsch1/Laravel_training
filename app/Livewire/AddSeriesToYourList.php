@@ -27,14 +27,15 @@ class AddSeriesToYourList extends Component
     public function mount()
     {
         $this->user = GlobalHelper::getLoggedInUser();
-        $this->excludedSeriesIds = SeriesUser::where('user_id', $this->user->id)
-            ->pluck('series_id')
-            ->toArray();
-        $this->series_statuses = SeriesStatus::all();
     }
 
     public function render()
     {
+        $this->excludedSeriesIds = SeriesUser::where('user_id', $this->user->id)
+            ->pluck('series_id')
+            ->toArray();
+        $this->series_statuses = SeriesStatus::all();
+
         return view('livewire.add-series-to-your-list');
     }
 

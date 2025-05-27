@@ -48,8 +48,7 @@ class EditProfile extends Component
 
     public function closeModal()
     {
-        $this->resetValidation();
-        $this->form->reset();
+        $this->form->resetValidation();
         $this->show = false;
     }
 
