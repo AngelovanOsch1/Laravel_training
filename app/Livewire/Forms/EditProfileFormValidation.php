@@ -11,7 +11,7 @@ class EditProfileFormValidation extends Form
     public string $country;
     public string $gender;
     public string $date_of_birth;
-    public string $description;
+    public ?string $description;
 
     protected function rules()
     {

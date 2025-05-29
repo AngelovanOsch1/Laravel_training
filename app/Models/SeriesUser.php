@@ -14,7 +14,7 @@ class SeriesUser extends Model
     protected $fillable = [
         'start_date',
         'end_date',
-        'episodes',
+        'episode_count',
         'score',
         'user_id',
         'series_id',

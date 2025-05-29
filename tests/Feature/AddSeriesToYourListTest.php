@@ -28,7 +28,7 @@ class AddSeriesToYourListTest extends TestCase
         $this->baseFormData = [
             'form.start_date' => fake()->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
             'form.end_date' => fake()->dateTimeBetween('+1 year', '+2 year')->format('Y-m-d'),
-            'form.episodes' => fake()->numberBetween(1, 100),
+            'form.episode_count' => fake()->numberBetween(1, 100),
             'form.score' => fake()->numberBetween(0, 10),
             'selectedSeries' => ['id' => Series::factory()->create()->id],
             'form.series_status' => SeriesStatus::factory()->create()->id,
@@ -46,7 +46,7 @@ class AddSeriesToYourListTest extends TestCase
         $this->assertDatabaseHas('series_user', [
             'start_date' => $this->baseFormData['form.start_date'],
             'end_date' => $this->baseFormData['form.end_date'],
-            'episodes' => $this->baseFormData['form.episodes'],
+            'episode_count' => $this->baseFormData['form.episode_count'],
             'score' => $this->baseFormData['form.score'],
             'user_id' => $this->user->id,
             'series_id' => $this->baseFormData['selectedSeries']['id'],

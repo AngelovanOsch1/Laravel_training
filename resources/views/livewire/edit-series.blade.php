@@ -23,13 +23,13 @@
                                         </div>
                                         <div class="flex flex-col md:flex-row gap-4">
                                             <div class="w-full md:w-1/2">
-                                                <x-form-label for="episodes" text="Episodes" />
+                                                <x-form-label for="episode_count" text="Episodes" />
                                                 <x-form-select
-                                                    id="episodes"
-                                                    name="form.episodes"
-                                                    model="form.episodes"
+                                                    id="episode_count"
+                                                    name="form.episode_count"
+                                                    model="form.episode_count"
                                                 >
-                                                    @foreach(range(0, $selectedSeries->series->episodes) as $episode)
+                                                    @foreach(range(0, $selectedSeries->series->episode_count) as $episode)
                                                         <x-form-option value="{{ $episode }}" text="{{ $episode }}" />
                                                     @endforeach
                                                 </x-form-select>
@@ -62,7 +62,7 @@
                                                 <x-form-input
                                                     id="end_date"
                                                     type="date"
-                                                    name="form.end_date"                                             
+                                                    name="form.end_date"
                                                     model="form.end_date"
                                                 />
                                             </div>
@@ -72,10 +72,9 @@
                         <x-primary-button
                             type="button"
                             text="Cancel"
-                            class="text-gray-700 bg-gray-200 hover:bg-gray-300
-                                   font-medium rounded-lg text-sm
+                            class="font-medium rounded-lg text-sm
                                    px-5 py-2.5 w-full sm:w-auto text-center
-                                   dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600
+                                   bg-gray-700 text-gray-200 hover:bg-gray-600
                                    shadow-sm transition-colors duration-150 cursor-pointer"
                             click="closeModal"
                         />

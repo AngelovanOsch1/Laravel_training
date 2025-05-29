@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->integer('episodes')->nullable();
+            $table->integer('episode_count')->nullable();
             $table->integer('score')->nullable();
             $table->foreignId('user_id');
             $table->foreignId('series_id');

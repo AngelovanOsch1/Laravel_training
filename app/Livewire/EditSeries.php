@@ -27,7 +27,7 @@ class EditSeries extends Component
     {
         $this->selectedSeries = json_decode(json_encode($series));
 
-        $this->form->episodes = $this->selectedSeries->episodes;
+        $this->form->episode_count = $this->selectedSeries->episode_count;
         $this->form->start_date = Carbon::parse($this->selectedSeries->start_date)->toDateString();
         $this->form->end_date = Carbon::parse($this->selectedSeries->end_date)->toDateString();
         $this->form->score = $this->selectedSeries->score;
@@ -50,7 +50,7 @@ class EditSeries extends Component
         $seriesUser->update([
             'start_date' => $this->form->start_date,
             'end_date' => $this->form->end_date,
-            'episodes' => $this->form->episodes,
+            'episode_count' => $this->form->episode_count,
             'score' => $this->form->score,
             'user_id' => $this->selectedSeries->user_id,
             'series_id' => $this->selectedSeries->series->id,

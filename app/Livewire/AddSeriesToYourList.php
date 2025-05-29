@@ -46,7 +46,7 @@ class AddSeriesToYourList extends Component
         SeriesUser::create([
             'start_date' => $this->form->start_date,
             'end_date' => $this->form->end_date,
-            'episodes' => $this->form->episodes,
+            'episode_count' => $this->form->episode_count,
             'score' => $this->form->score,
             'user_id' => $this->user->id,
             'series_id' => $this->selectedSeries['id'],

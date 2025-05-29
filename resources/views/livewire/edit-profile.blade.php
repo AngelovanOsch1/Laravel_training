@@ -11,7 +11,7 @@
                     <div class="mb-5">
                         <x-form-label for="firstName" text="Your first name" />
                         <x-form-input
-                            id="firstName" 
+                            id="firstName"
                             name="form.firstName"
                             placeholder="First name..."
                             model="form.firstName"
@@ -20,7 +20,7 @@
                     <div class="mb-5">
                         <x-form-label for="lastName" text="Your last name" />
                         <x-form-input
-                            id="lastName" 
+                            id="lastName"
                             name="form.lastName"
                             placeholder="Last name..."
                             model="form.lastName"
@@ -77,10 +77,9 @@
                         <x-primary-button
                             type="button"
                             text="Cancel"
-                            class="text-gray-700 bg-gray-200 hover:bg-gray-300
-                                   font-medium rounded-lg text-sm
+                            class="font-medium rounded-lg text-sm
                                    px-5 py-2.5 w-full sm:w-auto text-center
-                                   dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600
+                                   bg-gray-700 text-gray-200 hover:bg-gray-600
                                    shadow-sm transition-colors duration-150 cursor-pointer"
                             click="closeModal"
                         />

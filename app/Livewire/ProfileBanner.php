@@ -40,8 +40,11 @@ class ProfileBanner extends Component
 
             $this->profileBanner = $path;
         } catch (ValidationException $e) {
-            $errorMessage = $e->getMessage();
-            $this->dispatch('openWarningModal', $errorMessage);
+            $data = [
+                'body' => $e->getMessage(),
+            ];
+
+            $this->dispatch('openWarningModal', $data);
         }
     }
 }

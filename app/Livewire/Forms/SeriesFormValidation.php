@@ -6,7 +6,7 @@ use Livewire\Form;
 
 class SeriesFormValidation extends Form
 {
-    public $episodes;
+    public $episode_count;
     public $start_date;
     public $end_date;
     public $score;
@@ -15,7 +15,7 @@ class SeriesFormValidation extends Form
     protected function rules()
     {
         return [
-            'episodes' => 'nullable|integer',
+            'episode_count' => 'nullable|integer',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'score' => 'nullable|integer|min:0|max:10',

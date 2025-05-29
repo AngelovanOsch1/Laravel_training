@@ -12,11 +12,14 @@ use App\Models\SeriesUser;
 use App\Models\SeriesStatus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        $faker = Faker::create();
+
         $country = Country::factory()->count(10)->create();
         $gender = Gender::factory()->count(3)->create();
         $role = Role::factory()->count(3)->create();
@@ -35,8 +38,36 @@ class DatabaseSeeder extends Seeder
             'profile_banner' => null,
         ]);
 
+        $images = [
+            ['title' => 'Frieren',               'image' => 'storage/series/1.jpg'],
+            ['title' => 'Fullmetal Alchemist',   'image' => 'storage/series/2.jpg'],
+            ['title' => 'SteinsGate',            'image' => 'storage/series/3.jpg'],
+            ['title' => 'Attack on Titan',       'image' => 'storage/series/4.jpg'],
+            ['title' => 'Gintama',               'image' => 'storage/series/5.jpg'],
+            ['title' => 'Gintama 2',             'image' => 'storage/series/6.jpg'],
+            ['title' => 'One Piece',             'image' => 'storage/series/7.jpg'],
+            ['title' => 'Hunter x Hunter',       'image' => 'storage/series/8.jpg'],
+            ['title' => 'Gintama 3',             'image' => 'storage/series/9.jpg'],
+            ['title' => 'Kaguya-sama',           'image' => 'storage/series/10.jpg'],
+        ];
+
+        $seriesCollection = collect();
+
+        foreach ($images as $entry) {
+            $series = Series::create([
+                'title' => $entry['title'],
+                'type' => $faker->randomElement(['TV', 'Movie', 'OVA']),
+                'cover_image' => $entry['image'],
+                'episode_count' => $faker->numberBetween(1, 100),
+                'aired_start_date' => $faker->dateTimeBetween('-5 years', '-3 years'),
+                'aired_end_date' => $faker->dateTimeBetween('-2 years', '+2 years'),
+                'score' => $faker->randomFloat(2, 0, 10),
+            ]);
+
+            $seriesCollection->push($series);
+        }
+
         $genres = Genre::factory()->count(5)->create();
-        $series = Series::factory()->count(10)->create();
         $series_statuses = SeriesStatus::factory()->count(4)->create();
 
         $series->each(function ($serie) use ($genres) {
