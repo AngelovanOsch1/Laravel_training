@@ -1,7 +1,7 @@
 <div>
-    <livewire:profile-banner :profileBanner="$user->profile_banner" /> 
+    <livewire:profile-banner :profileBanner="$user->profile_banner" />
     <div class="flex justify-between w-full gap-x-25">
-        <x-profile-card :user="$user" />      
+        <x-profile-card :user="$user" />
         <div class="flex-grow">
             <livewire:series-statistics />
             <div class="mt-6">
@@ -9,10 +9,6 @@
             </div>
         </div>
     </div>
-    <x-primary-button 
-        text='Edit profile'
-        type="button"
-        click='openEditProfileModal'
-    />
+    <x-primary-button text='Edit profile' type="button" click='openEditProfileModal' />
     <livewire:edit-profile />
 </div>

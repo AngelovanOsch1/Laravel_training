@@ -4,8 +4,8 @@
     'class' => 'block mb-2 text-sm font-bold'
 ])
 
-<label 
-    for="{{ $for }}" 
+<label
+    for="{{ $for }}"
     class="{{ $class }}"
 >
     {{ $text }}

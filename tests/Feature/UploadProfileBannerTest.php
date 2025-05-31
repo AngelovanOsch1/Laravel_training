@@ -42,7 +42,7 @@ class UploadProfileBannerTest extends TestCase
         Livewire::test(ProfileBanner::class, ['profileBanner' => null])
             ->set('form.photo', $photo)
             ->assertDispatched('openWarningModal', function ($event, $param) {
-                return $param[0] === "Unsupported file format. Only JPEG, PNG, WEBP and JPG formats are supported.";
+                return $param[0]['body'] === "Unsupported file format. Only JPEG, PNG, WEBP and JPG formats are supported.";
             });
     }
 
@@ -54,7 +54,7 @@ class UploadProfileBannerTest extends TestCase
         Livewire::test(ProfileBanner::class, ['profileBanner' => null])
             ->set('form.photo', $photo)
             ->assertDispatched('openWarningModal', function ($event, $param) {
-                return $param[0] === "The file size is too large. Maximum size is 10MB.";
+                return $param[0]['body'] === "The file size is too large. Maximum size is 10MB.";
             });
     }
 }

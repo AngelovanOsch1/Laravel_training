@@ -19,8 +19,7 @@
     :readonly="{{ $readOnly }}"
     wire:model="{{ $model }}"
     wire:model.live.debounce.300ms="{{ $liveModel }}"
-    class="{{ $class }} {{ $readOnly ? 'bg-gray-700 cursor-not-allowed text-gray-400' : '' }}"
-
+    class="{{ $class }} {{ $readOnly ? '!bg-gray-600 cursor-not-allowed !text-gray-400' : '' }}"
 />
 
 @error($name)

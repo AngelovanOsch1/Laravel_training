@@ -41,7 +41,10 @@ class ProfilePhoto extends Component
             $this->profilePhoto = $path;
             $this->dispatch('profilePhotoUpdated', $this->profilePhoto);
         } catch (ValidationException $e) {
-            $errorMessage = $e->getMessage();
+            $errorMessage = [
+                'body' => $e->getMessage(),
+            ];
+
             $this->dispatch('openWarningModal', $errorMessage);
         }
     }

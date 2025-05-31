@@ -16,9 +16,10 @@ class UserSeriesList extends Component
 {
     use WithPagination;
 
-    public $sortField = 'id';
-    public $sortDirection = 'asc';
+    public $sortField = 'score';
+    public $sortDirection = 'desc';
     public User $user;
+    public $pivotSortable = ['episode_count', 'score', 'series_status_id', 'start_date'];
 
     public function mount()
     {
@@ -27,12 +28,17 @@ class UserSeriesList extends Component
 
     public function render()
     {
-        $seriesUser = SeriesUser::with(['series', 'seriesStatus'])
-            ->where('user_id', $this->user->id)
-            ->orderBy($this->sortField, $this->sortDirection)
-            ->paginate(50);
+        $seriesQuery = $this->user->series();
 
-        return view('livewire.user-series-list', ['seriesUser' => $seriesUser]);
+        if (in_array($this->sortField, $this->pivotSortable)) {
+            $seriesQuery->orderByPivot($this->sortField, $this->sortDirection);
+        } else {
+            $seriesQuery->orderBy($this->sortField, $this->sortDirection);
+        }
+
+        $seriesList = $seriesQuery->paginate(50);
+
+        return view('livewire.user-series-list', ['seriesList' => $seriesList]);
     }
 
     public function sortBy(string $field)
@@ -40,18 +46,18 @@ class UserSeriesList extends Component
         $this->sortField = $field;
 
         $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-
         $this->resetPage();
     }
 
-    public function openDeleteSeriesModal($id) {
-            $data = [
-                'body' => 'Are you sure you want to delete this entry?',
-                'callBackFunction' => 'deleteSeriesEntry',
-                'callBackFunctionParameter' => $id
-            ];
+    public function openDeleteSeriesModal($id)
+    {
+        $data = [
+            'body' => 'Are you sure you want to delete this entry?',
+            'callBackFunction' => 'deleteSeriesEntry',
+            'callBackFunctionParameter' => $id
+        ];
 
-            $this->dispatch('openWarningModal', $data);
+        $this->dispatch('openWarningModal', $data);
     }
 
     #[On('deleteSeriesEntry')]
@@ -72,4 +78,6 @@ class UserSeriesList extends Component
         $this->dispatch('openEditSeriesModal', $series);
     }
 
+    #[On('seriesUpdated')]
+    public function refreshSeries() {}
 }

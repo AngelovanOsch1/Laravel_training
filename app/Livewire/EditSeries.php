@@ -57,6 +57,8 @@ class EditSeries extends Component
             'series_status_id' => $this->form->series_status,
         ]);
 
+        $this->dispatch('seriesUpdated');
+
         $this->closeModal();
     }
 

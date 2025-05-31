@@ -1,6 +1,5 @@
-!images/default_profile_banner.webp
-!images/default_profile_photo.png
 !images
+!images/**
 !banners/
 !photos/
 !series/

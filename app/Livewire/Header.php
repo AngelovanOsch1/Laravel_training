@@ -3,13 +3,13 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 use App\Support\GlobalHelper;
 use Illuminate\Support\Facades\Auth;
 
 class Header extends Component
 {
-    public string $profilePhoto;
-    protected $listeners = ['profilePhotoUpdated' => 'refreshProfilePhoto'];
+    public string|null $profilePhoto;
 
     public function mount()
     {
@@ -17,6 +17,7 @@ class Header extends Component
         $this->profilePhoto = $user->profile_photo ?? 'images/default_profile_photo.png';
     }
 
+    #[On('profilePhotoUpdated')]
     public function refreshProfilePhoto($newPhotoPath)
     {
         $this->profilePhoto = $newPhotoPath;

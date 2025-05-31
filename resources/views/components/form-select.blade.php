@@ -11,7 +11,7 @@
     name="{{ $name }}"
     {{ $disabled ? 'disabled' : '' }}
     wire:model="{{ $model }}"
-    class="{{ $class }} {{ $disabled ? 'bg-gray-700 cursor-not-allowed text-gray-400' : ''  }}"
+    class="{{ $class }} {{ $disabled ? '!bg-gray-600 cursor-not-allowed !text-gray-400' : '' }}"
 >
     {{ $slot }}
 </select>
