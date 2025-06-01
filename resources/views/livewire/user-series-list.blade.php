@@ -18,32 +18,32 @@
                     <x-table-th>Cover</x-table-th>
 
                     <x-table-th :cursorPointer="true" click="sortBy('title')">
-                            Title
-                            {{-- <x-table-sort-icon :active="$sortField === 'title'" :direction="$sortDirection" /> --}}
+                        Title
+                        <x-table-sort-icon :active="$sortField === 'title'" :direction="$sortDirection" />
                     </x-table-th>
 
 
                     <x-table-th>Type</x-table-th>
 
                     <x-table-th :cursorPointer="true" click="sortBy('series_status_id')">
-                            Status
-                            {{-- <x-table-sort-icon :active="$sortField === 'series_status_id'" :direction="$sortDirection" /> --}}
+                        Status
+                        <x-table-sort-icon :active="$sortField === 'series_status_id'" :direction="$sortDirection" />
                     </x-table-th>
 
                     <x-table-th :cursorPointer="true" click="sortBy('start_date')">
-                            Start date & End date
-                            {{-- <x-table-sort-icon :active="$sortField === 'start_date'" :direction="$sortDirection" /> --}}
+                        Start date & End date
+                        <x-table-sort-icon :active="$sortField === 'start_date'" :direction="$sortDirection" />
                     </x-table-th>
 
                     <x-table-th :cursorPointer="true" click="sortBy('episode_count')">
-                            Episodes
-                            {{-- <x-table-sort-icon :active="$sortField === 'episode_count'" :direction="$sortDirection" /> --}}
+                        Episodes
+                        <x-table-sort-icon :active="$sortField === 'episode_count'" :direction="$sortDirection" />
                     </x-table-th>
 
                     <x-table-th :cursorPointer="true" click="sortBy('Score')">
 
-                            Score
-                            {{-- <x-table-sort-icon :active="$sortField === 'Score'" :direction="$sortDirection" /> --}}
+                        Score
+                        <x-table-sort-icon :active="$sortField === 'Score'" :direction="$sortDirection" />
 
                     </x-table-th>
                     @if (auth()->id() === $user->id)
@@ -53,26 +53,26 @@
             </x-table-thead>
             <x-table-tbody>
                 @forelse ($seriesList as $entry)
-                    <x-table-tr class="border-b border-gray-300 hover:bg-gray-50 transition">
+                    <x-table-tr>
                         <x-table-td class="p-3 align-middle font-black">{{ $loop->iteration }}</x-table-td>
                         <x-table-td>
-                            <img src="{{ asset($entry->cover_image) }}" alt="{{ $entry->title }}"
-                                class="h-20 w-auto mx-auto rounded-md shadow-sm" />
+                            <img src="{{ asset($entry->cover_image) }}" alt="{{ $entry->title }}" />
                         </x-table-td>
                         <x-table-td>{{ $entry->title }}</x-table-td>
                         <x-table-td>{{ $entry->type }}</x-table-td>
                         <x-table-td>{{ $entry->seriesStatus->name ?? 'N/A' }}</x-table-td>
                         <x-table-td>
-                            {{ date('M Y', strtotime($entry->pivot->start_end)) }}
+                            {{ \Carbon\Carbon::parse($entry->pivot->start_date)->format('M Y') }}
                             -
-                            {{ date('M Y', strtotime($entry->pivot->end_date)) }}
+                            {{ \Carbon\Carbon::parse($entry->pivot->end_date)->format('M Y') }}
                         </x-table-td>
                         <x-table-td>{{ $entry->pivot->episode_count }}</x-table-td>
                         <x-table-td>
-                            <div class="flex items-center justify-center gap-2 h-full">
+                            <div class="flex items-center justify-center gap-2 h-full -ml-[5px]">
                                 <img src="{{ asset('storage/images/star.svg') }}" class="w-7 h-7" alt="Star Icon">
                                 <span>{{ $entry->pivot->score }}</span>
                             </div>
+
                         </x-table-td>
 
 
