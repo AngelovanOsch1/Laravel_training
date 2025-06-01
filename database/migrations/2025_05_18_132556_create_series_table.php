@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('type')->default('TV');
             $table->string('cover_image');
             $table->integer('episode_count');
+            $table->integer('minutes_per_episode');
             $table->date('aired_start_date');
             $table->date('aired_end_date');
             $table->decimal('score');

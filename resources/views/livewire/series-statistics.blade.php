@@ -41,25 +41,28 @@
     <div class="grid grid-cols-1 gap-y-3 text-sm text-gray-700 w-full max-w-md">
         <div class="flex justify-between">
             <span>Total Entries</span>
-            <span>360</span>
+            <span>{{ $total_series }}</span>
         </div>
         <div class="flex justify-between">
             <span>Episodes</span>
-            <span>5055.6</span>
+            <span>{{ $total_episodes }}</span>
         </div>
         <div class="flex justify-between">
             <span>Total minutes</span>
-            <span>101112</span>
+            <span>{{ $total_minutes }} </span>
         </div>
         <div class="flex justify-between">
             <span>Total hours</span>
-            <span>1685.2</span>
+            <span>{{ number_format($total_hours, 2) }}</span>
+        </div>
+        <div class="flex justify-between">
+            <span>Total days</span>
+            <span>{{ number_format($total_days, 2) }}</span>
         </div>
         <div class="flex justify-between">
             <span>Total weeks</span>
-            <span>10.3</span>
+            <span>{{ number_format($total_weeks, 2) }}</span>
         </div>
-
         <div class="flex justify-between mt-5">
             <x-nav-link href="series-list" text="Update list" />
         </div>

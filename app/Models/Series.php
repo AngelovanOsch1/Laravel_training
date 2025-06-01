@@ -12,6 +12,7 @@ class Series extends Model
     protected $fillable = [
         'title',
         'episode_count',
+        'minutes_per_episode',
         'aired_start_date',
         'aired_end_date',
         'score',

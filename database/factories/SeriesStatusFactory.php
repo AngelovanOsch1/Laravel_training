@@ -12,7 +12,7 @@ class SeriesStatusFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->randomElement(['Watching', 'Completed', 'Dropped', 'Plan to watch']),
+            'name' => $this->faker->unique()->randomElement(['Watching', 'Completed', 'Dropped', 'Plan to watch', 'On-Hold']),
         ];
     }
 }

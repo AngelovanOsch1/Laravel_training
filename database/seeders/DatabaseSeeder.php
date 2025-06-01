@@ -54,21 +54,25 @@ class DatabaseSeeder extends Seeder
         $seriesCollection = collect();
 
         foreach ($images as $entry) {
+            $type = $faker->randomElement(['TV', 'Movie', 'OVA']);
+            $minutes_per_episode = $type === 'TV' ? 20 : 100;
+
             $series = Series::create([
                 'title' => $entry['title'],
-                'type' => $faker->randomElement(['TV', 'Movie', 'OVA']),
+                'type' => $type,
                 'cover_image' => $entry['image'],
                 'episode_count' => $faker->numberBetween(1, 100),
+                'minutes_per_episode' => $minutes_per_episode,
                 'aired_start_date' => $faker->dateTimeBetween('-5 years', '-3 years'),
                 'aired_end_date' => $faker->dateTimeBetween('-2 years', '+2 years'),
-                'score' => $faker->randomFloat(2, 0, 10),
+                'score' => $faker->numberBetween(1, 10),
             ]);
 
             $seriesCollection->push($series);
         }
 
         $genres = Genre::factory()->count(5)->create();
-        $series_statuses = SeriesStatus::factory()->count(4)->create();
+        $series_statuses = SeriesStatus::factory()->count(5)->create();
 
         $series->each(function ($serie) use ($genres) {
             $serie->genres()->attach(
@@ -76,11 +80,13 @@ class DatabaseSeeder extends Seeder
             );
         });
 
-        $series->each(function ($serie) use ($user, $series_statuses) {
+        $series->each(function ($serie) use ($user, $series_statuses, $faker) {
             SeriesUser::factory()->create([
                 'user_id' => $user->id,
                 'series_id' => $serie->id,
                 'series_status_id' => $series_statuses->random()->id,
+                'start_date' => $faker->dateTimeBetween('-5 years', '-3 years'),
+                'end_date' => $faker->dateTimeBetween('-2 years', '+2 years'),
             ]);
         });
     }
