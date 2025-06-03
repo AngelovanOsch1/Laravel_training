@@ -1,9 +1,7 @@
 @props([
-    'class' => 'min-w-full text-sm text-gray-700 bg-white text-center'
+    'class' => 'w-full text-left table-auto min-w-max',
 ])
 
-<table
-    class="{{ $class }}"
->
+<table class="{{ $class }}">
     {{ $slot }}
 </table>

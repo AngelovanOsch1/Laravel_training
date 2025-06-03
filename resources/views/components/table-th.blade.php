@@ -1,12 +1,9 @@
 @props([
-    'class' => 'p-3 font-bold align-middle',
+    'class' => 'p-4',
     'cursorPointer' => false,
-    'click' => null
+    'click' => null,
 ])
 
-<th
-    class="{{ $class }} {{ $cursorPointer ? ' cursor-pointer' : '' }}"
-    wire:click="{{ $click }}"
->
+<th class="{{ $class }} {{ $cursorPointer ? ' cursor-pointer' : '' }}" wire:click="{{ $click }}">
     {{ $slot }}
 </th>

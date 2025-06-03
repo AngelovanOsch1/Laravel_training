@@ -43,7 +43,7 @@ class RegisterFormTest extends TestCase
     }
 
     #[Test]
-    public function it_registers_a_user_and_authentication_record()
+    public function it_registers_a_user_record()
     {
         Livewire::test(RegisterForm::class)
             ->set($this->baseFormData)

@@ -1,9 +1,7 @@
 @props([
-    'class' => ''
+    'class' => '',
 ])
 
-<tr
-    class="{{ $class }}"
->
+<tr class="{{ $class }}">
     {{ $slot }}
 </tr>
