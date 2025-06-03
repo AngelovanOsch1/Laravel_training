@@ -1,11 +1,8 @@
 @props([
     'colspan' => 0,
-    'class' => 'p-3 align-middle'
+    'class' => 'p-4',
 ])
 
-<td
-    colspan="{{ $colspan }}"
-    class="{{ $class }}"
->
+<td colspan="{{ $colspan }}" class="{{ $class }}">
     {{ $slot }}
 </td>

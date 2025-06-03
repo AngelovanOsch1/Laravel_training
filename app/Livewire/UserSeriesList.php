@@ -2,13 +2,15 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
+use DB;
 use App\Models\User;
+use Livewire\Component;
 use App\Models\SeriesUser;
-use App\Support\GlobalHelper;
-use Livewire\WithPagination;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
+use App\Models\SeriesStatus;
+use Livewire\WithPagination;
+use App\Support\GlobalHelper;
+use Livewire\Attributes\Layout;
 
 
 #[Layout('layouts.app')]
@@ -38,7 +40,16 @@ class UserSeriesList extends Component
 
         $seriesList = $seriesQuery->paginate(50);
 
-        return view('livewire.user-series-list', ['seriesList' => $seriesList]);
+        $statusIds = $seriesList->getCollection()->pluck('pivot.series_status_id')->unique();
+
+        $statuses = SeriesStatus::whereIn('id', $statusIds)->get()->keyBy('id');
+        $seriesList->getCollection()->each(function ($series) use ($statuses) {
+            $series->pivot->setRelation('seriesStatus', $statuses->get($series->pivot->series_status_id));
+        });
+
+        return view('livewire.user-series-list', [
+            'seriesList' => $seriesList,
+        ]);
     }
 
     public function sortBy(string $field)
