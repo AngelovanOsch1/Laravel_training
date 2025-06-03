@@ -27,7 +27,7 @@ class DeleteSeriesTest extends TestCase
         ]);
 
         Livewire::test(UserSeriesList::class)
-            ->call('deleteSeries', $seriesUser->id);
+            ->call('openDeleteSeriesModal', $seriesUser->id);
 
         $this->assertDatabaseMissing('series_user', [
             'id' => $seriesUser->id,
