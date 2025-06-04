@@ -84,9 +84,9 @@ class UserSeriesList extends Component
 
     public function openEditSeriesModal(int $id)
     {
-        $series = SeriesUser::with(['series', 'seriesStatus'])->findOrFail($id);
+        $seriesUser = SeriesUser::with(['series', 'seriesStatus'])->find($id);
 
-        $this->dispatch('openEditSeriesModal', $series);
+        $this->dispatch('openEditSeriesModal', $seriesUser);
     }
 
     #[On('seriesUpdated')]

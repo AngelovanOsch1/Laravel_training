@@ -72,7 +72,12 @@ class DatabaseSeeder extends Seeder
         }
 
         $genres = Genre::factory()->count(5)->create();
-        $series_statuses = SeriesStatus::factory()->count(5)->create();
+
+        $series_status_names = ['Watching', 'Completed', 'Dropped', 'Plan to watch', 'On-Hold'];
+
+        $series_statuses = collect($series_status_names)->map(function ($name) {
+            return SeriesStatus::create(['name' => $name]);
+        });
 
         $series->each(function ($serie) use ($genres) {
             $serie->genres()->attach(

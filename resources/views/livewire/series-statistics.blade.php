@@ -6,35 +6,35 @@
                 <span class="h-3 w-3 rounded-full bg-green-500"></span>
                 <span>Watching</span>
             </div>
-            <span>20</span>
+            <span>{{ $total_series_watching }}</span>
         </div>
         <div class="flex justify-between items-center">
             <div class="flex items-center gap-2">
                 <span class="h-3 w-3 rounded-full bg-blue-500"></span>
                 <span>Completed</span>
             </div>
-            <span>2,451</span>
+            <span>{{ $total_series_completed }}</span>
         </div>
         <div class="flex justify-between items-center">
             <div class="flex items-center gap-2">
                 <span class="h-3 w-3 rounded-full bg-yellow-500"></span>
                 <span>On-Hold</span>
             </div>
-            <span>34</span>
+            <span>{{ $total_series_on_hold }}</span>
         </div>
         <div class="flex justify-between items-center">
             <div class="flex items-center gap-2">
                 <span class="h-3 w-3 rounded-full bg-red-500"></span>
                 <span>Dropped</span>
             </div>
-            <span>0</span>
+            <span>{{ $total_series_dropped }}</span>
         </div>
         <div class="flex justify-between items-center">
             <div class="flex items-center gap-2">
                 <span class="h-3 w-3 rounded-full bg-gray-500"></span>
                 <span>Plan to Watch</span>
             </div>
-            <span>58</span>
+            <span>{{ $total_series_plan_on_watching }} </span>
         </div>
     </div>
     <hr class="my-6 border-t border-gray-300 w-full max-w-md" />

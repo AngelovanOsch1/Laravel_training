@@ -17,6 +17,7 @@ class EditSeriesTest extends TestCase
     use RefreshDatabase;
 
     private array $baseFormData;
+    private SeriesUser $selectedSeriesUser;
     private User $user;
 
     protected function setUp(): void
@@ -28,7 +29,7 @@ class EditSeriesTest extends TestCase
 
         $series = Series::factory()->create();
 
-        $seriesUser = SeriesUser::factory()->create([
+        $this->selectedSeriesUser = SeriesUser::factory()->create([
             'user_id' => $this->user->id,
             'series_id' => $series->id,
         ])->load('series');;
@@ -39,7 +40,7 @@ class EditSeriesTest extends TestCase
             'form.episode_count' => fake()->numberBetween(1, 100),
             'form.score' => fake()->numberBetween(0, 10),
             'form.series_status' => SeriesStatus::factory()->create()->id,
-            'selectedSeries' => json_decode(json_encode($seriesUser)),
+            'selectedSeriesUser' => $this->selectedSeriesUser,
         ];
     }
 

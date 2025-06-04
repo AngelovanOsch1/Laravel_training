@@ -15,7 +15,7 @@ class EditSeries extends Component
     public bool $show = false;
     public SeriesFormValidation $form;
     public Collection $series_statuses;
-    public $selectedSeries;
+    public SeriesUser $selectedSeriesUser;
 
     public function mount()
     {
@@ -23,15 +23,15 @@ class EditSeries extends Component
     }
 
     #[On('openEditSeriesModal')]
-    public function openModal($series)
+    public function openModal(SeriesUser $seriesUser)
     {
-        $this->selectedSeries = json_decode(json_encode($series));
+        $this->selectedSeriesUser = $seriesUser;
 
-        $this->form->episode_count = $this->selectedSeries->episode_count;
-        $this->form->start_date = Carbon::parse($this->selectedSeries->start_date)->toDateString();
-        $this->form->end_date = Carbon::parse($this->selectedSeries->end_date)->toDateString();
-        $this->form->score = $this->selectedSeries->score;
-        $this->form->series_status = $this->selectedSeries->series_status->id;
+        $this->form->episode_count = $this->selectedSeriesUser->episode_count;
+        $this->form->start_date = Carbon::parse($this->selectedSeriesUser->start_date)->toDateString();
+        $this->form->end_date = Carbon::parse($this->selectedSeriesUser->end_date)->toDateString();
+        $this->form->score = $this->selectedSeriesUser->score;
+        $this->form->series_status = $this->selectedSeriesUser->seriesStatus->id;
 
         $this->show = true;
     }
@@ -45,15 +45,13 @@ class EditSeries extends Component
     {
         $this->form->validate();
 
-        $seriesUser = SeriesUser::findOrFail($this->selectedSeries->id);
-
-        $seriesUser->update([
+        $this->selectedSeriesUser->update([
             'start_date' => $this->form->start_date,
             'end_date' => $this->form->end_date,
             'episode_count' => $this->form->episode_count,
             'score' => $this->form->score,
-            'user_id' => $this->selectedSeries->user_id,
-            'series_id' => $this->selectedSeries->series->id,
+            'user_id' => $this->selectedSeriesUser->user_id,
+            'series_id' => $this->selectedSeriesUser->series->id,
             'series_status_id' => $this->form->series_status,
         ]);
 
