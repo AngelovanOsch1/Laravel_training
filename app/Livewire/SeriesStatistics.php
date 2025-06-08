@@ -27,9 +27,9 @@ class SeriesStatistics extends Component
     public float $total_days = 0;
     public float $total_weeks = 0;
 
-    public function mount()
+    public function mount(int $id)
     {
-        $this->user = GlobalHelper::getLoggedInUser();
+        $this->user = User::findOrFail($id);
     }
 
     public function render()

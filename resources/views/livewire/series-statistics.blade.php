@@ -1,5 +1,5 @@
 <div class="my-10 flex w-full flex-col rounded-xl bg-white px-6 py-6 text-center shadow-lg shadow-[#c0c0c0]">
-    <h3 class="text-xl font-bold mb-4 text-left">Anime Statistics</h3>
+    <h3 class="text-xl font-bold mb-8 text-left">Anime Statistics</h3>
     <div class="grid grid-cols-1 gap-y-3 text-sm text-gray-700 w-full max-w-md">
         <div class="flex justify-between items-center">
             <div class="flex items-center gap-2">
@@ -64,7 +64,7 @@
             <span>{{ number_format($total_weeks, 2) }}</span>
         </div>
         <div class="flex justify-between mt-5">
-            <x-nav-link href="series-list" text="Update list" />
+            <x-nav-link href="series-list" href="{{ route('series-list', ['id' => $user->id]) }}" :text="$user->id === auth()->id() ? 'Update list' : 'View list'" />
         </div>
     </div>
 </div>

@@ -13,9 +13,9 @@ class Profile extends Component
 {
     public User $user;
 
-    public function mount()
+    public function mount($id = null)
     {
-        $this->user = GlobalHelper::getLoggedInUser();
+        $this->user = $id ? User::findOrFail($id) : GlobalHelper::getLoggedInUser();
     }
 
     public function render()

@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use DB;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\SeriesUser;
@@ -23,9 +22,9 @@ class UserSeriesList extends Component
     public User $user;
     public $pivotSortable = ['episode_count', 'score', 'series_status_id', 'start_date'];
 
-    public function mount()
+    public function mount($id = null)
     {
-        $this->user = GlobalHelper::getLoggedInUser();
+        $this->user = User::findOrFail($id);
     }
 
     public function render()

@@ -8,16 +8,16 @@
                     {!! __('pagination.previous') !!}
                 </span>
             @else
-                <a href="{{ $paginator->previousPageUrl() }}" class="px-4 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:text-teal-600 hover:bg-teal-50 transition">
+                <button wire:click="previousPage" class="px-4 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:text-teal-600 hover:bg-teal-50 transition">
                     {!! __('pagination.previous') !!}
-                </a>
+                </button>
             @endif
 
             {{-- Next --}}
             @if ($paginator->hasMorePages())
-                <a href="{{ $paginator->nextPageUrl() }}" class="ml-3 px-4 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:text-teal-600 hover:bg-teal-50 transition">
+                <button wire:click="nextPage" class="ml-3 px-4 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:text-teal-600 hover:bg-teal-50 transition">
                     {!! __('pagination.next') !!}
-                </a>
+                </button>
             @else
                 <span class="ml-3 px-4 py-2 text-sm text-gray-400 bg-white border border-gray-200 rounded-md cursor-default">
                     {!! __('pagination.next') !!}
@@ -53,9 +53,9 @@
                             ‹
                         </span>
                     @else
-                        <a href="{{ $paginator->previousPageUrl() }}" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-l-md hover:text-teal-600 hover:bg-teal-50 transition" rel="prev">
+                        <button wire:click="previousPage" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-l-md hover:text-teal-600 hover:bg-teal-50 transition" rel="prev">
                             ‹
-                        </a>
+                        </button>
                     @endif
 
                     {{-- Page Links --}}
@@ -69,9 +69,9 @@
                                 @if ($page == $paginator->currentPage())
                                     <span class="px-3 py-2 text-sm text-white bg-teal-600 border border-teal-600 cursor-default">{{ $page }}</span>
                                 @else
-                                    <a href="{{ $url }}" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 hover:text-teal-600 hover:bg-teal-50 transition" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
+                                    <button wire:click="gotoPage({{ $page }})" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 hover:text-teal-600 hover:bg-teal-50 transition" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
                                         {{ $page }}
-                                    </a>
+                                    </button>
                                 @endif
                             @endforeach
                         @endif
@@ -79,9 +79,9 @@
 
                     {{-- Next Button --}}
                     @if ($paginator->hasMorePages())
-                        <a href="{{ $paginator->nextPageUrl() }}" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-r-md hover:text-teal-600 hover:bg-teal-50 transition" rel="next">
+                        <button wire:click="nextPage" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-r-md hover:text-teal-600 hover:bg-teal-50 transition" rel="next">
                             ›
-                        </a>
+                        </button>
                     @else
                         <span class="px-3 py-2 text-sm text-gray-300 bg-white border border-gray-200 rounded-r-md cursor-not-allowed">
                             ›

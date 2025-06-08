@@ -3,12 +3,11 @@
     <div class="flex justify-between w-full gap-x-25">
         <x-profile-card :user="$user" />
         <div class="flex-grow">
-            <livewire:series-statistics />
+            <livewire:series-statistics :id="$user->id"/>
             <div class="mt-6">
-                <livewire:user-highest-rated-entries />
+                <livewire:user-highest-rated-entries :id="$user->id" />
             </div>
         </div>
     </div>
-    <x-primary-button text='Edit profile' type="button" click='openEditProfileModal' />
-    <livewire:edit-profile />
+    <livewire:user-comments-list :id="$user->id" />
 </div>

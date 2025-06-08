@@ -12,4 +12,5 @@
     wire:navigate
 >
     {{ $text }}
+    {{ $slot }}
 </a>

@@ -10,9 +10,9 @@ class UserHighestRatedEntries extends Component
 {
     public User $user;
 
-    public function mount()
+    public function mount($id)
     {
-        $this->user = GlobalHelper::getLoggedInUser();
+        $this->user = User::findOrFail($id);
     }
 
     public function render()

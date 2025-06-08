@@ -7,7 +7,7 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class PhotoFormValidation extends Form
 {
-    public TemporaryUploadedFile $photo;
+    public ?TemporaryUploadedFile $photo = null;
 
     protected function rules()
     {
