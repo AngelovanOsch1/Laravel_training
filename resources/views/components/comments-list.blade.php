@@ -2,6 +2,7 @@
     'form' => null,
     'photoForm' => null,
     'commentsList' => [],
+    'user' => null
 ])
 
 <div class="flex w-full flex-col rounded-xl bg-white px-6 py-6 shadow-lg shadow-[#c0c0c0]">
@@ -10,7 +11,7 @@
         <form class="flex gap-3 mb-10" wire:submit.prevent="submit">
             <div>
                 <label class="relative inline-block h-15 w-15 cursor-pointer group">
-                    <img src="{{ asset('storage/' . 'images/default_profile_photo.png') }}"
+                    <img src="{{ asset('storage/' . ($user->profile_photo ?? 'images/default_profile_photo.png')) }}"
                         class="absolute inset-0 w-full h-full object-cover rounded-xl pointer-events-none"
                         alt="default-profile-photo" />
                 </label>

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Comment;
 use Livewire\Component;
 use App\Models\Reaction;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use App\Support\GlobalHelper;
 use Livewire\WithFileUploads;
@@ -50,6 +51,18 @@ class UserCommentsList extends Component
         ]);
     }
 
+    public function openDeleteCommentModal($id)
+    {
+        $data = [
+            'body' => 'Are you sure you want to delete this comment?',
+            'callBackFunction' => 'deleteComment',
+            'callBackFunctionParameter' => $id
+        ];
+
+        $this->dispatch('openWarningModal', $data);
+    }
+
+    #[On('deleteComment')]
     public function deleteComment(int $id)
     {
         Comment::destroy($id);

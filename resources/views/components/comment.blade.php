@@ -54,7 +54,7 @@
                     </button>
 
                     <button class="flex items-center w-full px-4 py-2 hover:bg-gray-100 text-red-600"
-                        @click="open = false" wire:click="deleteComment({{ $comment->id }})" title="Delete">
+                        @click="open = false" wire:click="openDeleteCommentModal({{ $comment->id }})" title="Delete">
                         <i class="fa fa-trash mr-2"></i>
                         Delete
                     </button>
