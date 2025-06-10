@@ -2,6 +2,7 @@
     'type' => 'submit',
     'text' => '',
     'disabled' => false,
+    'xClick' => null,
     'click' => null,
     'icon' => '',
     'iconPosition' => 'left',
@@ -10,6 +11,7 @@
 
 <button
     type="{{ $type }}"
+    @click="{{ $xClick }}"
     wire:click="{{ $click }}"
     class="{{ $class }}
             {{ $disabled ? '!bg-[#B2DFDB] !cursor-not-allowed' : '' }}

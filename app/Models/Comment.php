@@ -17,7 +17,7 @@ class Comment extends Model
         'parent_id',
         'is_deleted',
         'is_edited',
-        'image',
+        'photo',
     ];
 
     public function commentable()

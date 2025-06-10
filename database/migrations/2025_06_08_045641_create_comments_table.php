@@ -18,7 +18,7 @@ return new class extends Migration
             $table->boolean('is_edited')->default(false);
             $table->foreignId('parent_id')->nullable()->constrained('comments')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->text('image')->nullable();
+            $table->text('photo')->nullable();
             $table->timestamps();
         });
     }

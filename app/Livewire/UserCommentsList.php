@@ -12,7 +12,6 @@ use App\Support\GlobalHelper;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Storage;
-use App\Livewire\Forms\PhotoFormValidation;
 use App\Livewire\Forms\CommentFormValidation;
 use Illuminate\Validation\ValidationException;
 
@@ -23,8 +22,10 @@ class UserCommentsList extends Component
     use WithFileUploads;
 
     public CommentFormValidation $form;
-    public PhotoFormValidation $photoForm;
+    public CommentFormValidation $editForm;
     public User $user;
+
+    private string $sortBy = 'created_at';
 
     public function mount($id)
     {
@@ -43,7 +44,7 @@ class UserCommentsList extends Component
                     $query->where('type', 'dislike');
                 },
             ])
-            ->orderBy('created_at', 'desc')
+            ->orderBy($this->sortBy, 'desc')
             ->paginate(5);
 
         return view('livewire.user-comments-list', [
@@ -60,6 +61,40 @@ class UserCommentsList extends Component
         ];
 
         $this->dispatch('openWarningModal', $data);
+    }
+
+    // public function editCommentTest(int $id)
+    // {
+    //     $comment = Comment::findOrFail($id);
+    //     $this->editForm->message = $comment->message;
+    // }
+
+    // public function cancelEditCommentTest()
+    // {
+    //     $this->editForm->reset();
+    //     $this->editForm->resetValidation();
+    // }
+
+    public function updateComment(int $id)
+    {
+        $this->editForm->validate();
+
+        $comment = Comment::findOrFail($id);
+
+        if ($this->editForm->photo) {
+            $path = Storage::disk('public')->put('commentsPhotos', $this->editForm->photo);
+        }
+
+        $comment->update([
+            'message' => $this->editForm->message,
+            'photo' => $path ?? $comment->photo,
+            'is_edited' => true
+        ]);
+
+        $this->editForm->photo = null;
+        $this->editForm->message = '';
+
+        $this->resetPage();
     }
 
     #[On('deleteComment')]
@@ -103,16 +138,34 @@ class UserCommentsList extends Component
         }
     }
 
-    public function updatedphotoForm()
+
+
+    public function updated($property)
     {
-        try {
-            $this->photoForm->validate();
-        } catch (ValidationException $e) {
-            $this->photoForm->reset();
-            $errorMessage = [
-                'body' => $e->getMessage(),
-            ];
-            $this->dispatch('openWarningModal', $errorMessage);
+        if ($property === 'form.sortBy') {
+            $this->sortBy = $this->form->sortBy;
+        }
+
+        if ($property === 'form.photo') {
+            try {
+                $this->form->validateOnly('photo');
+            } catch (ValidationException $e) {
+                $this->form->reset('photo');
+                $this->dispatch('openWarningModal', [
+                    'body' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        if ($property === 'editForm.photo') {
+            try {
+                $this->editForm->validateOnly('photo');
+            } catch (ValidationException $e) {
+                $this->editForm->reset('photo');
+                $this->dispatch('openWarningModal', [
+                    'body' => $e->getMessage(),
+                ]);
+            }
         }
     }
 
@@ -120,23 +173,20 @@ class UserCommentsList extends Component
     {
         $this->form->validate();
 
-        if ($this->photoForm->photo) {
-            $path = Storage::disk('public')->put('commentsPhotos', $this->photoForm->photo);
+        if ($this->form->photo) {
+            $path = Storage::disk('public')->put('commentsPhotos', $this->form->photo);
         }
 
         Comment::create([
             'message' => $this->form->message,
             'commentable_id' => $this->user->id,
             'commentable_type' => User::class,
-            'image' => $path ?? null,
+            'photo' => $path ?? null,
             'user_id' => GlobalHelper::getLoggedInUser()->id,
         ]);
 
         $this->form->reset();
         $this->form->resetValidation();
-
-        $this->photoForm->reset();
-        $this->photoForm->resetValidation();
 
         $this->resetPage();
     }

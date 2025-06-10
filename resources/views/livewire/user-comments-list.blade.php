@@ -1,6 +1,6 @@
 <x-comments-list
     :form="$form"
-    :photoForm="$photoForm"
+    :editForm="$editForm"
     :commentsList="$commentsList"
     :user="$user"
 />

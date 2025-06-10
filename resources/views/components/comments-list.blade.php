@@ -1,12 +1,22 @@
 @props([
     'form' => null,
-    'photoForm' => null,
+    'editForm' => null,
     'commentsList' => [],
-    'user' => null
+    'user' => null,
 ])
 
 <div class="flex w-full flex-col rounded-xl bg-white px-6 py-6 shadow-lg shadow-[#c0c0c0]">
-    <h3 class="text-xl font-bold mb-8">Comments ({{ $commentsList->total() }})</h3>
+    <div class="flex justify-between">
+        <h3 class="text-xl font-bold mb-8">Comments ({{ $commentsList->total() }})</h3>
+        <div>
+            <x-form-select
+                class="w-full px-3 py-2 bg-white border border-gray-300 text-sm text-gray-800 rounded-md shadow-sm focus:outline-none"
+                liveModel="form.sortBy">
+                <x-form-option text="Newest" value="created_at" />
+                <x-form-option text="Likes" value="likes_count" />
+            </x-form-select>
+        </div>
+    </div>
     @auth
         <form class="flex gap-3 mb-10" wire:submit.prevent="submit">
             <div>
@@ -19,7 +29,7 @@
             <div class="flex-grow">
                 <x-form-textarea id="message" name="form.message" placeholder="Enter up to 300 characters..."
                     rows="0" liveModel="form.message" model="form.message" maxCharacters="300" :fileUpload="true"
-                    :value="$photoForm->photo?->temporaryUrl()"
+                    :value="$form->photo?->temporaryUrl()"
                     class="w-full text-sm border-0 border-b border-gray-300 focus:border-teal-600 focus:ring-0 placeholder-gray-400 pt-2 resize-none focus:outline-none" />
 
                 <div class="flex items-center justify-between h-15">
@@ -28,13 +38,12 @@
                             class="text-white font-medium rounded-full text-sm w-full sm:w-auto px-4 py-2 text-center bg-teal-600 hover:bg-teal-500 inline-flex items-center gap-3 shadow-sm transition-colors duration-200" />
                         <label class="cursor-pointer text-sm text-teal-600 hover:text-teal-500 font-medium">
                             Upload Photo
-                            <input type="file" wire:model="photoForm.photo" class="hidden" />
+                            <input type="file" wire:model="form.photo" class="hidden" />
                         </label>
                     </div>
-                    @if ($photoForm->photo?->temporaryUrl())
+                    @if ($form->photo?->temporaryUrl())
                         <div>
-                            <img src="{{ $photoForm->photo?->temporaryUrl() }}" alt="Preview"
-                                class="w-12 h-12 rounded-xl" />
+                            <img src="{{ $form->photo?->temporaryUrl() }}" alt="Preview" class="w-12 h-12 rounded-xl" />
                         </div>
                     @endif
                 </div>
@@ -42,7 +51,9 @@
         </form>
     @endauth
     @foreach ($commentsList as $comment)
-        <x-comment :comment="$comment" />
+        <div wire:key="comment-{{ $comment->id }}">
+            <x-comment :comment="$comment" :editForm="$editForm" />
+        </div>
     @endforeach
     <div class="mt-auto">
         {{ $commentsList->links('vendor.pagination.tailwind') }}
