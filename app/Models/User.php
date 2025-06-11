@@ -64,4 +64,9 @@ class User extends Authenticatable
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
+
+    public function reactions()
+    {
+        return $this->morphMany(Reaction::class, 'reactionable');
+    }
 }

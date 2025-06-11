@@ -1,5 +1,6 @@
 @props([
     'user' => null,
+    'likesObject' => null,
 ])
 
 <div
@@ -34,14 +35,17 @@
         <hr class="my-6 border-t border-gray-300" />
         <div class="flex flex-col gap-4 mt-6 w-full">
             <div class="flex gap-4">
-                <x-primary-button type="button" text='Like' icon='heart' iconPosition='right'
-                    class="flex-1 px-6 py-2 bg-pink-300 text-white font-semibold rounded-md shadow-md shadow-[#e0e0e0] hover:shadow-[#c0c0c0] hover:bg-pink-400 inline-flex items-center gap-3 cursor-pointer" />
-                <x-primary-button type="button" text='Chat' icon='comments' iconPosition='right'
-                    class="flex-1 px-6 py-2 bg-green-300 text-white font-semibold rounded-md shadow-md shadow-[#e0e0e0] hover:shadow-[#c0c0c0] hover:bg-green-400 inline-flex items-center gap-3 cursor-pointer" />
+                <x-primary-button type="button" text="Likes {{ $likesObject->likeCount }}" :icon="$likesObject->hasalreadyLiked ? 'heart' : 'heart-o'"
+                    iconPosition="right" click="likeUser({{ $user->id }})"
+                    class="px-4 py-2 bg-pink-300 text-white font-medium rounded shadow hover:bg-pink-400 flex items-center gap-2 text-sm w-full justify-center whitespace-nowrap" />
+
+                <x-primary-button type="button" text="Chat" icon="comments" iconPosition="right"
+                    class="px-4 py-2 bg-green-300 text-white font-medium rounded shadow hover:bg-green-400 flex items-center gap-2 text-sm w-full justify-center whitespace-nowrap" />
             </div>
             @if (auth()->id() === $user->id)
                 <div>
-                    <x-primary-button text='Edit profile' icon='edit' iconPosition='right' type="button" click='openEditProfileModal' />
+                    <x-primary-button text='Edit profile' icon='edit' iconPosition='right' type="button"
+                        click='openEditProfileModal' />
                 </div>
             @endif
         </div>
