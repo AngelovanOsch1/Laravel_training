@@ -101,7 +101,7 @@
                                                 <x-form-select id="score" name="form.score" :disabled="$selectedSeries['aired_start_date'] > now()"
                                                     model="form.score">
                                                     <x-form-option text="Select your score" />
-                                                    @foreach (range(0, 10) as $score)
+                                                    @foreach (range(1, 10) as $score)
                                                         <x-form-option value="{{ $score }}"
                                                             text="{{ $score }}" />
                                                     @endforeach

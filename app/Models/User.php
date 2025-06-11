@@ -52,6 +52,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Series::class, 'series_user')
             ->using(SeriesUser::class)
             ->withPivot([
+                'id',
                 'start_date',
                 'end_date',
                 'episode_count',

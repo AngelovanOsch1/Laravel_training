@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use App\Models\Series;
 use Livewire\Component;
 use App\Models\SeriesUser;
 use Livewire\Attributes\On;
@@ -73,7 +74,11 @@ class UserSeriesList extends Component
     #[On('deleteSeriesEntry')]
     public function deleteSeries(int $id)
     {
-        SeriesUser::destroy($id);
+        $seriesUser = SeriesUser::findOrFail($id);
+
+        $seriesUser->delete();
+
+        Series::calculateSeriesTotalScore($seriesUser->series_id);
     }
 
     public function openAddSeriesToYourListModal()

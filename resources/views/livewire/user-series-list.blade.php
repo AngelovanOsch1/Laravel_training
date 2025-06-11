@@ -109,10 +109,10 @@
                                 <x-table-td>
                                     <div class="flex items-center justify-center gap-2">
                                         <x-primary-button type="button" icon="edit"
-                                            click="openEditSeriesModal({{ $entry->id }})"
+                                            click="openEditSeriesModal({{ $entry->pivot->id }})"
                                             class="bg-blue-500 hover:bg-blue-600 text-white rounded p-2 text-xs shadow-md w-8 h-8 flex items-center justify-center" />
                                         <x-primary-button type="button" icon="trash"
-                                            click="openDeleteSeriesModal({{ $entry->id }})"
+                                            click="openDeleteSeriesModal({{ $entry->pivot->id }})"
                                             class="bg-red-500 hover:bg-red-600 text-white rounded p-2 text-xs shadow-md w-8 h-8 flex items-center justify-center" />
                                     </div>
                                 </x-table-td>

@@ -29,4 +29,18 @@ class Series extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    static function calculateSeriesTotalScore($id)
+    {
+        $seriesCollection = SeriesUser::where('series_id', $id)->get();
+
+        $seriesScore = $seriesCollection->isEmpty()
+            ? 0.00
+            : $seriesCollection->avg('score');
+
+        $series = Series::findOrFail($id);
+        $series->update([
+            'score' => $seriesScore,
+        ]);
+    }
 }

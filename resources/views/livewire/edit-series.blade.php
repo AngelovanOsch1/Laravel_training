@@ -20,7 +20,7 @@
                             <div class="w-full md:w-1/2">
                                 <x-form-label for="episode_count" text="Episodes" />
                                 <x-form-select id="episode_count" name="form.episode_count" model="form.episode_count">
-                                    @foreach (range(0, $selectedSeriesUser->series->episode_count) as $episode)
+                                    @foreach (range(0, $selectedSeriesUser->episode_count) as $episode)
                                         <x-form-option value="{{ $episode }}" text="{{ $episode }}" />
                                     @endforeach
                                 </x-form-select>
@@ -28,7 +28,7 @@
                             <div class="w-full md:w-1/2">
                                 <x-form-label for="score" text="Score" />
                                 <x-form-select id="score" name="form.score" model="form.score">
-                                    @foreach (range(0, 10) as $score)
+                                    @foreach (range(1, 10) as $score)
                                         <x-form-option value="{{ $score }}" text="{{ $score }}" />
                                     @endforeach
                                 </x-form-select>

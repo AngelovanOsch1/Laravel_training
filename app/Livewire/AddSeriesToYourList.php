@@ -52,7 +52,10 @@ class AddSeriesToYourList extends Component
             'series_id' => $this->selectedSeries['id'],
             'series_status_id' => $this->form->series_status,
         ]);
-        return redirect()->route('series-list');
+
+        Series::calculateSeriesTotalScore($this->selectedSeries['id']);
+
+        return redirect()->route('series-list', $this->user->id);
     }
 
     public function setSelectedIndex($index)

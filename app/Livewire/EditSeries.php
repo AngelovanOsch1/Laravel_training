@@ -9,6 +9,7 @@ use Livewire\Attributes\On;
 use App\Models\SeriesStatus;
 use Illuminate\Support\Collection;
 use App\Livewire\Forms\SeriesFormValidation;
+use App\Models\Series;
 
 class EditSeries extends Component
 {
@@ -54,6 +55,8 @@ class EditSeries extends Component
             'series_id' => $this->selectedSeriesUser->series->id,
             'series_status_id' => $this->form->series_status,
         ]);
+
+        Series::calculateSeriesTotalScore($this->selectedSeriesUser->series->id);
 
         $this->dispatch('seriesUpdated');
 
