@@ -44,7 +44,6 @@ class EditSeriesTest extends TestCase
         ];
     }
 
-
     #[Test]
     public function it_edit_series_user_record()
     {

@@ -15,6 +15,7 @@ class UploadProfileBannerTest extends TestCase
 {
     use RefreshDatabase;
 
+    #[Test]
     public function test_it_stores_image_and_updates_user_profile_banner_on_success()
     {
         Storage::fake('public');
