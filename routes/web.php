@@ -19,5 +19,5 @@ Route::middleware('guest')->group(function () {
 // Authenticated-only routes
 Route::middleware('auth')->group(function () {
     Route::get('profile/{id?}', Profile::class)->name('profile');
-    Route::get('series-list{id?}', UserSeriesList::class)->name('series-list');
+    Route::get('series-list/{id?}', UserSeriesList::class)->name('series-list');
 });

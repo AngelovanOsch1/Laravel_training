@@ -38,10 +38,11 @@ class AddSeriesToYourListTest extends TestCase
     #[Test]
     public function it_create_series_user_record()
     {
-        Livewire::test(AddSeriesToYourList::class)
+        Livewire::test(AddSeriesToYourList::class, ['id' => $this->user->id])
             ->set($this->baseFormData)
             ->call('submit')
-            ->assertRedirect(route('series-list'));
+            ->assertRedirect(route('series-list', $this->user->id));
+
 
         $this->assertDatabaseHas('series_user', [
             'start_date' => $this->baseFormData['form.start_date'],

@@ -58,8 +58,8 @@ class EditSeriesTest extends TestCase
             'episode_count' => $this->baseFormData['form.episode_count'],
             'score' => $this->baseFormData['form.score'],
             'series_status_id' => $this->baseFormData['form.series_status'],
-            'user_id' => $this->baseFormData['selectedSeries']->user_id,
-            'series_id' => $this->baseFormData['selectedSeries']->series->id,
+            'user_id' => $this->selectedSeriesUser->user_id,
+            'series_id' => $this->selectedSeriesUser->series_id,
         ]);
     }
 

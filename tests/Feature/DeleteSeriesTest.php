@@ -21,13 +21,10 @@ class DeleteSeriesTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $seriesUser = SeriesUser::factory()->create([
-            'user_id' => $user->id,
-            'series_id' => Series::factory()->create()->id,
-        ]);
+        $seriesUser = SeriesUser::factory()->create();
 
-        Livewire::test(UserSeriesList::class)
-            ->call('openDeleteSeriesModal', $seriesUser->id);
+        Livewire::test(UserSeriesList::class, ['id' => $user->id])
+            ->call('deleteSeries', $seriesUser->id);
 
         $this->assertDatabaseMissing('series_user', [
             'id' => $seriesUser->id,
