@@ -35,3 +35,16 @@
 .scrollbar-hidden::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
 }
+
+#series-scroll-container {
+    position: fixed;
+    top: calc(50% - 305px); /* center vertically considering modal height and margin */
+    left: calc(50% - 457.5px); /* center horizontally considering modal width */
+    width: 915px;
+    max-height: 400px;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    overflow-y: auto;
+    z-index: 9999;
+}

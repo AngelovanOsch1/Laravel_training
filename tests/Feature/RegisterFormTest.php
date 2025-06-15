@@ -48,7 +48,7 @@ class RegisterFormTest extends TestCase
         Livewire::test(RegisterForm::class)
             ->set($this->baseFormData)
             ->call('submit')
-            ->assertRedirect(route('dashboard'));
+            ->assertRedirect(route('profile', ['id' => User::where('email', $this->baseFormData['form.email'])->first()->id]));
 
         $this->assertDatabaseHas('users', [
             'email' => $this->baseFormData['form.email'],
@@ -62,6 +62,7 @@ class RegisterFormTest extends TestCase
         $user = User::where('email', $this->baseFormData['form.email'])->first();
         $this->assertTrue(Hash::check($this->baseFormData['form.password'], $user->password));
     }
+
 
     #[Test]
     public function it_validates_required_fields()

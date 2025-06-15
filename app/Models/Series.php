@@ -27,8 +27,17 @@ class Series extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)
+            ->using(SeriesUser::class)
+            ->withPivot([
+                'series_status_id',
+                'start_date',
+                'end_date',
+                'episode_count',
+                'score'
+            ]);
     }
+
 
     static function calculateSeriesTotalScore($id)
     {

@@ -29,10 +29,14 @@ class EditSeriesTest extends TestCase
 
         $series = Series::factory()->create();
 
-        $this->selectedSeriesUser = SeriesUser::factory()->create([
-            'user_id' => $this->user->id,
-            'series_id' => $series->id,
-        ])->load('series');;
+        $this->user->series()->attach($series->id, [
+            'series_status_id' => SeriesStatus::factory()->create()->id,
+        ]);
+
+        $this->selectedSeriesUser = $this->user->series()
+            ->where('series_id', $series->id)
+            ->first()
+            ->pivot;
 
         $this->baseFormData = [
             'form.start_date' => fake()->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
@@ -43,6 +47,7 @@ class EditSeriesTest extends TestCase
             'selectedSeriesUser' => $this->selectedSeriesUser,
         ];
     }
+
 
     #[Test]
     public function it_edit_series_user_record()

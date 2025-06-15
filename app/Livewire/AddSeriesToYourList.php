@@ -23,6 +23,7 @@ class AddSeriesToYourList extends Component
     public Collection $series_statuses;
     public User $user;
     public array $excludedSeriesIds;
+    public int $amount = 20;
 
     public function mount()
     {
@@ -31,12 +32,27 @@ class AddSeriesToYourList extends Component
 
     public function render()
     {
+        $this->series_statuses = SeriesStatus::all();
+
         $this->excludedSeriesIds = SeriesUser::where('user_id', $this->user->id)
             ->pluck('series_id')
             ->toArray();
-        $this->series_statuses = SeriesStatus::all();
+
+        $query = Series::whereNotIn('id', $this->excludedSeriesIds)
+            ->orderBy('score', 'desc');
+
+        if (strlen($this->query) >= 2) {
+            $query->where('title', 'like', "%{$this->query}%");
+        }
+
+        $this->results = $query->limit($this->amount)->get();
 
         return view('livewire.add-series-to-your-list');
+    }
+
+    public function loadMore()
+    {
+        $this->amount += 20;
     }
 
     public function submit()
@@ -83,18 +99,6 @@ class AddSeriesToYourList extends Component
         }
         $this->selectedSeries = null;
         $this->query = '';
-    }
-
-    public function updatedQuery()
-    {
-        if (strlen($this->query) > 2) {
-            $this->results = Series::where('title', 'like', "%{$this->query}%")
-                ->whereNotIn('id', $this->excludedSeriesIds)
-                ->orderBy('score', 'desc')
-                ->get();
-        } else {
-            $this->selectedSeries = null;
-        }
     }
 
     #[On('openAddSeriesToYourListModal')]

@@ -53,12 +53,14 @@ class DatabaseSeeder extends Seeder
 
         $seriesCollection = collect();
 
-        foreach ($images as $entry) {
+        for ($i = 0; $i < 200; $i++) {
+            $entry = $images[$i % count($images)];  // cycle through images
+
             $type = $faker->randomElement(['TV', 'Movie', 'OVA']);
             $minutes_per_episode = $type === 'TV' ? 20 : 100;
 
             $series = Series::create([
-                'title' => $entry['title'],
+                'title' => $entry['title'] . ' #' . ($i + 1), // make title unique by adding number
                 'type' => $type,
                 'cover_image' => $entry['image'],
                 'episode_count' => $faker->numberBetween(1, 100),
@@ -85,13 +87,13 @@ class DatabaseSeeder extends Seeder
             );
         });
 
-        $series->each(function ($serie) use ($user, $series_statuses, $faker) {
-            SeriesUser::factory()->create([
-                'user_id' => $user->id,
-                'series_id' => $serie->id,
+        $seriesCollection->each(function ($serie) use ($user, $series_statuses, $faker) {
+            $user->series()->attach($serie->id, [
                 'series_status_id' => $series_statuses->random()->id,
                 'start_date' => $faker->dateTimeBetween('-5 years', '-3 years'),
                 'end_date' => $faker->dateTimeBetween('-2 years', '+2 years'),
+                'episode_count'    => $faker->numberBetween(1, $serie->episode_count ?? 24),
+                'score' => $faker->numberBetween(1, 10),
             ]);
         });
     }

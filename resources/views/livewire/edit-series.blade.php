@@ -1,4 +1,4 @@
-<div>
+<div x-data x-init="$watch('$wire.show', value => document.body.classList.toggle('overflow-hidden', value))">
     @if ($show)
         <div class="fixed inset-0 flex justify-center items-center z-50 bg-gray-800/25">
             <div class="bg-white p-6 rounded-lg shadow-lg w-2xl">
@@ -20,7 +20,7 @@
                             <div class="w-full md:w-1/2">
                                 <x-form-label for="episode_count" text="Episodes" />
                                 <x-form-select id="episode_count" name="form.episode_count" model="form.episode_count">
-                                    @foreach (range(0, $selectedSeriesUser->episode_count) as $episode)
+                                    @foreach (range(0, $selectedSeriesUser->series->episode_count) as $episode)
                                         <x-form-option value="{{ $episode }}" text="{{ $episode }}" />
                                     @endforeach
                                 </x-form-select>

@@ -1,9 +1,9 @@
-<div>
+<div x-data x-init="$watch('$wire.show', value => document.body.classList.toggle('overflow-hidden', value))">
     @if ($show)
         <div class="fixed inset-0 flex justify-center items-center z-50 bg-gray-800/25">
             <div class="bg-white p-6 rounded-lg shadow-lg">
                 <form class="flex flex-col" wire:submit.prevent="submit">
-                    <h2 class="text-lg font-semibold">Edit Profile</h2>
+                    <h2 class="text-lg font-semibold text-left">Edit Profile</h2>
                     <p>Please fill in the form to update your profile details.</p>
 
                     <hr class="my-6 border-t border-gray-300" />

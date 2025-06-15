@@ -4,14 +4,15 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Support\GlobalHelper;
+use App\Traits\HandlesPhotos;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Storage;
 use App\Livewire\Forms\PhotoFormValidation;
 use Illuminate\Validation\ValidationException;
 
 class ProfilePhoto extends Component
 {
     use WithFileUploads;
+    use HandlesPhotos;
 
     public PhotoFormValidation $form;
     public string|null $profilePhoto;
@@ -31,9 +32,12 @@ class ProfilePhoto extends Component
         try {
             $this->validate();
 
-            $path = Storage::disk('public')->put('photos', $this->form->photo);
+            $path = $this->uploadPhoto($this->form->photo);
 
             $user = GlobalHelper::getLoggedInUser();
+
+            $this->deletePhoto($user->profile_photo);
+
             $user->update([
                 'profile_photo' => $path,
             ]);

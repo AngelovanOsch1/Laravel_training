@@ -10,6 +10,13 @@
             <x-form-input type="password" id="password" name="form.password" placeholder="Password..."
                 model="form.password" />
         </div>
-        <x-primary-button text='Login' />
+        <div class="flex items-start mb-5">
+            <div class="flex items-center h-5">
+                <x-form-input type="checkbox" id="remember" name="form.rememberMe" model="form.rememberMe" class="accent-[#00897B] h-3 w-3 rounded"/>
+            </div>
+            <x-form-label for="remember" class="ms-2 text-sm font-medium text-gray-700" text="Remember me" />
+        </div>
+
+        <x-primary-button text="Login" />
     </form>
 </div>

@@ -7,9 +7,10 @@ use App\Models\Gender;
 use App\Models\Country;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Livewire\Forms\RegisterFormValidation;
-use Illuminate\Support\Collection;
 
 #[Layout('layouts.app')]
 class RegisterForm extends Component
@@ -33,7 +34,7 @@ class RegisterForm extends Component
     {
         $this->form->validate();
 
-        User::create([
+        $user = User::create([
             'email' => $this->form->email,
             'password' => Hash::make($this->form->password),
             'first_name' => $this->form->firstName,
@@ -43,6 +44,7 @@ class RegisterForm extends Component
             'gender_id' => $this->form->gender,
         ]);
 
-        return redirect()->route('dashboard');
+        Auth::login($user);
+        return redirect()->route('profile', ['id' => $user->id]);
     }
 }

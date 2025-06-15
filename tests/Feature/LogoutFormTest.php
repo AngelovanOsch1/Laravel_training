@@ -23,7 +23,7 @@ class LogoutFormTest extends TestCase
 
         Livewire::test(Header::class)
             ->call('logout')
-            ->assertRedirect(route('dashboard'));
+            ->assertRedirect(route('login'));
 
         $this->assertGuest();
     }

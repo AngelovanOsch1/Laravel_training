@@ -6,7 +6,6 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Series;
 use Livewire\Livewire;
-use App\Models\SeriesUser;
 use App\Models\SeriesStatus;
 use App\Livewire\AddSeriesToYourList;
 use PHPUnit\Framework\Attributes\Test;
@@ -87,9 +86,8 @@ class AddSeriesToYourListTest extends TestCase
     {
         $series = Series::factory()->create();
 
-        SeriesUser::factory()->create([
-            'user_id' => $this->user->id,
-            'series_id' => $series->id,
+        $this->user->series()->attach($series->id, [
+            'series_status_id' => SeriesStatus::factory()->create()->id,
         ]);
 
         Livewire::test(AddSeriesToYourList::class)

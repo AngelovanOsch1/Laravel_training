@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Support\GlobalHelper;
+use App\Traits\HandlesPhotos;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 use App\Livewire\Forms\PhotoFormValidation;
@@ -12,6 +13,7 @@ use Illuminate\Validation\ValidationException;
 class ProfileBanner extends Component
 {
     use WithFileUploads;
+    use HandlesPhotos;
 
     public PhotoFormValidation $form;
     public string|null $profileBanner;
@@ -31,9 +33,12 @@ class ProfileBanner extends Component
         try {
             $this->validate();
 
-            $path = Storage::disk('public')->put('banners', $this->form->photo);
+            $path = $this->uploadPhoto($this->form->photo, 'banners');
 
             $user = GlobalHelper::getLoggedInUser();
+
+            $this->deletePhoto($user->profile_banner);
+
             $user->update([
                 'profile_banner' => $path,
             ]);

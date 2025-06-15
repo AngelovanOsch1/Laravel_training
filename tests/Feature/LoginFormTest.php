@@ -26,7 +26,7 @@ class LoginFormTest extends TestCase
         Livewire::test(LoginForm::class)
             ->set($validCredentials)
             ->call('submit')
-            ->assertRedirect(route('dashboard'));
+            ->assertRedirect(route('profile', ['id' => $user->id]));
 
         $this->assertAuthenticated();
     }

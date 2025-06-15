@@ -1,5 +1,5 @@
 <div>
-    <label class="relative inline-block h-56 w-56 cursor-pointer group">
+    <label class="relative block w-56 aspect-square cursor-pointer group">
         <input type="file" class="hidden" wire:model="form.photo" />
         <img src="{{ asset('storage/' . $profilePhoto) }}"
             class="absolute inset-0 w-full h-full object-cover rounded-xl pointer-events-none"

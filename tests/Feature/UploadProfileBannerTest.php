@@ -20,19 +20,27 @@ class UploadProfileBannerTest extends TestCase
     {
         Storage::fake('public');
 
-        $user = User::factory()->create();
+        $existingBanner = UploadedFile::fake()->create('banner.jpg', 100, 'image/jpeg');
+        $existingBannerPath = Storage::disk('public')->putFile('banners', $existingBanner);
+
+        $user = User::factory()->create([
+            'profile_banner' => $existingBannerPath,
+        ]);
+
         $this->actingAs($user);
 
-        $photo = UploadedFile::fake()->create('image.jpg', 100, 'image/jpeg');
+        $newBanner = UploadedFile::fake()->create('banner.jpg', 100, 'image/jpeg');
 
         Livewire::test(ProfileBanner::class, ['profileBanner' => null])
-            ->set('form.photo', $photo);
+            ->set('form.photo', $newBanner);
 
-        $filePath = 'banners/' . $photo->hashName();
-        $this->assertTrue(Storage::disk('public')->exists($filePath));
+        $newBannerPath = 'banners/' . $newBanner->hashName();
+
+        $this->assertTrue(Storage::disk('public')->exists($newBannerPath));
+        $this->assertFalse(Storage::disk('public')->exists($existingBannerPath));
 
         $user->refresh();
-        $this->assertEquals($filePath, $user->profile_banner);
+        $this->assertEquals($newBannerPath, $user->profile_banner);
     }
 
     #[Test]

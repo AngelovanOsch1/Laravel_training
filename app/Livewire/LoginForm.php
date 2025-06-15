@@ -12,6 +12,13 @@ class LoginForm extends Component
 {
     public LoginFormValidation $form;
 
+    public function mount()
+    {
+        if (Auth::check()) {
+            return redirect()->route('profile', Auth::id());
+        }
+    }
+
     public function render()
     {
         return view('livewire.login-form');
@@ -24,11 +31,12 @@ class LoginForm extends Component
         if (!Auth::attempt([
             'email' => $this->form->email,
             'password' => $this->form->password,
-        ])) {
+        ], $this->form->rememberMe)) {
             return $this->form->addError('email', 'Incorrect credentials');
         }
 
         session()->regenerate();
-        return redirect()->route('dashboard');
+
+        return redirect()->route('profile', ['id' => Auth::user()->id]);
     }
 }

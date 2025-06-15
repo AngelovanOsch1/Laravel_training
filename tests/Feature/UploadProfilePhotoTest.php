@@ -20,19 +20,27 @@ class UploadProfilePhotoTest extends TestCase
     {
         Storage::fake('public');
 
-        $user = User::factory()->create();
+        $existingPhoto = UploadedFile::fake()->create('image.jpg', 100, 'image/jpeg');
+        $existingPhotoPath = Storage::disk('public')->putFile('photos', $existingPhoto);
+
+        $user = User::factory()->create([
+            'profile_photo' => $existingPhotoPath
+        ]);
+
         $this->actingAs($user);
 
-        $photo = UploadedFile::fake()->create('image.jpg', 100, 'image/jpeg');
+        $newPhoto = UploadedFile::fake()->create('image.jpg', 100, 'image/jpeg');
 
         Livewire::test(ProfilePhoto::class, ['profilePhoto' => null])
-            ->set('form.photo', $photo);
+            ->set('form.photo', $newPhoto);
 
-        $filePath = 'photos/' . $photo->hashName();
-        $this->assertTrue(Storage::disk('public')->exists($filePath));
+        $newPhotoPath = 'photos/' . $newPhoto->hashName();
+        $this->assertTrue(Storage::disk('public')->exists($newPhotoPath));
+
+        $this->assertFalse(Storage::disk('public')->exists($existingPhotoPath));
 
         $user->refresh();
-        $this->assertEquals($filePath, $user->profile_photo);
+        $this->assertEquals($newPhotoPath, $user->profile_photo);
     }
 
     #[Test]

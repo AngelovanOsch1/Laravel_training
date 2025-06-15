@@ -1,7 +1,7 @@
 @props([
     'for' => '',
     'text' => '',
-    'class' => 'block mb-2 text-sm font-bold'
+    'class' => 'block mb-2 text-sm font-bold text-left'
 ])
 
 <label

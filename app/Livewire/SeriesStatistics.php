@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\SeriesStatus;
-use App\Support\GlobalHelper;
 use Livewire\Attributes\Layout;
 
 #[Layout('layouts.app')]
@@ -36,49 +35,34 @@ class SeriesStatistics extends Component
     {
         $series = $this->user->series()->get();
 
-        $statusIds = $series->pluck('pivot.series_status_id')->unique();
+        $statusMap = SeriesStatus::all()->keyBy('id');
 
-        $statuses = SeriesStatus::whereIn('id', $statusIds)->get()->keyBy('id');
+        foreach ($series as $item) {
+            $statusName = $statusMap[$item->pivot->series_status_id]->name;
 
-        $series->each(function ($seriesItem) use ($statuses) {
-            $seriesItem->pivot->setRelation('seriesStatus', $statuses->get($seriesItem->pivot->series_status_id));
-        });
+            $this->incrementStatusCount($statusName);
+            $this->total_minutes += $item->pivot->episode_count * $item->minutes_per_episode;
+            $this->total_episodes += $item->pivot->episode_count;
+        }
 
-        $this->calculateSeriesStatistics($series);
+        $this->total_series = $series->count();
+        $this->total_hours = $this->total_minutes / 60;
+        $this->total_days = $this->total_hours / 24;
+        $this->total_weeks = $this->total_days / 7;
 
         return view('livewire.series-statistics');
     }
 
-    public function calculateSeriesStatistics($series)
+
+    protected function incrementStatusCount(string $status)
     {
-        foreach ($series as $item) {
-            $this->getSeriesCount($item->pivot->seriesStatus->name);
-            $this->total_minutes = $item->pivot->episode_count * $item->minutes_per_episode;
-
-            $this->total_series += 1;
-            $this->total_episodes += $item->pivot->episode_count;
-        }
-
-        $this->total_hours = $this->total_minutes / 60;
-        $this->total_days = $this->total_hours / 24;
-        $this->total_weeks = $this->total_days / 7;
-    }
-
-    public function getSeriesCount(string $seriesStatusName)
-    {
-        switch (strtolower($seriesStatusName)) {
-            case 'watching':
-                return $this->total_series_watching += 1;
-            case 'dropped':
-                return $this->total_series_dropped += 1;
-            case 'plan to watch':
-                return $this->total_series_plan_on_watching += 1;
-            case 'completed':
-                return $this->total_series_completed += 1;
-            case 'on-hold':
-                return $this->total_series_on_hold += 1;
-            default:
-                return null;
-        }
+        match (strtolower($status)) {
+            'watching'      => $this->total_series_watching++,
+            'completed'     => $this->total_series_completed++,
+            'on-hold'       => $this->total_series_on_hold++,
+            'dropped'       => $this->total_series_dropped++,
+            'plan to watch' => $this->total_series_plan_on_watching++,
+            default         => null,
+        };
     }
 }
