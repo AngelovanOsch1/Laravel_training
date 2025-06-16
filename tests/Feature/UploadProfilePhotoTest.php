@@ -15,32 +15,37 @@ class UploadProfilePhotoTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected User $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Storage::fake('public');
+
+        $this->user = User::factory()->create();
+        $this->actingAs($this->user);
+    }
+
     #[Test]
     public function test_it_stores_image_and_updates_user_profile_photo_on_success()
     {
-        Storage::fake('public');
-
         $existingPhoto = UploadedFile::fake()->create('image.jpg', 100, 'image/jpeg');
         $existingPhotoPath = Storage::disk('public')->putFile('photos', $existingPhoto);
 
-        $user = User::factory()->create([
-            'profile_photo' => $existingPhotoPath
-        ]);
-
-        $this->actingAs($user);
+        $this->user->update(['profile_photo' => $existingPhotoPath]);
 
         $newPhoto = UploadedFile::fake()->create('image.jpg', 100, 'image/jpeg');
 
-        Livewire::test(ProfilePhoto::class, ['profilePhoto' => null])
+        Livewire::test(ProfilePhoto::class, ['user' => $this->user])
             ->set('form.photo', $newPhoto);
 
         $newPhotoPath = 'photos/' . $newPhoto->hashName();
         $this->assertTrue(Storage::disk('public')->exists($newPhotoPath));
-
         $this->assertFalse(Storage::disk('public')->exists($existingPhotoPath));
 
-        $user->refresh();
-        $this->assertEquals($newPhotoPath, $user->profile_photo);
+        $this->user->refresh();
+        $this->assertEquals($newPhotoPath, $this->user->profile_photo);
     }
 
     #[Test]
@@ -48,7 +53,7 @@ class UploadProfilePhotoTest extends TestCase
     {
         $photo = UploadedFile::fake()->create('document.pdf', 100, 'application/pdf');
 
-        Livewire::test(ProfilePhoto::class, ['profilePhoto' => null])
+        Livewire::test(ProfilePhoto::class, ['user' => $this->user])
             ->set('form.photo', $photo)
             ->assertDispatched('openWarningModal', function ($event, $param) {
                 return $param[0]['body'] === "Unsupported file format. Only JPEG, PNG, WEBP and JPG formats are supported.";
@@ -60,7 +65,7 @@ class UploadProfilePhotoTest extends TestCase
     {
         $photo = UploadedFile::fake()->create('large-image.jpg', 10241, 'image/jpeg');
 
-        Livewire::test(ProfilePhoto::class, ['profilePhoto' => null])
+        Livewire::test(ProfilePhoto::class, ['user' => $this->user])
             ->set('form.photo', $photo)
             ->assertDispatched('openWarningModal', function ($event, $param) {
                 return $param[0]['body'] === "The file size is too large. Maximum size is 10MB.";

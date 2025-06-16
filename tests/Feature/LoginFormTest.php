@@ -21,6 +21,7 @@ class LoginFormTest extends TestCase
         $validCredentials = [
             'form.email' => $user->email,
             'form.password' => 'Password123!',
+            'form.rememberMe' => true
         ];
 
         Livewire::test(LoginForm::class)

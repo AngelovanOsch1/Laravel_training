@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Storage;
 use App\Livewire\Forms\CommentFormValidation;
 use Illuminate\Validation\ValidationException;
 
-#[Layout('layouts.app')]
 class UserCommentsList extends Component
 {
     use WithPagination;

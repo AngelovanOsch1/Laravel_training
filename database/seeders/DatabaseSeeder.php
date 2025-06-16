@@ -53,14 +53,12 @@ class DatabaseSeeder extends Seeder
 
         $seriesCollection = collect();
 
-        for ($i = 0; $i < 200; $i++) {
-            $entry = $images[$i % count($images)];  // cycle through images
-
+        foreach ($images as $entry) {
             $type = $faker->randomElement(['TV', 'Movie', 'OVA']);
             $minutes_per_episode = $type === 'TV' ? 20 : 100;
 
             $series = Series::create([
-                'title' => $entry['title'] . ' #' . ($i + 1), // make title unique by adding number
+                'title' => $entry['title'],
                 'type' => $type,
                 'cover_image' => $entry['image'],
                 'episode_count' => $faker->numberBetween(1, 100),

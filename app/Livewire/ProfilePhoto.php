@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Support\GlobalHelper;
 use App\Traits\HandlesPhotos;
@@ -15,11 +16,13 @@ class ProfilePhoto extends Component
     use HandlesPhotos;
 
     public PhotoFormValidation $form;
+    public User $user;
     public string|null $profilePhoto;
 
-    public function mount($profilePhoto)
+    public function mount($user)
     {
-        $this->profilePhoto = $profilePhoto ?? 'images/default_profile_photo.png';
+        $this->user = $user;
+        $this->profilePhoto = $user->profile_photo ?? 'images/default_profile_photo.png';
     }
 
     public function render()

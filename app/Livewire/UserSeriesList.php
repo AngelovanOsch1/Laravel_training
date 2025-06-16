@@ -9,9 +9,7 @@ use App\Models\SeriesUser;
 use Livewire\Attributes\On;
 use App\Models\SeriesStatus;
 use Livewire\WithPagination;
-use App\Support\GlobalHelper;
 use Livewire\Attributes\Layout;
-use Illuminate\Support\Facades\DB;
 
 
 #[Layout('layouts.app')]

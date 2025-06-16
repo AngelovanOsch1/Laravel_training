@@ -6,7 +6,7 @@
 <div
     class="my-10 flex flex-col items-center rounded-xl bg-white px-6 py-6 text-center md:max-w-md shadow-lg shadow-[#e0e0e0]">
     <div class="mb-4">
-        <livewire:profile-photo :profilePhoto="$user->profile_photo" />
+        <livewire:profile-photo :user="$user" />
     </div>
     <div>
         <h2 class="text-xl font-bold text-gray-800">{{ $user->first_name . ' ' . $user->last_name }}</h2>

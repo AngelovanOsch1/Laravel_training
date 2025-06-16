@@ -7,7 +7,6 @@ use Livewire\Component;
 use App\Models\SeriesStatus;
 use Livewire\Attributes\Layout;
 
-#[Layout('layouts.app')]
 class SeriesStatistics extends Component
 {
     public User $user;

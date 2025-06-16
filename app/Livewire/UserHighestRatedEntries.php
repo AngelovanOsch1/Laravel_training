@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use App\Models\User;
 use Livewire\Component;
-use App\Support\GlobalHelper;
 
 class UserHighestRatedEntries extends Component
 {

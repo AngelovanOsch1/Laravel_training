@@ -31,7 +31,7 @@ class UploadProfileBannerTest extends TestCase
 
         $newBanner = UploadedFile::fake()->create('banner.jpg', 100, 'image/jpeg');
 
-        Livewire::test(ProfileBanner::class, ['profileBanner' => null])
+        Livewire::test(ProfileBanner::class, ['profileBanner' => $existingBannerPath])
             ->set('form.photo', $newBanner);
 
         $newBannerPath = 'banners/' . $newBanner->hashName();

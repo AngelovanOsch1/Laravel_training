@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Comment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -68,5 +67,21 @@ class User extends Authenticatable
     public function reactions()
     {
         return $this->morphMany(Reaction::class, 'reactionable');
+    }
+
+
+    public function sessions()
+    {
+        return $this->hasMany(Session::class);
+    }
+
+
+    public function getIsOnlineAttribute()
+    {
+        $threshold = now()->subMinutes(10)->timestamp;
+
+        return $this->sessions()
+            ->where('last_activity', '>=', $threshold)
+            ->exists();
     }
 }
