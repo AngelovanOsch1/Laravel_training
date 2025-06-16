@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\User;
 use Livewire\Livewire;
 use App\Livewire\LoginForm;
+use Illuminate\Support\Facades\Cookie;
 use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -30,6 +31,8 @@ class LoginFormTest extends TestCase
             ->assertRedirect(route('profile', ['id' => $user->id]));
 
         $this->assertAuthenticated();
+
+        $this->assertNotNull(Cookie::get(app('config')->get('auth.remember_cookie')));
     }
 
     #[Test]

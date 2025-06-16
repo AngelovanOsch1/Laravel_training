@@ -35,7 +35,7 @@ class ProfilePhoto extends Component
         try {
             $this->validate();
 
-            $path = $this->uploadPhoto($this->form->photo);
+            $path = $this->uploadPhoto($this->form->photo, 'photos');
 
             $user = GlobalHelper::getLoggedInUser();
 

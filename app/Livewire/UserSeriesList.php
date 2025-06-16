@@ -10,6 +10,7 @@ use Livewire\Attributes\On;
 use App\Models\SeriesStatus;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
+use Carbon\Carbon;
 
 
 #[Layout('layouts.app')]
@@ -21,6 +22,8 @@ class UserSeriesList extends Component
     public $sortDirection = 'desc';
     public User $user;
     public $pivotSortable = ['episode_count', 'score', 'series_status_id', 'start_date'];
+    public string $query = '';
+
 
     public function mount($id = null)
     {
@@ -30,6 +33,10 @@ class UserSeriesList extends Component
     public function render()
     {
         $seriesQuery = $this->user->series();
+
+        if (strlen($this->query) >= 2) {
+            $seriesQuery->where('title', 'like', "%{$this->query}%");
+        }
 
         if (in_array($this->sortField, $this->pivotSortable)) {
             $seriesQuery->orderByPivot($this->sortField, $this->sortDirection);

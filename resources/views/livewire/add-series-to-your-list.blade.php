@@ -8,14 +8,14 @@
                             <div class="relative w-full">
                                 <x-form-input type="search" placeholder="Search series..."
                                     class="border border-gray-300 bg-white text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                                    liveModel="query" />
+                                    liveModel="query" icon="search" />
                             </div>
                             @if ($results->isEmpty())
                                 @if (strlen($query) >= 2)
-                                    <p class="mt-2 text-gray-500">No series found matching
-                                        "<strong>{{ $query }}</strong>".</p>
+                                    <p class="mt-2 pl-2 text-gray-500">No series found matching
+                                        "<strong>{{ $query }}</strong>"</p>
                                 @else
-                                    <p class="mt-2 text-gray-500">you've already added all available ones.</p>
+                                    <p class="mt-2 pl-2 text-gray-500">you've already added all available ones.</p>
                                 @endif
                             @else
                                 <div class="max-h-[400px] overflow-y-auto mt-12 scrollbar-hidden">
