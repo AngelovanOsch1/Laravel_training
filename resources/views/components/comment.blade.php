@@ -1,4 +1,4 @@
-@props([
+{{-- @props([
     'comment' => null,
     'editForm' => null,
 ])
@@ -108,4 +108,4 @@
         </template>
         @endif
     </div>
-</div>
+</div> --}}

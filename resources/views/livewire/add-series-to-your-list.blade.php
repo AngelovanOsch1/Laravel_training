@@ -1,4 +1,4 @@
-<div x-data x-init="$watch('$wire.show', value => document.body.classList.toggle('overflow-hidden', value))">
+<div x-data x-init="$watch('$wire.show', value => window.toggleBodyScroll(value))">
     @if ($show)
         <div class="fixed inset-0 flex justify-center items-center z-50 bg-gray-800/25">
             <div class="bg-gray-100 p-6 rounded-lg shadow-lg w-full max-w-[915px] min-h-[610px] flex flex-col">

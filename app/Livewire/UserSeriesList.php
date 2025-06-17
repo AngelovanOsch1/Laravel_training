@@ -30,6 +30,7 @@ class UserSeriesList extends Component
         $this->user = User::findOrFail($id);
     }
 
+    #[On('seriesUpdated')]
     public function render()
     {
         $seriesQuery = $this->user->series();
@@ -98,7 +99,4 @@ class UserSeriesList extends Component
 
         $this->dispatch('openEditSeriesModal', $seriesUser);
     }
-
-    #[On('seriesUpdated')]
-    public function refreshSeries() {}
 }
