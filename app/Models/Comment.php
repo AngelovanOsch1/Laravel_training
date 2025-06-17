@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Comment extends Model
 {
@@ -38,6 +39,14 @@ class Comment extends Model
     public function reactions()
     {
         return $this->morphMany(Reaction::class, 'reactionable');
+    }
+
+    public function authUserReactedWith($type)
+    {
+        return $this->reactions
+            ->where('user_id', Auth::id())
+            ->where('type', $type)
+            ->isNotEmpty();
     }
 
     protected static function booted()

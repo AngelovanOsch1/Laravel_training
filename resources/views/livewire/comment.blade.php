@@ -33,7 +33,6 @@
                             rows="0" liveModel="form.message" maxCharacters="300" :fileUpload="true"
                             :value="$comment->photo"
                             class="w-full text-sm border-0 border-b border-gray-300 focus:border-teal-600 focus:ring-0 placeholder-gray-400 pt-2 resize-none focus:outline-none" />
-
                         @if ($comment->photo)
                             <div class="relative flex items-center gap-4 mb-4">
                                 <div class="relative">
@@ -61,28 +60,29 @@
                     </div>
                 @endif
             </div>
+
             @if (!$isEditing)
                 <div class="mt-3 flex gap-5">
-                    <div class="flex gap-2 items-center cursor-pointer" wire:click="like({{ $comment->id }})">
-                        <i
-                            class="{{ $comment->reactions->where('user_id', auth()->id())->where('type', 'like')->isNotEmpty()
-                                ? 'fa fa-thumbs-up'
-                                : 'fa fa-thumbs-o-up' }}">
-                        </i>
+                    <div class="flex gap-2 items-center cursor-pointer select-none"
+                        wire:click="like({{ $comment->id }})" x-data="{ liked: false }"
+                        x-on:click="liked = true;setTimeout(() => liked = false, 300);">
+                        <i :class="(liked ? 'fa fa-thumbs-up' :
+                            '{{ $comment->authUserReactedWith('like') ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up' }}') +' fa-fw animate-scale-up'"
+                            class="transition-transform" style="width: 1.25rem; text-align: center;"></i>
                         <p>{{ $comment->likes_count }}</p>
                     </div>
 
-                    <div class="flex gap-2 items-center cursor-pointer" wire:click="dislike({{ $comment->id }})">
-                        <i
-                            class="{{ $comment->reactions->where('user_id', auth()->id())->where('type', 'dislike')->isNotEmpty()
-                                ? 'fa fa-thumbs-down'
-                                : 'fa fa-thumbs-o-down' }}">
-                        </i>
+                    <div class="flex gap-2 items-center cursor-pointer select-none"
+                        wire:click="dislike({{ $comment->id }})" x-data="{ disliked: false }"
+                        x-on:click="disliked = true; setTimeout(() => disliked = false, 300);">
+                        <i :class="(disliked ? 'fa fa-thumbs-down' :
+                            '{{ $comment->authUserReactedWith('dislike') ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down' }}') + ' fa-fw animate-scale-up'"
+                            class="transition-transform" style="width: 1.25rem; text-align: center;"></i>
                         <p>{{ $comment->dislikes_count }}</p>
                     </div>
 
                     <div class="flex gap-2 items-center cursor-pointer">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-comment-o fa-fw"></i>
                         <p>0</p>
                     </div>
                 </div>
@@ -94,6 +94,7 @@
                 <button @click="open = !open" class="px-2 py-1 cursor-pointer" type="button">
                     <i class="fa fa-ellipsis-v pt-3"></i>
                 </button>
+
                 <div x-show="open" @click.away="open = false"
                     class="absolute right-0 mt-2 w-28 bg-white border border-gray-300 rounded shadow-lg z-10">
                     <x-primary-button class="flex items-center w-full px-4 py-2 hover:bg-gray-100 gap-3"

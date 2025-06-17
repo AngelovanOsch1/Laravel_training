@@ -42,9 +42,6 @@ class Comments extends Component
                 'reactions as likes_count' => function ($query) {
                     $query->where('type', 'like');
                 },
-                'reactions as dislikes_count' => function ($query) {
-                    $query->where('type', 'dislike');
-                },
             ])
             ->orderBy($this->sortBy, 'desc')
             ->paginate(5);
