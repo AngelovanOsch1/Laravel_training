@@ -2,14 +2,15 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Models\Reaction;
 use Livewire\Attributes\On;
 use App\Traits\HandlesPhotos;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Comment as CommentModel;
 use App\Livewire\Forms\CommentFormValidation;
-use App\Models\User;
 use Illuminate\Validation\ValidationException;
 
 class Comment extends Component
@@ -22,12 +23,19 @@ class Comment extends Component
     public User $user;
     public User $loggedInUser;
     public bool $isEditing = false;
+    public $replies;
+
+    public bool $isReplying = false;
+    public string $replyMessage = '';
+    public $replyPhoto = null;
 
     public function mount(CommentModel $comment, User $user, User $loggedInUser)
     {
         $this->comment = $comment;
         $this->user = $user;
         $this->loggedInUser = $loggedInUser;
+
+        $this->loadReplies();
     }
 
     public function render()
@@ -35,13 +43,29 @@ class Comment extends Component
         return view('livewire.comment');
     }
 
-    public function editComment(int $id)
+    protected function loadReplies()
     {
-        $comment = CommentModel::findOrFail($id);
-        $this->form->message = $comment->message;
+        $this->replies = $this->comment->children()
+            ->with('user')
+            ->withCount([
+                'reactions as likes_count' => fn($q) => $q->where('type', 'like'),
+                'reactions as dislikes_count' => fn($q) => $q->where('type', 'dislike'),
+            ])
+            ->get();
+    }
 
+    #[On('refreshReplies')]
+    public function refreshReplies()
+    {
+        $this->loadReplies();
+    }
+
+    public function editComment()
+    {
+        $this->form->message = $this->comment->message;
         $this->isEditingState(true);
     }
+
 
     public function closeEditing()
     {
@@ -95,7 +119,7 @@ class Comment extends Component
     public function deleteComment(int $id)
     {
         CommentModel::destroy($id);
-        $this->dispatch('refreshComments')->to('comments');
+        $this->dispatch('refreshComments');
     }
 
     public function like(int $id)
@@ -130,7 +154,6 @@ class Comment extends Component
                 'type' => $type,
             ]);
         }
-
         $this->isEditingState(false);
     }
 
@@ -144,11 +167,39 @@ class Comment extends Component
         }
     }
 
-    public function getComment(int $id)
+    // New method to toggle reply form visibility
+    public function toggleReplying()
     {
-        return CommentModel::withCount([
-            'reactions as likes_count' => fn($q) => $q->where('type', 'like'),
-            'reactions as dislikes_count' => fn($q) => $q->where('type', 'dislike'),
-        ])->find($id);
+        $this->isReplying = !$this->isReplying;
+    }
+
+    // New method to save a reply
+    public function saveReply()
+    {
+        $this->validate([
+            'replyMessage' => 'required|string|max:300',
+            'replyPhoto' => 'nullable|image|max:1024',
+        ]);
+
+        $photoPath = null;
+        if ($this->replyPhoto) {
+            $photoPath = $this->uploadPhoto($this->replyPhoto, 'commentsPhotos');
+        }
+
+        CommentModel::create([
+            'message' => $this->replyMessage,
+            'photo' => $photoPath,
+            'user_id' => $this->loggedInUser->id,
+            'commentable_id' => $this->comment->commentable_id,
+            'commentable_type' => $this->comment->commentable_type,
+            'parent_id' => $this->comment->id,
+            'is_edited' => false,
+        ]);
+
+        $this->replyMessage = '';
+        $this->replyPhoto = null;
+        $this->isReplying = false;
+
+        $this->loadReplies();
     }
 }

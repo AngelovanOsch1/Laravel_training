@@ -36,6 +36,24 @@ class Comment extends Model
         return $this->belongsTo(Comment::class, 'parent_id');
     }
 
+    public function children()
+    {
+        return $this->hasMany(Comment::class, 'parent_id');
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(Comment::class, 'parent_id')->latest();
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($comment) {
+            $comment->children()->delete();  // deletes all direct replies
+            $comment->reactions()->delete(); // deletes all reactions for this comment
+        });
+    }
+
     public function reactions()
     {
         return $this->morphMany(Reaction::class, 'reactionable');
@@ -47,22 +65,5 @@ class Comment extends Model
             ->where('user_id', Auth::id())
             ->where('type', $type)
             ->isNotEmpty();
-    }
-
-    protected static function booted()
-    {
-        static::deleting(function ($comment) {
-            $comment->reactions()->delete();
-        });
-    }
-
-    public function getLikesCountAttribute()
-    {
-        return $this->reactions()->where('type', 'like')->count();
-    }
-
-    public function getDislikesCountAttribute()
-    {
-        return $this->reactions()->where('type', 'dislike')->count();
     }
 }

@@ -30,7 +30,6 @@ class Comments extends Component
         $this->loggedInUser = GlobalHelper::getLoggedInUser();
     }
 
-    #[On('refreshComments')]
     public function render()
     {
         $commentsList = $this->user->comments()
@@ -41,6 +40,9 @@ class Comments extends Component
             ->withCount([
                 'reactions as likes_count' => function ($query) {
                     $query->where('type', 'like');
+                },
+                'reactions as dislikes_count' => function ($query) {
+                    $query->where('type', 'dislike');
                 },
             ])
             ->orderBy($this->sortBy, 'desc')
@@ -92,4 +94,7 @@ class Comments extends Component
 
         $this->resetPage();
     }
+
+    #[On('refreshComments')]
+    public function test() {}
 }
