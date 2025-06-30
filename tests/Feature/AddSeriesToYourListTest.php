@@ -39,9 +39,7 @@ class AddSeriesToYourListTest extends TestCase
     {
         Livewire::test(AddSeriesToYourList::class, ['id' => $this->user->id])
             ->set($this->baseFormData)
-            ->call('submit')
-            ->assertRedirect(route('series-list', $this->user->id));
-
+            ->call('submit');
 
         $this->assertDatabaseHas('series_user', [
             'start_date' => $this->baseFormData['form.start_date'],

@@ -18,8 +18,8 @@
     id="{{ $id }}"
     name="{{ $name }}"
     placeholder="{{ $placeholder }}"
-    wire:model="{{ $model }}"
-    wire:model.live="{{ $liveModel }}"
+    @if($model) wire:model="{{ $model }}" @endif
+    @if($liveModel) wire:model.live="{{ $liveModel }}" @endif
     rows="{{ $rows }}"
     class="{{ $class }}"
 ></textarea>

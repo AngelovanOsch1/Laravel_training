@@ -55,14 +55,4 @@ class Comment extends Model
             $comment->reactions()->delete();
         });
     }
-
-    public function getLikesCountAttribute()
-    {
-        return $this->reactions()->where('type', 'like')->count();
-    }
-
-    public function getDislikesCountAttribute()
-    {
-        return $this->reactions()->where('type', 'dislike')->count();
-    }
 }
