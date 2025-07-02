@@ -14,12 +14,11 @@ class CommentFormValidation extends Form
     protected function rules()
     {
         return [
-            'message' => 'required|max:300',
+            'message' => 'max:300|nullable|required_without:photo',
             'photo' => 'max:10240|mimes:jpeg,png,webp,jpg|nullable',
             'sortBy' => 'in:created_at,likes_count|nullable',
         ];
     }
-
 
     protected function messages()
     {

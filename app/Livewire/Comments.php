@@ -32,45 +32,36 @@ class Comments extends Component
 
     public function render()
     {
-        $commentsList = $this->user->comments()
-            ->with('user')
-            ->with([
-                'reactions' => fn($q) => $q->where('user_id', $this->loggedInUser->id),
-            ])
+        $query = $this->user->comments()
+            ->whereNull('parent_id')
             ->withCount([
-                'reactions as likes_count' => function ($query) {
-                    $query->where('type', 'like');
-                },
-                'reactions as dislikes_count' => function ($query) {
-                    $query->where('type', 'dislike');
-                },
-            ])
-            ->orderBy($this->sortBy, 'desc')
-            ->paginate(5);
+                'reactions as likes_count' => fn($q) => $q->where('type', 'like'),
+            ]);
+
+        $commentsList = $query->orderBy($this->sortBy, 'desc')->paginate(5);
+
 
         return view('livewire.comments', [
             'commentsList' => $commentsList,
         ]);
     }
 
-    public function updatedForm($property, $value)
+    public function updatedFormPhoto()
     {
-        if ($value === 'photo') {
-            try {
-                $this->form->validateOnly('photo');
-            } catch (ValidationException $e) {
-                $this->form->reset('photo');
-                $this->dispatch('openWarningModal', [
-                    'body' => $e->getMessage(),
-                ]);
-            }
-            return;
+        try {
+            $this->form->validateOnly('photo');
+        } catch (ValidationException $e) {
+            $this->form->reset('photo');
+            $this->dispatch('openWarningModal', [
+                'body' => $e->getMessage(),
+            ]);
         }
+    }
 
-        if ($value === 'sortBy') {
-            $this->sortBy = $this->form->sortBy;
-            $this->resetPage();
-        }
+    public function updatedFormSortBy()
+    {
+        $this->sortBy = $this->form->sortBy;
+        $this->resetPage();
     }
 
     public function submit()
@@ -95,6 +86,10 @@ class Comments extends Component
         $this->resetPage();
     }
 
-    #[On('refreshComments')]
-    public function test() {}
+    #[On('deleteComment')]
+    public function deleteComment($id)
+    {
+        Comment::destroy($id);
+        $this->resetPage();
+    }
 }

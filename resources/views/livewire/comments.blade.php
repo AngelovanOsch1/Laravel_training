@@ -27,7 +27,7 @@
 
                 <div class="flex items-center justify-between h-15">
                     <div class="flex items-center gap-2">
-                        <x-primary-button text="Comment" :disabled="empty($form->message)"
+                        <x-primary-button text="Comment" :disabled="empty($form->message || $form->photo)"
                             class="text-white font-medium rounded-full text-sm w-full sm:w-auto px-4 py-2 text-center bg-teal-600 hover:bg-teal-500 inline-flex items-center gap-3 shadow-sm transition-colors duration-200" />
                         <label class="cursor-pointer text-sm text-teal-600 hover:text-teal-500 font-medium">
                             Upload Photo
@@ -43,21 +43,16 @@
             </div>
         </form>
     @endauth
-    <div class="space-y-4">
     @foreach ($commentsList as $comment)
-        <div
-            wire:key="comment-{{ $comment->id }}"
-            class="animate-fade-in transition duration-300"
-        >
+        <div wire:key="comment-{{ $comment->id }}" class="animate-fade-in transition duration-300">
             <livewire:comment
                 :comment="$comment"
                 :user="$user"
                 :loggedInUser="$loggedInUser"
-                :key="'comment-' . $comment->id"
+                :key="$comment->id"
             />
         </div>
     @endforeach
-</div>
     <div class="mt-auto">
         {{ $commentsList->links('vendor.pagination.tailwind') }}
     </div>

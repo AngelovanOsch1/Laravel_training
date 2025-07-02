@@ -31,16 +31,6 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function parent()
-    {
-        return $this->belongsTo(Comment::class, 'parent_id');
-    }
-
-    public function children()
-    {
-        return $this->hasMany(Comment::class, 'parent_id');
-    }
-
     public function replies()
     {
         return $this->hasMany(Comment::class, 'parent_id')->latest();
@@ -49,8 +39,8 @@ class Comment extends Model
     protected static function booted()
     {
         static::deleting(function ($comment) {
-            $comment->children()->delete();  // deletes all direct replies
-            $comment->reactions()->delete(); // deletes all reactions for this comment
+            $comment->replies()->delete();
+            $comment->reactions()->delete();
         });
     }
 

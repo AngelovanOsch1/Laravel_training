@@ -69,9 +69,10 @@ class AddSeriesToYourList extends Component
             'series_status_id' => $this->form->series_status,
         ]);
 
-        Series::calculateSeriesTotalScore($this->selectedSeries['id']);
+        $this->dispatch('seriesUpdated');
+        $this->closeModal();
 
-        return redirect()->route('series-list', $this->user->id);
+        Series::calculateSeriesTotalScore($this->selectedSeries['id']);
     }
 
     public function setSelectedIndex($index)
@@ -110,5 +111,8 @@ class AddSeriesToYourList extends Component
     public function closeModal()
     {
         $this->show = false;
+        $this->resetValidation();
+        $this->form->reset();
+        $this->stepCount = 0;
     }
 }
