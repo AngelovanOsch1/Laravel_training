@@ -67,66 +67,62 @@
             </div>
         </div>
     </div>
-     <div class="flex flex-col flex-1">
-            {{-- <div class="text-xl font-bold mb-8 text-center">Series Status Chart</div>
-            <canvas id="chartDoughnut" class="w-90 h-90 mx-auto"></canvas> --}}
-             <div wire:ignore>
-    <canvas id="seriesChart" width="800" height="400"></canvas>
-</div>
 
-
+    <div class="flex flex-col flex-1">
+        <div class="text-xl font-bold mb-8 text-center">Series Status Chart</div>
+        <div wire:ignore>
+            <canvas id="chartDoughnut" class="w-90 h-90 mx-auto"></canvas>
         </div>
+    </div>
 </div>
 
-@push('scripts')
+@assets
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+@endassets
+
+@script
 <script>
-    document.addEventListener('livewire:load', () => {
-        const ctx = document.getElementById('seriesChart');
+    const seriesStatusCounts = @json(
+        $totalSeriesStatusCounts->map(fn($status) => [
+            'name' => $status->name,
+            'count' => $status->count,
+        ])->values()
+    );
 
-        const data = @json($totalSeriesStatusCounts);
-        console.log(data);
-        // Convert object to arrays
-        const labels = Object.values(data).map(item => item.name);
-        const values = Object.values(data).map(item => item.count);
+    const labels = seriesStatusCounts.map(item => item.name);
+    const values = seriesStatusCounts.map(item => item.count);
 
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Series by Status',
-                    data: values,
-                    backgroundColor: [
-                        'rgba(34, 197, 94, 0.5)',   // green - Watching
-                        'rgba(59, 130, 246, 0.5)',  // blue - Completed
-                        'rgba(234, 179, 8, 0.5)',   // yellow - On-Hold
-                        'rgba(239, 68, 68, 0.5)',   // red - Dropped
-                        'rgba(107, 114, 128, 0.5)', // gray - Plan to Watch
-                    ],
-                    borderColor: [
-                        'rgba(34, 197, 94, 1)',
-                        'rgba(59, 130, 246, 1)',
-                        'rgba(234, 179, 8, 1)',
-                        'rgba(239, 68, 68, 1)',
-                        'rgba(107, 114, 128, 1)',
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        precision: 0
-                    }
+    const ctx = document.getElementById('chartDoughnut');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: values,
+                backgroundColor: [
+                    "#22c55e",
+                    "#3b82f6",
+                    "#eab308",
+                    "#ef4444",
+                    "#6b7280"
+                ],
+                hoverOffset: 10,
+            }]
+        },
+        options: {
+            cutout: '70%',
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    displayColors: false,
+                    callbacks: {
+                        label: ctx => `${ctx.label} ${ctx.parsed}`,
+                        title: () => '',
+                    },
+                    bodyFont: { size: 12, weight: 'bold' }
                 }
             }
-        });
+        }
     });
 </script>
-@endpush
+@endscript

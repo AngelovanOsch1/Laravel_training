@@ -39,7 +39,6 @@ class SeriesStatistics extends Component
             ->get()
             ->toArray();
 
-
         $countsByStatusId = collect($seriesStatusCounts)->keyBy('series_status_id');
 
         $statusMap = SeriesStatus::all()->keyBy('id');
@@ -58,9 +57,9 @@ class SeriesStatistics extends Component
         $this->totalWatchTime = (object) [
             'totalSeries' => $series['total_series'] ?? 0,
             'totalMinutes' => $series['total_minutes'] ?? 0,
-            'totalHours' => $series['total_minutes'] / 60,
-            'totalDays' => $series['total_minutes'] / 60 / 24,
-            'totalWeeks' => $series['total_minutes'] / 60 / 24 / 7,
+            'totalHours' => ($series['total_minutes'] ?? 0) / 60,
+            'totalDays' => ($series['total_minutes'] ?? 0) / 60 / 24,
+            'totalWeeks' => ($series['total_minutes'] ?? 0) / 60 / 24 / 7,
         ];
 
         return view('livewire.series-statistics');
