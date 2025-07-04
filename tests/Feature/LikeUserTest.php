@@ -25,12 +25,6 @@ class LikeUserTest extends TestCase
         $this->loggedInUser = User::factory()->create();
         $this->targetUser = User::factory()->create();
 
-        $series_status_names = ['Watching', 'Completed', 'Dropped', 'Plan to watch', 'On-Hold'];
-
-        collect($series_status_names)->map(function ($name) {
-            return SeriesStatus::create(['name' => $name]);
-        });
-
         $this->actingAs($this->loggedInUser);
     }
 

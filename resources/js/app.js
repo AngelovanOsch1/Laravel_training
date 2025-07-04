@@ -1,5 +1,6 @@
 import './bootstrap';
 
+// modal cant be scrolled with this code
 window.toggleBodyScroll = function(showModal) {
     if (showModal) {
         const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;

@@ -7,35 +7,35 @@
                     <span class="h-3 w-3 rounded-full bg-green-500"></span>
                     <span>Watching</span>
                 </div>
-                <span>{{ $totalSeriesStatusCounts['watching']->count }}</span>
+                <span>{{ $totalSeriesStatusCounts['watching']->count ?? 0 }}</span>
             </div>
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-2">
                     <span class="h-3 w-3 rounded-full bg-blue-500"></span>
                     <span>Completed</span>
                 </div>
-                <span>{{ $totalSeriesStatusCounts['completed']->count }}</span>
+                <span>{{ $totalSeriesStatusCounts['completed']->count ?? 0 }}</span>
             </div>
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-2">
                     <span class="h-3 w-3 rounded-full bg-yellow-500"></span>
                     <span>On-Hold</span>
                 </div>
-                <span>{{ $totalSeriesStatusCounts['onHold']->count }}</span>
+                <span>{{ $totalSeriesStatusCounts['onHold']->count ?? 0 }}</span>
             </div>
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-2">
                     <span class="h-3 w-3 rounded-full bg-red-500"></span>
                     <span>Dropped</span>
                 </div>
-                <span>{{ $totalSeriesStatusCounts['dropped']->count }}</span>
+                <span>{{ $totalSeriesStatusCounts['dropped']->count ?? 0 }}</span>
             </div>
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-2">
                     <span class="h-3 w-3 rounded-full bg-gray-500"></span>
                     <span>Plan to Watch</span>
                 </div>
-                <span>{{ $totalSeriesStatusCounts['planToWatch']->count }}</span>
+                <span>{{ $totalSeriesStatusCounts['planToWatch']->count ?? 0 }}</span>
             </div>
         </div>
 
