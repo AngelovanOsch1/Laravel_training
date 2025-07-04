@@ -30,7 +30,7 @@
                 @if ($isEditing)
                     <div>
                         <x-form-textarea id="message" name="form.message" placeholder="Enter up to 300 characters..."
-                            rows="0" liveModel="form.message" maxCharacters="300" :fileUpload="true"
+                            rows="0" liveModel="form.message" maxCharacters="300" :fileUpload="$comment->photo ? true : false"
                             :value="$comment->photo"
                             class="w-full text-sm border-0 border-b border-gray-300 focus:border-teal-600 focus:ring-0 placeholder-gray-400 pt-2 resize-none focus:outline-none" />
                         @if ($comment->photo)
@@ -52,7 +52,7 @@
                         <div class="flex gap-2">
                             <x-primary-button
                                 class="text-white font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-1 text-center bg-teal-600 hover:bg-teal-500 cursor-pointer min-w-[65px]"
-                                click="updateComment({{ $comment->id }})" text="Save" type="button" />
+                                click="updateComment" text="Save" type="button" />
                             <x-primary-button
                                 class="font-medium rounded-lg text-sm px-3 py-1 w-full sm:w-auto text-center bg-gray-700 text-gray-200 hover:bg-gray-600 cursor-pointer min-w-[65px]"
                                 click="closeEditing" text="Cancel" type="button" />
@@ -63,21 +63,15 @@
 
             @if (!$isEditing)
                 <div class="mt-3 flex gap-5">
-                    <div class="flex gap-2 items-center cursor-pointer select-none"
-                        wire:click="like({{ $comment->id }})" x-data="{ liked: false }"
-                        x-on:click="liked = true;setTimeout(() => liked = false, 300);">
-                        <i :class="(liked ? 'fa fa-thumbs-up' :
-                            '{{ $comment->authUserReactedWith('like') ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up' }}') +' fa-fw animate-scale-up'"
-                            class="transition-transform" style="width: 1.25rem; text-align: center;"></i>
+                    <div class="flex gap-2 items-center cursor-pointer select-none" wire:click="like">
+                        <i
+                            class="{{ $comment->authUserReactedWith('like') ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up' }}"></i>
                         <p>{{ $comment->likes_count }}</p>
                     </div>
 
-                    <div class="flex gap-2 items-center cursor-pointer select-none"
-                        wire:click="dislike({{ $comment->id }})" x-data="{ disliked: false }"
-                        x-on:click="disliked = true; setTimeout(() => disliked = false, 300);">
-                        <i :class="(disliked ? 'fa fa-thumbs-down' :
-                            '{{ $comment->authUserReactedWith('dislike') ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down' }}') + ' fa-fw animate-scale-up'"
-                            class="transition-transform" style="width: 1.25rem; text-align: center;"></i>
+                    <div class="flex gap-2 items-center cursor-pointer select-none" wire:click="dislike">
+                        <i
+                            class="{{ $comment->authUserReactedWith('dislike') ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down' }}"></i>
                         <p>{{ $comment->dislikes_count }}</p>
                     </div>
 
@@ -98,11 +92,10 @@
                 <div x-show="open" @click.away="open = false"
                     class="absolute right-0 mt-2 w-28 bg-white border border-gray-300 rounded shadow-lg z-10">
                     <x-primary-button class="flex items-center w-full px-4 py-2 hover:bg-gray-100 gap-3"
-                        xClick="open = false; isEditing = true;" click="editComment({{ $comment->id }})"
-                        text="Edit" icon="edit" type="button" />
-                    <x-primary-button class="flex items-center w-full px-4 py-2 hover:bg-gray-100 text-red-600 gap-3"
-                        click="openDeleteCommentModal({{ $comment->id }})" text="Delete" icon="trash"
+                        xClick="open = false; isEditing = true;" click="editComment" text="Edit" icon="edit"
                         type="button" />
+                    <x-primary-button class="flex items-center w-full px-4 py-2 hover:bg-gray-100 text-red-600 gap-3"
+                        click="openDeleteCommentModal" text="Delete" icon="trash" type="button" />
                 </div>
             </div>
         @endif

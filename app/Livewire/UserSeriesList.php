@@ -10,7 +10,6 @@ use Livewire\Attributes\On;
 use App\Models\SeriesStatus;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
-use Carbon\Carbon;
 
 
 #[Layout('layouts.app')]
@@ -30,7 +29,6 @@ class UserSeriesList extends Component
         $this->user = User::findOrFail($id);
     }
 
-    #[On('seriesUpdated')]
     public function render()
     {
         $seriesQuery = $this->user->series()
@@ -94,4 +92,7 @@ class UserSeriesList extends Component
 
         $this->dispatch('openEditSeriesModal', $seriesUser);
     }
+
+    #[On('seriesUpdated')]
+    public function refreshSeries() {}
 }

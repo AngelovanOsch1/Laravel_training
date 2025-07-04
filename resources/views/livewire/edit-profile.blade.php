@@ -45,7 +45,7 @@
                     <div class="mb-5">
                         <x-form-label for="description" text="Your description" />
                         <x-form-textarea id="description" name="form.description"
-                            placeholder="Enter up to 100 characters..." rows="4" model='form.description'
+                            placeholder="Enter up to 100 characters..." rows="4" liveModel='form.description'
                             maxCharacters="100" />
                     </div>
                     <div class="flex justify-between mt-4">

@@ -11,8 +11,8 @@
     id="{{ $id }}"
     name="{{ $name }}"
     {{ $disabled ? 'disabled' : '' }}
-    wire:model="{{ $model }}"
-    wire:model.live="{{ $liveModel }}"
+    @if ($model) wire:model="{{ $model }}" @endif
+    @if ($liveModel) wire:model.live="{{ $liveModel }}" @endif
     class="{{ $class }} {{ $disabled ? '!bg-gray-600 cursor-not-allowed !text-gray-400' : '' }}"
 >
     {{ $slot }}

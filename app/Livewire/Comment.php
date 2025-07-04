@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Reaction;
-use Livewire\Attributes\On;
 use App\Traits\HandlesPhotos;
 use Livewire\WithFileUploads;
 use App\Models\Comment as CommentModel;
@@ -32,14 +31,18 @@ class Comment extends Component
 
     public function render()
     {
+        $this->comment = CommentModel::withCount([
+            'reactions as likes_count' => fn($query) => $query->where('type', 'like'),
+            'reactions as dislikes_count' => fn($query) => $query->where('type', 'dislike'),
+        ])
+            ->find($this->comment->id);
+
         return view('livewire.comment');
     }
 
-    public function editComment(int $id)
+    public function editComment()
     {
-        $comment = CommentModel::findOrFail($id);
-        $this->form->message = $comment->message;
-
+        $this->form->message = $this->comment->message;
         $this->isEditingState(true);
     }
 
@@ -60,58 +63,48 @@ class Comment extends Component
         }
     }
 
-    public function updateComment(int $id)
+    public function updateComment()
     {
         $this->form->validate();
 
-        $comment = CommentModel::find($id);
-
         if ($this->form->photo) {
             $path = $this->uploadPhoto($this->form->photo, 'commentsPhotos');
-            $this->deletePhoto($comment->photo);
+            $this->deletePhoto($this->comment->photo);
         }
 
-        $comment->update([
+        $this->comment->update([
             'message' => $this->form->message,
-            'photo' => $path ?? $comment->photo,
+            'photo' => $path ?? $this->comment->photo,
             'is_edited' => true
         ]);
 
         $this->isEditingState(false);
-        $this->comment = $comment;
     }
 
-    public function openDeleteCommentModal(int $id)
+    public function openDeleteCommentModal()
     {
         $data = [
             'body' => 'Are you sure you want to delete this comment?',
             'callBackFunction' => 'deleteComment',
-            'callBackFunctionParameter' => $id
+            'callBackFunctionParameter' => $this->comment->id
         ];
         $this->dispatch('openWarningModal', $data);
     }
 
-    #[On('deleteComment')]
-    public function deleteComment(int $id)
+    public function like()
     {
-        CommentModel::destroy($id);
-        $this->dispatch('refreshComments')->to('comments');
+        $this->toggleReaction(Reaction::TYPE_LIKE);
     }
 
-    public function like(int $id)
+    public function dislike()
     {
-        $this->toggleReaction($id, Reaction::TYPE_LIKE);
+        $this->toggleReaction(Reaction::TYPE_DISLIKE);
     }
 
-    public function dislike(int $id)
-    {
-        $this->toggleReaction($id, Reaction::TYPE_DISLIKE);
-    }
-
-    protected function toggleReaction(int $id, string $type)
+    protected function toggleReaction(string $type)
     {
         $existingReaction = Reaction::where('user_id', $this->loggedInUser->id)
-            ->where('reactionable_id', $id)
+            ->where('reactionable_id', $this->comment->id)
             ->where('reactionable_type', CommentModel::class)
             ->first();
 
@@ -125,7 +118,7 @@ class Comment extends Component
         } else {
             Reaction::create([
                 'user_id' => $this->loggedInUser->id,
-                'reactionable_id' => $id,
+                'reactionable_id' => $this->comment->id,
                 'reactionable_type' => CommentModel::class,
                 'type' => $type,
             ]);
@@ -142,13 +135,5 @@ class Comment extends Component
             $this->resetValidation();
             $this->form->reset();
         }
-    }
-
-    public function getComment(int $id)
-    {
-        return CommentModel::withCount([
-            'reactions as likes_count' => fn($q) => $q->where('type', 'like'),
-            'reactions as dislikes_count' => fn($q) => $q->where('type', 'dislike'),
-        ])->find($id);
     }
 }

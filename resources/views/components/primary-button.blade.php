@@ -11,12 +11,12 @@
 
 <button
     type="{{ $type }}"
-    @click="{{ $xClick }}"
-    wire:click="{{ $click }}"
+    @if ($xClick) @click="{{ $xClick }}" @endif
+    @if ($click) wire:click="{{ $click }}" @endif
     class="{{ $class }}
             {{ $disabled ? '!bg-[#B2DFDB] !cursor-not-allowed' : '' }}
             {{ $iconPosition === 'right' ? 'flex-row-reverse' : 'flex-row' }}"
-    :disabled="{{ $disabled }}"
+    @if ($disabled) disabled @endif
 >
     @if ($icon)
         <i class="{{ 'fa fa-' . $icon }} fa-sm"></i>
