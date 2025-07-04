@@ -4,9 +4,10 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Reaction;
 use Livewire\Livewire;
+use App\Models\Reaction;
 use App\Livewire\Profile;
+use App\Models\SeriesStatus;
 use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -23,6 +24,12 @@ class LikeUserTest extends TestCase
 
         $this->loggedInUser = User::factory()->create();
         $this->targetUser = User::factory()->create();
+
+        $series_status_names = ['Watching', 'Completed', 'Dropped', 'Plan to watch', 'On-Hold'];
+
+        collect($series_status_names)->map(function ($name) {
+            return SeriesStatus::create(['name' => $name]);
+        });
 
         $this->actingAs($this->loggedInUser);
     }

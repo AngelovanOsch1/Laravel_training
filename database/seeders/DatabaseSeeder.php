@@ -8,7 +8,6 @@ use App\Models\Genre;
 use App\Models\Gender;
 use App\Models\Series;
 use App\Models\Country;
-use App\Models\SeriesUser;
 use App\Models\SeriesStatus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;

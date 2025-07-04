@@ -33,7 +33,9 @@ class UserSeriesList extends Component
     #[On('seriesUpdated')]
     public function render()
     {
-        $seriesQuery = $this->user->series();
+        $seriesQuery = $this->user->series()
+            ->join('series_statuses', 'series_status_id', '=', 'series_statuses.id')
+            ->select("series.title", 'series_statuses.name as series_status_name');
 
         if (strlen($this->query) >= 2) {
             $seriesQuery->where('title', 'like', "%{$this->query}%");
@@ -47,17 +49,10 @@ class UserSeriesList extends Component
 
         $seriesList = $seriesQuery->paginate(50);
 
-        $statusMap = SeriesStatus::all()->keyBy('id');
-
-        foreach ($seriesList as $series) {
-            $series->pivot->status_name = $statusMap[$series->pivot->series_status_id]->name;
-        }
-
         return view('livewire.user-series-list', [
             'seriesList' => $seriesList,
         ]);
     }
-
 
     public function sortBy(string $field)
     {

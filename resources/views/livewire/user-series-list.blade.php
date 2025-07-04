@@ -87,8 +87,7 @@
                             </x-table-td>
                             <x-table-td>
                                 <p>
-                                    {{ $entry->pivot->seriesStatus->name }}
-                                </p>
+                                    {{ $entry->series_status_name }}
                             </x-table-td>
                             <x-table-td>
                                 <p>
