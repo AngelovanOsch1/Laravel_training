@@ -21,8 +21,7 @@
             </div>
             <div class="flex-grow">
                 <x-form-textarea id="message" name="form.message" placeholder="Enter up to 300 characters..."
-                    rows="0" liveModel="form.message" maxCharacters="300" :fileUpload="true"
-                    :value="$form->photo?->temporaryUrl()"
+                    rows="0" liveModel="form.message" maxCharacters="300" :fileUpload="true" :value="$form->photo?->temporaryUrl()"
                     class="w-full text-sm border-0 border-b border-gray-300 focus:border-teal-600 focus:ring-0 placeholder-gray-400 pt-2 resize-none focus:outline-none" />
 
                 <div class="flex items-center justify-between h-15">
@@ -43,17 +42,14 @@
             </div>
         </form>
     @endauth
-    @foreach ($commentsList as $comment)
-        <div wire:key="comment-{{ $comment->id }}" class="animate-fade-in transition duration-300">
-            <livewire:comment
-                :comment="$comment"
-                :user="$user"
-                :loggedInUser="$loggedInUser"
-                :key="$comment->id"
-            />
+    <div x-data="{ isEditing: false, }" x-on:comment-updated.window="isEditing = false">
+        @foreach ($commentsList as $comment)
+            <div class="animate-fade-in transition duration-300">
+                <livewire:comment :comment="$comment" :user="$user" :loggedInUser="$loggedInUser" :key="$comment->id" />
+            </div>
+        @endforeach
+        <div class="mt-auto">
+            {{ $commentsList->links('vendor.pagination.tailwind') }}
         </div>
-    @endforeach
-    <div class="mt-auto">
-        {{ $commentsList->links('vendor.pagination.tailwind') }}
     </div>
 </div>

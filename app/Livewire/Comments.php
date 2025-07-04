@@ -89,7 +89,12 @@ class Comments extends Component
     #[On('deleteComment')]
     public function deleteComment($id)
     {
-        Comment::destroy($id);
+        $comment = Comment::find($id);
+        $parentId = $comment->parent_id;
+
+        $comment->delete();
+
+        $this->dispatch("childCommentDeleted.$parentId");
         $this->resetPage();
     }
 }

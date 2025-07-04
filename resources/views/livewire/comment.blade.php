@@ -59,7 +59,7 @@
                                     click="updateComment" text="Save" :disabled="empty($updateCommentform->message || $comment->photo)" type="button" />
                                 <x-primary-button
                                     class="font-medium rounded-lg text-sm px-3 py-1 w-full sm:w-auto text-center bg-gray-700 text-gray-200 hover:bg-gray-600 cursor-pointer min-w-[65px]"
-                                    click="isEditingState(false)" text="Cancel" type="button" />
+                                    xClick="isEditing = false" click="isEditingState(false)" text="Cancel" type="button" />
                             </div>
                         </div>
                     @endif
@@ -82,10 +82,7 @@
                         </div>
 
 
-                        <div class="flex gap-2 items-center cursor-pointer" wire:click="isReplyingState(true)">
-                            <i class="fa fa-comment-o fa-fw"></i>
-                            <p>{{ $totalRepliesCount }}</p>
-                        </div>
+                        <x-primary-button class="flex gap-2 items-center cursor-pointer" click="isReplyingState(true)" xClick="isEditing = true;" icon="comment-o" text="{{ $totalRepliesCount }}" xDisabled="isEditing" />
                     </div>
                 @endif
                 @if ($isReplying)
@@ -125,7 +122,7 @@
                                         click="submitReply" :disabled="empty($replyForm->message || $replyForm->photo)" text="Reply" type="button" />
                                     <x-primary-button
                                         class="font-medium rounded-lg text-sm px-3 py-1 w-full sm:w-auto text-center bg-gray-700 text-gray-200 hover:bg-gray-600 cursor-pointer min-w-[65px]"
-                                        click="isReplyingState(false)" text="Cancel" type="button" />
+                                        click="isReplyingState(false)" xClick="isEditing = false;" text="Cancel" type="button" />
                                 </div>
                             </div>
                         </div>
@@ -135,7 +132,7 @@
             </div>
 
             @if (auth()->id() === $comment->user->id && !$isEditing && !$isReplying)
-                <div x-data="{ open: false }" class="relative">
+                <div x-data="{ open: false }" x-show="!isEditing" class="relative">
                     <button @click="open = !open" class="px-2 py-1 cursor-pointer" type="button">
                         <i class="fa fa-ellipsis-v pt-3"></i>
                     </button>
@@ -162,13 +159,21 @@
                     </div>
                 @endforeach
             </div>
-            <div wire:click="toggleReplies"
-                class="absolute top-0 left-0 h-full w-4 flex items-center cursor-pointer group">
-                <div class="w-0.5 h-full bg-gray-300 group-hover:bg-teal-500 transition-colors"></div>
+            <div class="group">
+                @if ($isReplying)
+                    <div class="absolute -top-62 left-[0px] w-4 cursor-pointer" wire:click="toggleReplies">
+                        <div class="w-0.5 h-65 bg-gray-300 group-hover:bg-teal-500 transition-colors"></div>
+                    </div>
+                @endif
+
+                <div wire:click="toggleReplies"
+                    class="absolute top-0 left-0 h-full w-4 cursor-pointer">
+                    <div class="w-0.5 h-full bg-gray-300 group-hover:bg-teal-500 transition-colors"></div>
+                </div>
             </div>
         </div>
 
-        @if ($totalRepliesCount > 2 && !$isEditing && !$isReplying)
+        @if ($totalRepliesCount > 2)
             <div class="flex gap-2 place-items-center mb-4 pl-5">
                 <x-primary-button
                     class="w-6 h-6 rounded-full bg-teal-600 hover:bg-teal-500 text-white text-xs flex items-center justify-center cursor-pointer"
@@ -177,5 +182,4 @@
             </div>
         @endif
     @endif
-
 </div>

@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Reaction;
+use Livewire\Attributes\On;
 use App\Traits\HandlesPhotos;
 use Livewire\WithFileUploads;
 use App\Models\Comment as CommentModel;
@@ -89,6 +90,7 @@ class Comment extends Component
         ]);
 
         $this->isEditingState(false);
+        $this->dispatch('comment-updated');
     }
 
     public function openDeleteCommentModal()
@@ -180,7 +182,15 @@ class Comment extends Component
             'parent_id' => $this->comment->id,
         ]);
 
+        $this->loadReplies();
+        $this->dispatch('comment-updated');
         $this->isReplyingState(false);
+    }
+
+    #[On('childCommentDeleted.{comment.id}')]
+    public function onChildCommentDeleted()
+    {
+        $this->comment->refresh();
     }
 
     public function isEditingState(bool $editState)
@@ -202,7 +212,6 @@ class Comment extends Component
         if (!$this->isReplying) {
             $this->replyForm->resetValidation();
             $this->replyForm->reset();
-            $this->loadReplies();
         }
     }
 }
