@@ -69,7 +69,7 @@
     </div>
 
     <div class="flex flex-col flex-1">
-        <div class="text-xl font-bold mb-8 text-center">Series Status Chart</div>
+        <div class="text-xl font-bold mb-8 text-center"> {{ collect($totalSeriesStatusCounts)->every(fn($item) => $item->count === 0) ? '' : 'Series Status Chart' }}</div>
         <div wire:ignore>
             <canvas id="chartDoughnut" class="w-90 h-90 mx-auto"></canvas>
         </div>
