@@ -31,9 +31,17 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function parent()
+    public function replies()
     {
-        return $this->belongsTo(Comment::class, 'parent_id');
+        return $this->hasMany(Comment::class, 'parent_id')->latest();
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($comment) {
+            $comment->replies()->delete();
+            $comment->reactions()->delete();
+        });
     }
 
     public function reactions()
@@ -47,12 +55,5 @@ class Comment extends Model
             ->where('user_id', Auth::id())
             ->where('type', $type)
             ->isNotEmpty();
-    }
-
-    protected static function booted()
-    {
-        static::deleting(function ($comment) {
-            $comment->reactions()->delete();
-        });
     }
 }

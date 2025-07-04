@@ -44,12 +44,14 @@
         </form>
     @endauth
     @foreach ($commentsList as $comment)
-        <livewire:comment
-            :comment="$comment"
-            :user="$user"
-            :loggedInUser="$loggedInUser"
-            :key="$comment->id"
-        />
+        <div wire:key="comment-{{ $comment->id }}" class="animate-fade-in transition duration-300">
+            <livewire:comment
+                :comment="$comment"
+                :user="$user"
+                :loggedInUser="$loggedInUser"
+                :key="$comment->id"
+            />
+        </div>
     @endforeach
     <div class="mt-auto">
         {{ $commentsList->links('vendor.pagination.tailwind') }}

@@ -33,11 +33,13 @@ class Comments extends Component
     public function render()
     {
         $query = $this->user->comments()
+            ->whereNull('parent_id')
             ->withCount([
                 'reactions as likes_count' => fn($q) => $q->where('type', 'like'),
             ]);
 
         $commentsList = $query->orderBy($this->sortBy, 'desc')->paginate(5);
+
 
         return view('livewire.comments', [
             'commentsList' => $commentsList,
@@ -88,5 +90,6 @@ class Comments extends Component
     public function deleteComment($id)
     {
         Comment::destroy($id);
+        $this->resetPage();
     }
 }

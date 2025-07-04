@@ -2,13 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Models\Reaction;
 use App\Traits\HandlesPhotos;
 use Livewire\WithFileUploads;
 use App\Models\Comment as CommentModel;
 use App\Livewire\Forms\CommentFormValidation;
-use App\Models\User;
 use Illuminate\Validation\ValidationException;
 
 class Comment extends Component
@@ -16,17 +16,26 @@ class Comment extends Component
     use WithFileUploads;
     use HandlesPhotos;
 
-    public CommentFormValidation $form;
+    public CommentFormValidation $updateCommentform;
+    public CommentFormValidation $replyForm;
     public CommentModel $comment;
     public User $user;
     public User $loggedInUser;
     public bool $isEditing = false;
+    public $replies;
+
+    public bool $isReplying = false;
+    public $totalRepliesCount = 0;
+    public $allReplies;
+    public $visibleRepliesCount = 2;
 
     public function mount(CommentModel $comment, User $user, User $loggedInUser)
     {
         $this->comment = $comment;
         $this->user = $user;
         $this->loggedInUser = $loggedInUser;
+
+        $this->loadReplies(2);
     }
 
     public function render()
@@ -40,23 +49,24 @@ class Comment extends Component
         return view('livewire.comment');
     }
 
-    public function editComment()
-    {
-        $this->form->message = $this->comment->message;
-        $this->isEditingState(true);
-    }
-
-    public function closeEditing()
-    {
-        $this->isEditingState(false);
-    }
-
-    public function updatedFormPhoto()
+    public function updateCommentformPhoto()
     {
         try {
-            $this->form->validateOnly('photo');
+            $this->updateCommentform->validateOnly('photo');
         } catch (ValidationException $e) {
-            $this->form->reset('photo');
+            $this->updateCommentform->reset('photo');
+            $this->dispatch('openWarningModal', [
+                'body' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function replyFormPhoto()
+    {
+        try {
+            $this->updateCommentform->validateOnly('photo');
+        } catch (ValidationException $e) {
+            $this->updateCommentform->reset('photo');
             $this->dispatch('openWarningModal', [
                 'body' => $e->getMessage(),
             ]);
@@ -65,15 +75,15 @@ class Comment extends Component
 
     public function updateComment()
     {
-        $this->form->validate();
+        $this->updateCommentform->validate();
 
-        if ($this->form->photo) {
-            $path = $this->uploadPhoto($this->form->photo, 'commentsPhotos');
+        if ($this->updateCommentform->photo) {
+            $path = $this->uploadPhoto($this->updateCommentform->photo, 'commentsPhotos');
             $this->deletePhoto($this->comment->photo);
         }
 
         $this->comment->update([
-            'message' => $this->form->message,
+            'message' => $this->updateCommentform->message,
             'photo' => $path ?? $this->comment->photo,
             'is_edited' => true
         ]);
@@ -91,17 +101,7 @@ class Comment extends Component
         $this->dispatch('openWarningModal', $data);
     }
 
-    public function like()
-    {
-        $this->toggleReaction(Reaction::TYPE_LIKE);
-    }
-
-    public function dislike()
-    {
-        $this->toggleReaction(Reaction::TYPE_DISLIKE);
-    }
-
-    protected function toggleReaction(string $type)
+    public function toggleReaction(string $type)
     {
         $existingReaction = Reaction::where('user_id', $this->loggedInUser->id)
             ->where('reactionable_id', $this->comment->id)
@@ -123,8 +123,64 @@ class Comment extends Component
                 'type' => $type,
             ]);
         }
-
         $this->isEditingState(false);
+    }
+
+    public function loadReplies()
+    {
+        $this->allReplies = $this->comment->replies()
+            ->withCount([
+                'reactions as likes_count' => fn($q) => $q->where('type', 'like'),
+                'reactions as dislikes_count' => fn($q) => $q->where('type', 'dislike'),
+            ])
+            ->get();
+
+        $this->totalRepliesCount = $this->allReplies->count();
+        $this->updateVisibleReplies();
+    }
+
+    public function loadMoreReplies()
+    {
+        $this->visibleRepliesCount += 2;
+        $this->updateVisibleReplies();
+    }
+
+    protected function updateVisibleReplies()
+    {
+        $this->replies = $this->allReplies->take($this->visibleRepliesCount);
+    }
+
+    public function toggleReplies()
+    {
+        if ($this->visibleRepliesCount >= $this->totalRepliesCount) {
+            $this->visibleRepliesCount = 2;
+        } else {
+            $this->visibleRepliesCount += 2;
+        }
+
+        $this->updateVisibleReplies();
+    }
+
+
+    public function submitReply()
+    {
+        $this->replyForm->validate();
+
+        $photoPath = null;
+        if ($this->replyForm->photo) {
+            $photoPath = $this->uploadPhoto($this->replyForm->photo, 'commentsPhotos');
+        }
+
+        CommentModel::create([
+            'message' => $this->replyForm->message,
+            'commentable_id' => $this->comment->commentable_id,
+            'commentable_type' => $this->comment->commentable_type,
+            'photo' => $photoPath,
+            'user_id' => $this->loggedInUser->id,
+            'parent_id' => $this->comment->id,
+        ]);
+
+        $this->isReplyingState(false);
     }
 
     public function isEditingState(bool $editState)
@@ -132,8 +188,21 @@ class Comment extends Component
         $this->isEditing = $editState;
 
         if (!$this->isEditing) {
-            $this->resetValidation();
-            $this->form->reset();
+            $this->updateCommentform->resetValidation();
+            $this->updateCommentform->reset();
+        } else {
+            $this->updateCommentform->message = $this->comment->message;
+        }
+    }
+
+    public function isReplyingState(bool $replyingState)
+    {
+        $this->isReplying = $replyingState;
+
+        if (!$this->isReplying) {
+            $this->replyForm->resetValidation();
+            $this->replyForm->reset();
+            $this->loadReplies();
         }
     }
 }
