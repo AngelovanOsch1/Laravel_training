@@ -16,7 +16,7 @@
     @if ($click) wire:click="{{ $click }}" @endif
     x-bind:class="{ '!cursor-not-allowed': {{ $xDisabled ?? 'false' }} }"
     class="{{ $class }}
-    {{ $disabled ? '!bg-[#B2DFDB] !cursor-not-allowed' : '' }}
+    {{ $disabled ? '!bg-[#B2DFDB] !cursor-not-allowed' : 'cursor-pointer' }}
     {{ $iconPosition === 'right' ? 'flex-row-reverse' : 'flex-row' }}"
     @if ($disabled) disabled @endif
     @if($xDisabled) x-bind:disabled="{{ $xDisabled }}" @endif

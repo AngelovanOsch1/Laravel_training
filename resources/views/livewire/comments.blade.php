@@ -34,10 +34,16 @@
                         </label>
                     </div>
                     @if ($form->photo?->temporaryUrl())
-                        <div>
-                            <img src="{{ $form->photo?->temporaryUrl() }}" alt="Preview" class="w-12 h-12 rounded-xl" />
+                        <div class="relative w-12 h-12">
+                            <img src="{{ $form->photo?->temporaryUrl() }}" alt="Preview"
+                                class="w-full h-full rounded-xl object-cover" />
+
+                            <x-primary-button type="button" click="$set('form.photo', null)"
+                                class="absolute top-[-5px] right-[-6px] bg-white border border-gray-300 text-red-600 hover:text-red-300 rounded-full w-5 h-5 flex items-center justify-center text-xs shadow-sm"
+                                icon="remove" />
                         </div>
                     @endif
+
                 </div>
             </div>
         </form>
