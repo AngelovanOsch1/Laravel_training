@@ -24,6 +24,7 @@ class Comments extends Component
 
     private string $sortBy = 'created_at';
 
+
     public function mount($id)
     {
         $this->user = User::findOrFail($id);
@@ -39,7 +40,6 @@ class Comments extends Component
             ]);
 
         $commentsList = $query->orderBy($this->sortBy, 'desc')->paginate(5);
-
 
         return view('livewire.comments', [
             'commentsList' => $commentsList,
@@ -61,7 +61,7 @@ class Comments extends Component
     public function updatedFormSortBy()
     {
         $this->sortBy = $this->form->sortBy;
-        $this->resetPage();
+        $this->gotoPage(1);
     }
 
     public function submit()
@@ -82,14 +82,24 @@ class Comments extends Component
 
         $this->form->reset();
         $this->form->resetValidation();
-
-        $this->resetPage();
+        $this->gotoPage(1);
     }
 
     #[On('deleteComment')]
     public function deleteComment($id)
     {
-        Comment::destroy($id);
-        $this->resetPage();
+        $comment = Comment::find($id);
+        $parentId = $comment->parent_id;
+
+        $comment->delete();
+
+        $this->dispatch("childCommentDeleted.$parentId");
+        $this->gotoPage(1);
+    }
+
+    #[On('profilePhotoUpdated')]
+    public function refreshProfilePhoto($newPhotoPath)
+    {
+        $this->loggedInUser->profilePhoto = $newPhotoPath;
     }
 }

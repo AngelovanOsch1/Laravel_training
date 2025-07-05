@@ -1,6 +1,7 @@
 @props([
     'type' => 'submit',
     'text' => '',
+    'xDisabled' => false,
     'disabled' => false,
     'xClick' => null,
     'click' => null,
@@ -13,10 +14,12 @@
     type="{{ $type }}"
     @if ($xClick) @click="{{ $xClick }}" @endif
     @if ($click) wire:click="{{ $click }}" @endif
+    x-bind:class="{ '!cursor-not-allowed': {{ $xDisabled ?? 'false' }} }"
     class="{{ $class }}
-            {{ $disabled ? '!bg-[#B2DFDB] !cursor-not-allowed' : '' }}
-            {{ $iconPosition === 'right' ? 'flex-row-reverse' : 'flex-row' }}"
+    {{ $disabled ? '!bg-[#B2DFDB] !cursor-not-allowed' : 'cursor-pointer' }}
+    {{ $iconPosition === 'right' ? 'flex-row-reverse' : 'flex-row' }}"
     @if ($disabled) disabled @endif
+    @if($xDisabled) x-bind:disabled="{{ $xDisabled }}" @endif
 >
     @if ($icon)
         <i class="{{ 'fa fa-' . $icon }} fa-sm"></i>
