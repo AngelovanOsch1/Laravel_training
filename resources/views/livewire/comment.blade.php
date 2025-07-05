@@ -59,7 +59,8 @@
                                     click="updateComment" text="Save" :disabled="empty($updateCommentform->message || $comment->photo)" type="button" />
                                 <x-primary-button
                                     class="font-medium rounded-lg text-sm px-3 py-1 w-full sm:w-auto text-center bg-gray-700 text-gray-200 hover:bg-gray-600 cursor-pointer min-w-[65px]"
-                                    xClick="isEditing = false" click="isEditingState(false)" text="Cancel" type="button" />
+                                    xClick="isEditing = false" click="isEditingState(false)" text="Cancel"
+                                    type="button" />
                             </div>
                         </div>
                     @endif
@@ -82,7 +83,9 @@
                         </div>
 
 
-                        <x-primary-button class="flex gap-2 items-center cursor-pointer" click="isReplyingState(true)" xClick="isEditing = true;" icon="comment-o" text="{{ $totalRepliesCount }}" xDisabled="isEditing" />
+                        <x-primary-button class="flex gap-2 items-center cursor-pointer" click="isReplyingState(true)"
+                            xClick="isEditing = true;" icon="comment-o" text="{{ $totalRepliesCount }}"
+                            xDisabled="isEditing" />
                     </div>
                 @endif
                 @if ($isReplying)
@@ -106,6 +109,11 @@
                                     <div class="relative">
                                         <img src="{{ $replyForm->photo?->temporaryUrl() ?? asset('storage/images/placeholder-image.jpg') }}"
                                             class="w-24 h-24 rounded-xl" alt="comment-photo" />
+                                        @if ($replyForm->photo)
+                                            <x-primary-button type="button" click="$set('replyForm.photo', null)"
+                                                class="absolute top-[-6px] right-[-6px] bg-white border border-gray-300 text-red-600 hover:text-red-300 rounded-full w-5 h-5 flex items-center justify-center text-xs shadow-sm"
+                                                icon="remove" />
+                                        @endif
                                     </div>
 
                                     <div>
@@ -122,7 +130,8 @@
                                         click="submitReply" :disabled="empty($replyForm->message || $replyForm->photo)" text="Reply" type="button" />
                                     <x-primary-button
                                         class="font-medium rounded-lg text-sm px-3 py-1 w-full sm:w-auto text-center bg-gray-700 text-gray-200 hover:bg-gray-600 cursor-pointer min-w-[65px]"
-                                        click="isReplyingState(false)" xClick="isEditing = false;" text="Cancel" type="button" />
+                                        click="isReplyingState(false)" xClick="isEditing = false;" text="Cancel"
+                                        type="button" />
                                 </div>
                             </div>
                         </div>
@@ -154,7 +163,7 @@
         <div class="relative pl-8 ml-8">
             <div>
                 @foreach ($replies as $reply)
-                    <div wire:key="reply-{{ $reply->id }}" class="animate-fade-in transition duration-300">
+                    <div wire:key="{{ $reply->id }}" class="animate-fade-in transition duration-300">
                         <livewire:comment :comment="$reply" :user="$reply->user" :loggedInUser="$loggedInUser" :key="$reply->id" />
                     </div>
                 @endforeach
@@ -166,8 +175,7 @@
                     </div>
                 @endif
 
-                <div wire:click="toggleReplies"
-                    class="absolute top-0 left-0 h-full w-4 cursor-pointer">
+                <div wire:click="toggleReplies" class="absolute top-0 left-0 h-full w-4 cursor-pointer">
                     <div class="w-0.5 h-full bg-gray-300 group-hover:bg-teal-500 transition-colors"></div>
                 </div>
             </div>
@@ -178,7 +186,8 @@
                 <x-primary-button
                     class="w-6 h-6 rounded-full bg-teal-600 hover:bg-teal-500 text-white text-xs flex items-center justify-center cursor-pointer"
                     click="toggleReplies" :icon="$totalRepliesCount > count($replies) ? 'plus' : 'minus'" type="button" />
-                <div class="text-xs text-gray-400 font-light">load more comments</div>
+                <div class="text-xs text-gray-400 font-light">
+                    {{ $totalRepliesCount > count($replies) ? 'load more comments' : 'Show less comments' }}</div>
             </div>
         @endif
     @endif

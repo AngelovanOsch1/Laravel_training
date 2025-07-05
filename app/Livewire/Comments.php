@@ -40,7 +40,6 @@ class Comments extends Component
 
         $commentsList = $query->orderBy($this->sortBy, 'desc')->paginate(5);
 
-
         return view('livewire.comments', [
             'commentsList' => $commentsList,
         ]);
@@ -82,8 +81,7 @@ class Comments extends Component
 
         $this->form->reset();
         $this->form->resetValidation();
-
-        $this->resetPage();
+        $this->gotoPage(1);
     }
 
     #[On('deleteComment')]

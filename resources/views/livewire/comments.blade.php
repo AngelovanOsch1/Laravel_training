@@ -44,12 +44,14 @@
     @endauth
     <div x-data="{ isEditing: false, }" x-on:comment-updated.window="isEditing = false">
         @foreach ($commentsList as $comment)
-            <div class="animate-fade-in transition duration-300">
+            <div wire:key="{{ $comment->id }}" class="animate-fade-in transition duration-300">
                 <livewire:comment :comment="$comment" :user="$user" :loggedInUser="$loggedInUser" :key="$comment->id" />
             </div>
         @endforeach
-        <div class="mt-auto">
-            {{ $commentsList->links('vendor.pagination.tailwind') }}
-        </div>
     </div>
+
+    <div class="mt-auto">
+        {{ $commentsList->links('vendor.pagination.tailwind') }}
+    </div>
+</div>
 </div>
