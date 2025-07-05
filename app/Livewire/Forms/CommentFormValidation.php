@@ -7,7 +7,7 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class CommentFormValidation extends Form
 {
-    public string $message = '';
+    public ?string $message = null;
     public ?TemporaryUploadedFile $photo = null;
     public string $sortBy = 'created_at';
 

@@ -9,6 +9,7 @@ use Livewire\Attributes\On;
 use App\Traits\HandlesPhotos;
 use Livewire\WithFileUploads;
 use App\Models\Comment as CommentModel;
+use Illuminate\Support\Facades\Storage;
 use App\Livewire\Forms\CommentFormValidation;
 use Illuminate\Validation\ValidationException;
 
@@ -50,7 +51,7 @@ class Comment extends Component
         return view('livewire.comment');
     }
 
-    public function updateCommentformPhoto()
+    public function updatedupdateCommentform()
     {
         try {
             $this->updateCommentform->validateOnly('photo');
@@ -62,12 +63,12 @@ class Comment extends Component
         }
     }
 
-    public function replyFormPhoto()
+    public function updatedreplyForm()
     {
         try {
-            $this->updateCommentform->validateOnly('photo');
+            $this->replyForm->validateOnly('photo');
         } catch (ValidationException $e) {
-            $this->updateCommentform->reset('photo');
+            $this->replyForm->reset('photo');
             $this->dispatch('openWarningModal', [
                 'body' => $e->getMessage(),
             ]);
@@ -163,21 +164,19 @@ class Comment extends Component
         $this->updateVisibleReplies();
     }
 
-
     public function submitReply()
     {
         $this->replyForm->validate();
 
-        $photoPath = null;
         if ($this->replyForm->photo) {
-            $photoPath = $this->uploadPhoto($this->replyForm->photo, 'commentsPhotos');
+            $path = Storage::disk('public')->put('commentsPhotos', $this->replyForm->photo);
         }
 
         CommentModel::create([
             'message' => $this->replyForm->message,
             'commentable_id' => $this->comment->commentable_id,
             'commentable_type' => $this->comment->commentable_type,
-            'photo' => $photoPath,
+            'photo' => $path ?? null,
             'user_id' => $this->loggedInUser->id,
             'parent_id' => $this->comment->id,
         ]);
@@ -213,5 +212,11 @@ class Comment extends Component
             $this->replyForm->resetValidation();
             $this->replyForm->reset();
         }
+    }
+
+    #[On('profilePhotoUpdated')]
+    public function refreshProfilePhoto($newPhotoPath)
+    {
+        $this->user->profilePhoto = $newPhotoPath;
     }
 }

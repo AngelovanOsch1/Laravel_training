@@ -24,6 +24,7 @@ class Comments extends Component
 
     private string $sortBy = 'created_at';
 
+
     public function mount($id)
     {
         $this->user = User::findOrFail($id);
@@ -60,7 +61,7 @@ class Comments extends Component
     public function updatedFormSortBy()
     {
         $this->sortBy = $this->form->sortBy;
-        $this->resetPage();
+        $this->gotoPage(1);
     }
 
     public function submit()
@@ -93,6 +94,12 @@ class Comments extends Component
         $comment->delete();
 
         $this->dispatch("childCommentDeleted.$parentId");
-        $this->resetPage();
+        $this->gotoPage(1);
+    }
+
+    #[On('profilePhotoUpdated')]
+    public function refreshProfilePhoto($newPhotoPath)
+    {
+        $this->loggedInUser->profilePhoto = $newPhotoPath;
     }
 }
