@@ -15,7 +15,7 @@
                         <x-nav-link href="{{ route('profile') }}" text="My Profile"
                             class="block rounded-lg px-4 py-2 text-sm" />
 
-                        <x-nav-link href="{{ route('chat') }}" text="My chats" class="block rounded-lg px-4 py-2 text-sm" />
+                        <x-nav-link href="{{ route('chat') }}" text="My Chats" class="block rounded-lg px-4 py-2 text-sm" />
                     </div>
                 @endauth
 

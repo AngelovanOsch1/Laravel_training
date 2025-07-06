@@ -4,7 +4,7 @@
 ])
 
 <div
-    class="my-10 flex flex-col items-center rounded-xl bg-white px-6 py-6 text-center md:max-w-md shadow-lg shadow-[#e0e0e0]">
+    class="my-10 flex flex-col items-center rounded-xl bg-white px-6 py-6 text-center md:max-w-md shadow-lg shadow-[#c0c0c0]">
     <div class="mb-4">
         <livewire:profile-photo :user="$user" />
     </div>
