@@ -1,7 +1,7 @@
 <div x-data x-init="$watch('$wire.show', value => window.toggleBodyScroll(value))">
     @if ($show)
-        <div class="fixed inset-0 flex justify-center items-center z-50 bg-gray-800/25">
-            <div class="bg-white p-6 rounded-lg shadow-lg">
+        <div class="fixed inset-0 flex justify-center items-center z-50 bg-gray-800/25" @click="$wire.closeModal()">
+            <div class="bg-white p-6 rounded-lg shadow-lg" @click.stop >
                 <form class="flex flex-col" wire:submit.prevent="submit">
                     <h2 class="text-lg font-semibold text-left">Edit Profile</h2>
                     <p>Please fill in the form to update your profile details.</p>

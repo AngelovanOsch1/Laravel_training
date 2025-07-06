@@ -1,8 +1,8 @@
 <div x-data
      x-init="$watch('$wire.show', value => window.toggleBodyScroll(value))">
     @if ($show)
-        <div class="fixed inset-0 flex justify-center items-center z-50 bg-gray-800/25">
-            <div class="bg-white p-6 rounded-lg shadow-lg">
+        <div class="fixed inset-0 flex justify-center items-center z-50 bg-gray-800/25" @click="$wire.closeModal()">
+            <div class="bg-white p-6 rounded-lg shadow-lg" @click.stop>
                 <h2 class="text-lg font-semibold">{{ $title }}</h2>
                 <hr class="my-3 border-t border-gray-300" />
                 <p class="text-sm text-red-600">{{ $body }}</p>

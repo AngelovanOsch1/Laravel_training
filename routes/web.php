@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Chat;
 use App\Livewire\Profile;
 use App\Livewire\LoginForm;
 use App\Livewire\RegisterForm;
@@ -16,4 +17,5 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('profile/{id?}', Profile::class)->name('profile');
     Route::get('series-list/{id}', UserSeriesList::class)->name('series-list');
+    Route::get('chat/{id?}', Chat::class)->name('chat');
 });
