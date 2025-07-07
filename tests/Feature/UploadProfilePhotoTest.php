@@ -21,8 +21,6 @@ class UploadProfilePhotoTest extends TestCase
     {
         parent::setUp();
 
-        Storage::fake('public');
-
         $this->user = User::factory()->create();
         $this->actingAs($this->user);
     }
@@ -30,6 +28,8 @@ class UploadProfilePhotoTest extends TestCase
     #[Test]
     public function test_it_stores_image_and_updates_user_profile_photo_on_success()
     {
+        Storage::fake('public');
+
         $existingPhoto = UploadedFile::fake()->create('image.jpg', 100, 'image/jpeg');
         $existingPhotoPath = Storage::disk('public')->putFile('photos', $existingPhoto);
 

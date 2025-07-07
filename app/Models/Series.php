@@ -39,7 +39,7 @@ class Series extends Model
     }
 
 
-    static function calculateSeriesTotalScore($id)
+    public static function calculateSeriesTotalScore($id)
     {
         $seriesCollection = SeriesUser::where('series_id', $id)->get();
 

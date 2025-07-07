@@ -1,5 +1,5 @@
 <div>
-    <livewire:profile-banner :profileBanner="$user->profile_banner" />
+    <livewire:profile-banner :user="$user" />
     <div class="flex justify-between w-full gap-x-25">
         <x-profile-card
             :user="$user"

@@ -2,11 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
-use App\Support\GlobalHelper;
 use App\Traits\HandlesPhotos;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Storage;
 use App\Livewire\Forms\PhotoFormValidation;
 use Illuminate\Validation\ValidationException;
 
@@ -17,10 +16,12 @@ class ProfileBanner extends Component
 
     public PhotoFormValidation $form;
     public string|null $profileBanner;
+    public User $user;
 
-    public function mount($profileBanner)
+    public function mount($user)
     {
-        $this->profileBanner = $profileBanner ?? 'images/default_profile_banner.webp';
+        $this->user = $user;
+        $this->profileBanner = $this->user->profile_banner ?? 'images/default_profile_banner.webp';
     }
 
     public function render()
@@ -35,11 +36,9 @@ class ProfileBanner extends Component
 
             $path = $this->uploadPhoto($this->form->photo, 'banners');
 
-            $user = GlobalHelper::getLoggedInUser();
+            $this->deletePhoto($this->user->profile_banner);
 
-            $this->deletePhoto($user->profile_banner);
-
-            $user->update([
+            $this->user->update([
                 'profile_banner' => $path,
             ]);
 

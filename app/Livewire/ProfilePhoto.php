@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use App\Models\User;
 use Livewire\Component;
-use App\Support\GlobalHelper;
 use App\Traits\HandlesPhotos;
 use Livewire\WithFileUploads;
 use App\Livewire\Forms\PhotoFormValidation;
@@ -16,13 +15,13 @@ class ProfilePhoto extends Component
     use HandlesPhotos;
 
     public PhotoFormValidation $form;
-    public User $user;
     public string|null $profilePhoto;
+    public User $user;
 
     public function mount($user)
     {
         $this->user = $user;
-        $this->profilePhoto = $user->profile_photo ?? 'images/default_profile_photo.png';
+        $this->profilePhoto = $this->user->profile_photo ?? 'images/default_profile_photo.png';
     }
 
     public function render()
@@ -37,11 +36,9 @@ class ProfilePhoto extends Component
 
             $path = $this->uploadPhoto($this->form->photo, 'photos');
 
-            $user = GlobalHelper::getLoggedInUser();
+            $this->deletePhoto($this->user->profile_photo);
 
-            $this->deletePhoto($user->profile_photo);
-
-            $user->update([
+            $this->user->update([
                 'profile_photo' => $path,
             ]);
 

@@ -23,19 +23,34 @@ class DatabaseSeeder extends Seeder
         $gender = Gender::factory()->count(3)->create();
         $role = Role::factory()->count(3)->create();
 
-        $user = User::create([
-            'email' => 'Angelo.van.osch@hotmail.com',
-            'password' => Hash::make('wachtwoord123'),
-            'role_id' => $role->random()->id,
-            'first_name' => 'Angelo',
-            'last_name' => 'van Osch',
-            'date_of_birth' => '1996-09-04',
-            'country_id' => $country->random()->id,
-            'gender_id' => $gender->random()->id,
-            'description' => 'This is a description!.',
-            'profile_photo' => null,
-            'profile_banner' => null,
-        ]);
+        $userCollection = collect();
+
+        $emails = [
+            'angelo.van.osch@hotmail.com',
+            'angelo.van.osch1@hotmail.com',
+            'angelo.van.osch2@hotmail.com',
+        ];
+
+        $firstNames = ['Angelo', 'Angela', 'Angelina'];
+        $lastNames = ['van Osch', 'van Oscha', 'van Oschy'];
+
+        foreach ($emails as $index => $email) {
+            $user = User::create([
+                'email' => $email,
+                'password' => Hash::make('wachtwoord123'),
+                'role_id' => $role->random()->id,
+                'first_name' => $firstNames[$index],
+                'last_name' => $lastNames[$index],
+                'date_of_birth' => '1996-09-04',
+                'country_id' => $country->random()->id,
+                'gender_id' => $gender->random()->id,
+                'description' => 'This is a description!.',
+                'profile_photo' => null,
+                'profile_banner' => null,
+            ]);
+            $userCollection->push($user);
+        }
+
 
         $images = [
             ['title' => 'Frieren',               'image' => 'storage/series/1.jpg'],
@@ -84,14 +99,16 @@ class DatabaseSeeder extends Seeder
             );
         });
 
-        $seriesCollection->each(function ($serie) use ($user, $series_statuses, $faker) {
-            $user->series()->attach($serie->id, [
-                'series_status_id' => $series_statuses->random()->id,
-                'start_date' => $faker->dateTimeBetween('-5 years', '-3 years'),
-                'end_date' => $faker->dateTimeBetween('-2 years', '+2 years'),
-                'episode_count'    => $faker->numberBetween(1, $serie->episode_count ?? 24),
-                'score' => $faker->numberBetween(1, 10),
-            ]);
+        $userCollection->each(function ($user) use ($seriesCollection, $series_statuses, $faker) {
+            $seriesCollection->each(function ($serie) use ($user, $series_statuses, $faker) {
+                $user->series()->attach($serie->id, [
+                    'series_status_id' => $series_statuses->random()->id,
+                    'start_date' => $faker->dateTimeBetween('-5 years', '-3 years'),
+                    'end_date' => $faker->dateTimeBetween('-2 years', '+2 years'),
+                    'episode_count' => $faker->numberBetween(1, $serie->episode_count ?? 24),
+                    'score' => $faker->numberBetween(1, 10),
+                ]);
+            });
         });
     }
 }

@@ -3,19 +3,24 @@
 namespace App\Livewire;
 
 use App\Models\User;
-use App\Support\GlobalHelper;
+use App\Models\Contact;
 use Livewire\Component;
+use App\Support\GlobalHelper;
 use Livewire\Attributes\Layout;
 
 #[Layout('layouts.app')]
 class Chat extends Component
 {
     public User $loggedInUser;
+    public ?int $latestContactId = null;
 
     public function mount()
     {
         $this->loggedInUser = GlobalHelper::getLoggedInUser();
+        $contacts = Contact::getContactList($this->loggedInUser);
+        $this->latestContactId = $contacts->first()?->id;
     }
+
     public function render()
     {
         return view('livewire.chat');

@@ -1,3 +1,10 @@
+@props([
+    'user' => null,
+    'isCurrentUser' => false,
+    'icon' => '',
+    'contact' => null,
+])
+
 <div class="flex items-center {{ $isCurrentUser ? 'gap-4' : 'gap-2' }}">
     <label class="relative {{ $isCurrentUser ? 'h-20 w-20' : 'h-12 w-12' }}">
         <img src="{{ asset('storage/' . ($user->profile_photo ?? 'images/default_profile_photo.png')) }}"
@@ -20,7 +27,7 @@
         @endif
     </div>
     @if (!$isCurrentUser)
-        <div x-data="{ open: false }" class="relative ml-auto">
+        <div x-data="{ open: false }" class="relative ml-auto" @click.stop>
             <x-primary-button xClick="open = !open" class="px-2 py-1" type="button" icon="{{ $icon }}" />
             <div x-show="open" @click.away="open = false"
                 class="absolute right-0 mt-2 w-28 bg-white border border-gray-300 rounded shadow-lg z-10">
@@ -29,8 +36,10 @@
                     <i class="fa fa-id-badge"></i>
                     <span>Profile</span>
                 </x-nav-link>
-                <x-primary-button class="flex items-center w-full px-4 py-2 hover:bg-gray-100 gap-3"
-                    click="hideUser" text="Hide" icon="eye-slash" type="button" />
+                @if ($contact)
+                     <x-primary-button class="flex items-center w-full px-4 py-2 hover:bg-gray-100 gap-3"
+                    click="toggleVisibility({{ $contact->id }})" text="Hide" icon="eye-slash" type="button" />
+                @endif
             </div>
         </div>
     @endif
