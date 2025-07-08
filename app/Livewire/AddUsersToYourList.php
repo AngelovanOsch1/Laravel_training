@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use App\Models\User;
 use App\Models\Contact;
-use App\Models\Message;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Support\GlobalHelper;
@@ -15,6 +14,10 @@ class AddUsersToYourList extends Component
     public bool $show = false;
     public User $loggedInUser;
     public Collection $userList;
+    public string $query = '';
+    public int $amount = 20;
+    public Collection $results;
+
 
     public function mount()
     {
@@ -35,11 +38,26 @@ class AddUsersToYourList extends Component
                 : $contact->user_one_id;
         })->toArray();
 
-        $this->userList = User::where('id', '!=', $this->loggedInUser->id)
-            ->whereNotIn('id', $visibleContactUserIds)
-            ->get();
+
+        $query = User::where('id', '!=', $this->loggedInUser->id)
+            ->whereNotIn('id', $visibleContactUserIds);
+
+        if (isset($this->query) && strlen($this->query) >= 2) {
+            $query->where(function ($q) {
+                $q->where('first_name', 'like', "%{$this->query}%")
+                    ->orWhere('last_name', 'like', "%{$this->query}%");
+            });
+        }
+
+        $this->results = $query->limit($this->amount)->get();
 
         return view('livewire.add-users-to-your-list');
+    }
+
+
+    public function loadMore()
+    {
+        $this->amount += 20;
     }
 
     public function addUserToList($id)
@@ -67,12 +85,6 @@ class AddUsersToYourList extends Component
                 'added_by_user_id' => $this->loggedInUser->id,
                 'user_one_visible' => $userOne === $this->loggedInUser->id,
                 'user_two_visible' => $userTwo === $this->loggedInUser->id ? false : true,
-            ]);
-
-            Message::create([
-                'contact_id' => $contact->id,
-                'sender_id' => $this->loggedInUser->id,
-                'body' => 'Chat started',
             ]);
 
             $contactId = $contact->id;

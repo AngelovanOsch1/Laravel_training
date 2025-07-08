@@ -22,7 +22,7 @@
                                     <ul class="grid grid-cols-[repeat(auto-fit,160px)] gap-4">
                                         @foreach ($results as $series)
                                             <li wire:click="setSelectedIndex({{ $series->id }})"
-                                                class="animate-fade-in rounded-lg bg-white p-3 shadow-lg hover:shadow-md transition cursor-pointer border-2"
+                                                class="animate-fade-in rounded-lg bg-white p-3 shadow-lg shadow-[#c0c0c0] hover:shadow-md transition cursor-pointer border-2"
                                                 style="{{ isset($selectedSeries['id']) && $series->id === $selectedSeries['id'] ? 'border-color: #00897B;' : 'border-color: transparent;' }}">
                                                 <div class="h-48 mb-2 rounded-md overflow-hidden flex shadow-lg">
                                                     <img src="{{ asset($series->cover_image) }}"

@@ -59,6 +59,12 @@ class ContactList extends Component
         $this->dispatch('loadChat', $id);
     }
 
+    #[On('refreshContactList')]
+    public function refreshContactList()
+    {
+        $this->contacts = Contact::getContactList($this->loggedInUser);
+    }
+
     public function openAddUsersToYourListModal()
     {
         $this->dispatch('openAddUsersToYourListModal');

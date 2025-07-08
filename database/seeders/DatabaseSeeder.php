@@ -25,29 +25,29 @@ class DatabaseSeeder extends Seeder
 
         $userCollection = collect();
 
-        $emails = [
-            'angelo.van.osch@hotmail.com',
-            'angelo.van.osch1@hotmail.com',
-            'angelo.van.osch2@hotmail.com',
-        ];
+        $baseEmail = 'angelo.van.osch';
+        $firstNames = ['Angelo', 'Angela', 'Angelina', 'Angel', 'Angie'];
+        $lastNames = ['van Osch', 'van Oscha', 'van Oschy', 'van Oshen', 'van Oschsen'];
 
-        $firstNames = ['Angelo', 'Angela', 'Angelina'];
-        $lastNames = ['van Osch', 'van Oscha', 'van Oschy'];
+        $userCollection = collect();
 
-        foreach ($emails as $index => $email) {
+        for ($i = 0; $i < 100; $i++) {
             $user = User::create([
-                'email' => $email,
+                'email' => $i === 0
+                    ? "{$baseEmail}@hotmail.com"
+                    : "{$baseEmail}{$i}@hotmail.com",
                 'password' => Hash::make('wachtwoord123'),
                 'role_id' => $role->random()->id,
-                'first_name' => $firstNames[$index],
-                'last_name' => $lastNames[$index],
+                'first_name' => $firstNames[$i % count($firstNames)],
+                'last_name' => $lastNames[$i % count($lastNames)],
                 'date_of_birth' => '1996-09-04',
                 'country_id' => $country->random()->id,
                 'gender_id' => $gender->random()->id,
-                'description' => 'This is a description!.',
+                'description' => 'This is a description!',
                 'profile_photo' => null,
                 'profile_banner' => null,
             ]);
+
             $userCollection->push($user);
         }
 

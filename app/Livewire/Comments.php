@@ -77,7 +77,7 @@ class Comments extends Component
             'commentable_id' => $this->user->id,
             'commentable_type' => User::class,
             'photo' => $path ?? null,
-            'user_id' => GlobalHelper::getLoggedInUser()->id,
+            'user_id' => $this->loggedInUser->id,
         ]);
 
         $this->form->reset();

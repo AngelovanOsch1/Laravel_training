@@ -20,11 +20,19 @@
         <h2 class="{{ $isCurrentUser ? 'text-xl font-semibold' : 'text-sm font-medium' }}">
             {{ $user->first_name . ' ' . $user->last_name }}
         </h2>
-        @if (!$isCurrentUser && $user->role)
-            <span class="mt-1 px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-100 text-blue-800 w-fit">
+
+        @if ($contact?->latestMessage)
+            <div class="{{ $isCurrentUser ? 'mt-3' : 'mt-1' }} text-xs">
+                {{ $contact->latestMessage->body ?? 'Sent a photo' }}
+            </div>
+        @else
+            <span
+                class="{{ $isCurrentUser ? 'mt-3' : 'mt-1' }} px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-100 text-blue-800 w-fit">
                 {{ $user->role->name }}
             </span>
         @endif
+
+
     </div>
     @if (!$isCurrentUser)
         <div x-data="{ open: false }" class="relative ml-auto" @click.stop>
@@ -37,8 +45,8 @@
                     <span>Profile</span>
                 </x-nav-link>
                 @if ($contact)
-                     <x-primary-button class="flex items-center w-full px-4 py-2 hover:bg-gray-100 gap-3"
-                    click="toggleVisibility({{ $contact->id }})" text="Hide" icon="eye-slash" type="button" />
+                    <x-primary-button class="flex items-center w-full px-4 py-2 hover:bg-gray-100 gap-3"
+                        click="toggleVisibility({{ $contact->id }})" text="Hide" icon="eye-slash" type="button" />
                 @endif
             </div>
         </div>

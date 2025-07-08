@@ -4,15 +4,23 @@ namespace App\Livewire;
 
 use App\Models\User;
 use App\Models\Contact;
+use App\Models\Message;
 use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\WithFileUploads;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
+use App\Livewire\Forms\MessageValidationForm;
+use Illuminate\Validation\ValidationException;
 
 class ChatScreen extends Component
 {
+    use WithFileUploads;
+
     public User $loggedInUser;
     public ?Contact $contact = null;
     public Collection $messages;
+    public MessageValidationForm $form;
 
     public function mount(User $loggedInUser, ?int $latestContactId)
     {
@@ -24,6 +32,8 @@ class ChatScreen extends Component
     }
     public function render()
     {
+        $this->dispatch('chat-opened');
+
         return view('livewire.chat-screen');
     }
 
@@ -31,10 +41,51 @@ class ChatScreen extends Component
     public function loadChat(?int $id)
     {
         if ($id === null) {
-            return $this->messages = collect();
+            return;
         }
 
         $this->contact = Contact::with('userOne', 'userTwo', 'messages.sender')->findOrFail($id);
         $this->messages = $this->contact->messages;
+    }
+
+    public function updatedFormPhoto()
+    {
+        try {
+            $this->form->validateOnly('photo');
+        } catch (ValidationException $e) {
+            $this->form->reset('photo');
+            $this->dispatch('openWarningModal', [
+                'body' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function submit()
+    {
+        try {
+            $this->form->validateOnly('message');
+        } catch (ValidationException $e) {
+            return $this->dispatch('openWarningModal', [
+                'body' => $e->getMessage(),
+            ]);
+        }
+
+        if ($this->form->photo) {
+            $path = Storage::disk('public')->put('messagesPhotos', $this->form->photo);
+        }
+
+        Message::create([
+            'contact_id' => $this->contact->id,
+            'sender_id' => $this->loggedInUser->id,
+            'body' => $this->form->message,
+            'photo' => $path ?? null
+        ]);
+
+        $this->messages = $this->contact->messages()->with('sender')->get();
+        $this->dispatch('chat-scroll-down');
+        $this->dispatch('refreshContactList');
+
+        $this->form->reset();
+        $this->form->resetValidation();
     }
 }

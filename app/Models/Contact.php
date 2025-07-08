@@ -34,9 +34,15 @@ class Contact extends Model
         return $this->hasMany(Message::class);
     }
 
+    public function latestMessage()
+    {
+        return $this->hasOne(Message::class)
+            ->latest('created_at');
+    }
+
     public static function getContactList(User $user)
     {
-        return self::with(['userOne', 'userTwo'])
+        return self::with(['userOne', 'userTwo', 'latestMessage.sender'])
             ->where(function ($query) use ($user) {
                 $query->where('user_one_id', $user->id)
                     ->where('user_one_visible', true);
