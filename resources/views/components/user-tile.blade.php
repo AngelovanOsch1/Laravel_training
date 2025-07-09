@@ -61,7 +61,7 @@
             </x-nav-link>
             @if ($contact)
                 <x-primary-button class="flex items-center w-full px-4 py-2 hover:bg-gray-100 gap-3"
-                    click="toggleVisibility({{ $contact->id }})"
+                    click="toggleVisibility({{ $contact->id }})" xClick="open = false"
                     text="Hide" icon="eye-slash" type="button" />
             @endif
         </div>

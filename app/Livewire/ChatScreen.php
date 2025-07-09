@@ -23,6 +23,7 @@ class ChatScreen extends Component
     public Message $message;
     public MessageValidationForm $form;
     public bool $isEditing = false;
+    public ?int $activeMessageId = null;
 
     public function mount(User $loggedInUser, ?int $latestContactId)
     {
@@ -34,8 +35,6 @@ class ChatScreen extends Component
     }
     public function render()
     {
-        $this->dispatch('chat-opened');
-
         return view('livewire.chat-screen');
     }
 
@@ -43,7 +42,7 @@ class ChatScreen extends Component
     public function loadChat(?int $id)
     {
         if ($id === null) {
-            return;
+            return $this->messages = collect();
         }
 
         $this->contact = Contact::with('userOne', 'userTwo', 'messages.sender')->findOrFail($id);
@@ -87,6 +86,7 @@ class ChatScreen extends Component
                 'body' => $this->form->message,
                 'photo' => $path ?? null
             ]);
+            $this->activeMessageId = null;
         } else {
             Message::create([
                 'contact_id' => $this->contact->id,
@@ -97,7 +97,6 @@ class ChatScreen extends Component
         }
 
         $this->messages = $this->contact->messages()->with('sender')->get();
-        $this->dispatch('chat-scroll-down');
         $this->dispatch('message-updated');
         $this->dispatch('refreshContactList');
 
@@ -106,14 +105,25 @@ class ChatScreen extends Component
         $this->form->resetValidation();
     }
 
-    #[On('editMessage')]
     public function editMessage($id)
     {
         $this->isEditing = true;
+        $this->activeMessageId = $id;
+
         $this->message = $this->messages->find($id);
 
         $this->form->message = $this->message->body;
         $this->form->photo = $this->message->photo;
+    }
+
+    public function openDeleteMessageModal($id)
+    {
+        $data = [
+            'body' => 'Are you sure you want to delete this message?',
+            'callBackFunction' => 'deleteMessage',
+            'callBackFunctionParameter' => $id
+        ];
+        $this->dispatch('openWarningModal', $data);
     }
 
     #[On('deleteMessage')]
