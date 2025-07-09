@@ -60,35 +60,9 @@ class AddUsersToYourList extends Component
         $this->amount += 20;
     }
 
-    public function addUserToList($id)
+    public function addUserToContactList($id)
     {
-        $userOne = min($this->loggedInUser->id, $id);
-        $userTwo = max($this->loggedInUser->id, $id);
-
-        $existingContact = Contact::where('user_one_id', $userOne)
-            ->where('user_two_id', $userTwo)
-            ->first();
-
-        if ($existingContact) {
-            if ($existingContact->user_one_id === $this->loggedInUser->id) {
-                $existingContact->user_one_visible = true;
-            } else {
-                $existingContact->user_two_visible = true;
-            }
-
-            $existingContact->save();
-            $contactId = $existingContact->id;
-        } else {
-            $contact = Contact::create([
-                'user_one_id' => $userOne,
-                'user_two_id' => $userTwo,
-                'added_by_user_id' => $this->loggedInUser->id,
-                'user_one_visible' => $userOne === $this->loggedInUser->id,
-                'user_two_visible' => $userTwo === $this->loggedInUser->id ? false : true,
-            ]);
-
-            $contactId = $contact->id;
-        }
+        $contactId = Contact::addUserToContactList($id, $this->loggedInUser->id);
 
         $this->dispatch('chatOpen', $contactId);
         $this->closeModal();

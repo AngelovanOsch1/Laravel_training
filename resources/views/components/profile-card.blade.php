@@ -39,7 +39,7 @@
                     iconPosition="right" click="likeUser({{ $user->id }})"
                     class="px-4 py-2 bg-pink-300 text-white font-medium rounded shadow hover:bg-pink-400 flex items-center gap-2 text-sm w-full justify-center whitespace-nowrap" />
 
-                <x-primary-button type="button" text="Chat" icon="comments" iconPosition="right"
+                <x-primary-button type="button" text="Chat" icon="comments" iconPosition="right"  click="startChatWithUser({{ $user->id }})"
                     class="px-4 py-2 bg-green-300 text-white font-medium rounded shadow hover:bg-green-400 flex items-center gap-2 text-sm w-full justify-center whitespace-nowrap" />
             </div>
             @if (auth()->id() === $user->id)

@@ -14,9 +14,14 @@ class Chat extends Component
     public User $loggedInUser;
     public ?int $latestContactId = null;
 
-    public function mount()
+    public function mount(?int $id = null)
     {
         $this->loggedInUser = GlobalHelper::getLoggedInUser();
+
+        if ($id) {
+            return $this->latestContactId = $id;
+        }
+
         $contacts = Contact::getContactList($this->loggedInUser);
         $this->latestContactId = $contacts->first()?->id;
     }

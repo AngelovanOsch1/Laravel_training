@@ -11,7 +11,7 @@
                     </button>
 
                     <div x-show="open" @click.outside="open = false" x-transition
-                        class="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white z-50" role="menu">
+                        class="absolute right-5 mt-2 w-56 rounded-md shadow-lg bg-white z-50" role="menu">
                         <x-nav-link href="{{ route('profile') }}" text="My Profile"
                             class="block rounded-lg px-4 py-2 text-sm" />
 

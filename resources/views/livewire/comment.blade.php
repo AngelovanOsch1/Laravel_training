@@ -144,7 +144,7 @@
                 <div x-data="{ open: false }" x-show="!isEditing" class="relative">
                     <x-primary-button xClick="open = !open" class="px-2 py-1" type="button" icon="ellipsis-v" />
                     <div x-show="open" @click.away="open = false"
-                        class="absolute right-0 mt-2 w-28 bg-white border border-gray-300 rounded shadow-lg z-10">
+                        class="absolute right-5 w-28 bg-white border border-gray-300 rounded shadow-lg z-10">
                         <x-primary-button class="flex items-center w-full px-4 py-2 hover:bg-gray-100 gap-3"
                             xClick="open = false; isEditing = true;" click="isEditingState(true)" text="Edit"
                             icon="edit" type="button" />

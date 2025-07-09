@@ -12,11 +12,9 @@ class CreateContactsTable extends Migration
             $table->id();
             $table->foreignId('user_one_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('user_two_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('added_by_user_id')->constrained('users')->onDelete('cascade');
             $table->boolean('user_one_visible')->default(true);
             $table->boolean('user_two_visible')->default(true);
             $table->timestamps();
-
             $table->unique(['user_one_id', 'user_two_id']);
         });
     }

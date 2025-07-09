@@ -45,6 +45,12 @@ class ChatScreen extends Component
         }
 
         $this->contact = Contact::with('userOne', 'userTwo', 'messages.sender')->findOrFail($id);
+
+        Message::where('contact_id', $this->contact->id)
+            ->where('sender_id', '!=', $this->loggedInUser->id)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+
         $this->messages = $this->contact->messages;
     }
 
@@ -87,5 +93,14 @@ class ChatScreen extends Component
 
         $this->form->reset();
         $this->form->resetValidation();
+    }
+
+    #[On('deleteMessage')]
+    public function deleteMessage($id)
+    {
+        $message = Message::find($id);
+        $message->delete();
+
+        $this->messages = $this->contact->messages()->with('sender')->get();
     }
 }

@@ -16,10 +16,21 @@
                 title="{{ $user->is_online ? 'Online' : 'Offline' }}"></span>
         @endif
     </label>
-    <div class="flex flex-col">
-        <h2 class="{{ $isCurrentUser ? 'text-xl font-semibold' : 'text-sm font-medium' }}">
-            {{ $user->first_name . ' ' . $user->last_name }}
-        </h2>
+
+    <div class="flex flex-col relative">
+        <div class="flex items-center gap-2">
+            <h2 class="{{ $isCurrentUser ? 'text-xl font-semibold' : 'text-sm font-medium' }}">
+                {{ $user->first_name . ' ' . $user->last_name }}
+            </h2>
+
+            {{-- Unread messages badge --}}
+            @if (!$isCurrentUser && $contact?->unread_messages_count > 0)
+                <span
+                    class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                    {{ $contact->unread_messages_count }}
+                </span>
+            @endif
+        </div>
 
         @if ($contact?->latestMessage)
             <div class="{{ $isCurrentUser ? 'mt-3' : 'mt-1' }} text-xs">
@@ -31,24 +42,30 @@
                 {{ $user->role->name }}
             </span>
         @endif
-
-
     </div>
-    @if (!$isCurrentUser)
-        <div x-data="{ open: false }" class="relative ml-auto" @click.stop>
-            <x-primary-button xClick="open = !open" class="px-2 py-1" type="button" icon="{{ $icon }}" />
-            <div x-show="open" @click.away="open = false"
-                class="absolute right-0 mt-2 w-28 bg-white border border-gray-300 rounded shadow-lg z-10">
-                <x-nav-link href="{{ route('profile', ['id' => $user->id]) }}"
-                    class="flex items-center w-full px-4 py-2 hover:bg-gray-100 gap-3 text-black" @click="open = false">
-                    <i class="fa fa-id-badge"></i>
-                    <span>Profile</span>
-                </x-nav-link>
-                @if ($contact)
-                    <x-primary-button class="flex items-center w-full px-4 py-2 hover:bg-gray-100 gap-3"
-                        click="toggleVisibility({{ $contact->id }})" text="Hide" icon="eye-slash" type="button" />
-                @endif
-            </div>
+
+@if (!$isCurrentUser)
+    <div class="relative ml-auto" @click.stop>
+        <x-primary-button xClick="openDropdownId === {{ $user->id }} ? openDropdownId = null : openDropdownId = {{ $user->id }}" class="px-2 py-1" type="button" icon="{{ $icon }}" />
+
+        <div
+            x-show="openDropdownId === {{ $user->id }}"
+            @click.away="openDropdownId = null"
+            class="absolute right-5 w-28 bg-white border border-gray-300 rounded shadow-lg z-10"
+            x-transition>
+            <x-nav-link href="{{ route('profile', ['id' => $user->id]) }}"
+                class="flex items-center w-full px-4 py-2 hover:bg-gray-100 gap-3 text-black"
+                @click="openDropdownId = null">
+                <i class="fa fa-id-badge"></i>
+                <span>Profile</span>
+            </x-nav-link>
+            @if ($contact)
+                <x-primary-button class="flex items-center w-full px-4 py-2 hover:bg-gray-100 gap-3"
+                    click="toggleVisibility({{ $contact->id }})"
+                    text="Hide" icon="eye-slash" type="button" />
+            @endif
         </div>
-    @endif
+    </div>
+@endif
+
 </div>

@@ -21,7 +21,7 @@
                         <div class="flex-1 mt-6 overflow-y-auto scrollbar-hidden">
                             <ul class="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
                                 @foreach ($results as $user)
-                                    <li wire:click="addUserToList({{ $user->id }})"
+                                    <li wire:click="addUserToContactList({{ $user->id }})"
                                         class="animate-fade-in rounded-lg bg-gray-50 p-4 shadow-lg shadow-[#c0c0c0] hover:bg-gray-100 transition cursor-pointer border border-transparent hover:border-teal-500">
                                         <div class="flex items-center gap-3">
                                             <x-user-tile :user="$user" :isCurrentUser="false" icon="" />

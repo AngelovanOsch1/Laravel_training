@@ -1,5 +1,4 @@
 <div
-    x-data
     x-init="$nextTick(() => {
         const el = $refs.chatEnd;
         if (el) el.scrollIntoView({ behavior: 'auto', block: 'end' });
@@ -14,42 +13,14 @@
             if (el) el.scrollIntoView({ behavior: 'auto', block: 'end' });
         });
     "
+    x-data="{ isEditing: false, }" x-on:message-updated.window="isEditing = false"
     class="bg-white h-full flex flex-col p-8"
 >
     <div class="flex-1 overflow-y-auto space-y-4 pr-1 max-h-[693px] scrollbar-hidden" style="overflow-anchor: none;">
         @forelse($messages ?? [] as $message)
-            <div class="flex animate-fade-in transition duration-300 {{ $message->sender_id === $loggedInUser->id ? 'justify-end' : 'justify-start' }}">
-                <div class="flex gap-3 max-w-[75%] {{ $message->sender_id === $loggedInUser->id ? 'flex-row-reverse' : 'flex-row' }}">
-                    <div class="relative w-8 h-8 flex-shrink-0">
-                        <img src="{{ asset('storage/' . ($message->sender->profile_photo ?? 'images/default_profile_photo.png')) }}"
-                             class="absolute inset-0 w-full h-full object-cover rounded-full pointer-events-none"
-                             alt="{{ $message->sender->first_name }} profile photo" />
-                    </div>
-
-                    <div @class([
-                        'flex flex-col rounded-xl px-4 py-3 shadow-sm relative pr-12',
-                        'bg-teal-100' => $message->sender_id === $loggedInUser->id,
-                        'bg-gray-100' => $message->sender_id !== $loggedInUser->id,
-                    ])>
-                        <div class="text-xs font-semibold text-gray-700">
-                            {{ $message->sender->first_name }} {{ $message->sender->last_name }}
-                        </div>
-
-                        <div class="text-sm text-gray-900 whitespace-pre-line flex flex-col mt-5 items-start gap-5">
-                            @if ($message->photo)
-                                <img src="{{ asset('storage/' . $message->photo) }}"
-                                     class="rounded-lg max-w-xs w-auto h-auto"
-                                     alt="Attached photo" />
-                            @endif
-                            <p class="flex-1">{{ $message->body }}</p>
-                        </div>
-
-                        <div class="absolute bottom-1 right-2 text-[11px] text-gray-500 whitespace-nowrap">
-                            {{ \Carbon\Carbon::parse($message->created_at)->format('H:i') }}
-                        </div>
-                    </div>
+                <div :key="$message->id" class="animate-fade-in transition duration-300">
+                    <livewire:message :loggedInUser="$loggedInUser" :message="$message" :key="$message->id" />
                 </div>
-            </div>
         @empty
             <div class="flex flex-col justify-center items-center h-full text-gray-400">
                 <img src="{{ asset('storage/images/chat.png') }}" class="h-32 w-32 mb-4" />
@@ -75,8 +46,8 @@
         <div class="flex justify-center items-start gap-12 mt-5">
             <div class="flex-grow scrollbar-hidden">
                 <x-form-textarea id="message" name="form.message" placeholder="Write a message..."
-                    :showCharacterCount="false" :fileUpload="true" rows="4" function="submit"
-                    liveModel="form.message"
+                    :showCharacterCount="false" rows="4" function="submit"
+                    model="form.message"
                     class="w-full text-sm rounded-lg bg-white border border-gray-300 focus:border-teal-600 focus:ring-0 placeholder-gray-500 resize-none p-3 shadow-sm focus:outline-none scrollbar-hidden" />
             </div>
 
