@@ -13,7 +13,7 @@ class Message extends Component
     public User $loggedInUser;
     public MessageModel $message;
     public MessageEditValidationForm $form;
-    public bool $isEditing = false;
+    public ?int $activeMessageId = null;
 
     public function mount(User $loggedInUser, MessageModel $message)
     {
@@ -36,36 +36,9 @@ class Message extends Component
         $this->dispatch('openWarningModal', $data);
     }
 
-    public function isEditingState()
+    public function editMessage(int $id)
     {
-        $this->form->message = $this->message->body;
-        $this->isEditing = true;
-    }
-
-    public function submit()
-    {
-
-        if (empty($this->form->message)) {
-            $this->openDeleteMessageModal();
-        } else {
-            try {
-                $this->form->validateOnly('message');
-            } catch (ValidationException $e) {
-                return $this->dispatch('openWarningModal', [
-                    'body' => $e->getMessage(),
-                ]);
-            }
-
-            $this->message->update([
-                'sender_id' => $this->loggedInUser->id,
-                'body' => $this->form->message,
-                'photo' => $path ?? null
-            ]);
-
-            $this->dispatch('message-updated');
-            $this->isEditing = false;
-            $this->form->reset();
-            $this->form->resetValidation();
-        }
+        $this->activeMessageId = $id;
+        $this->dispatch('editMessage', $id);
     }
 }

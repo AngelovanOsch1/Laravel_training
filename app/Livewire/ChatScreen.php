@@ -20,7 +20,9 @@ class ChatScreen extends Component
     public User $loggedInUser;
     public ?Contact $contact = null;
     public Collection $messages;
+    public Message $message;
     public MessageValidationForm $form;
+    public bool $isEditing = false;
 
     public function mount(User $loggedInUser, ?int $latestContactId)
     {
@@ -80,26 +82,44 @@ class ChatScreen extends Component
             $path = Storage::disk('public')->put('messagesPhotos', $this->form->photo);
         }
 
-        Message::create([
-            'contact_id' => $this->contact->id,
-            'sender_id' => $this->loggedInUser->id,
-            'body' => $this->form->message,
-            'photo' => $path ?? null
-        ]);
+        if ($this->isEditing) {
+            $this->message->update([
+                'body' => $this->form->message,
+                'photo' => $path ?? null
+            ]);
+        } else {
+            Message::create([
+                'contact_id' => $this->contact->id,
+                'sender_id' => $this->loggedInUser->id,
+                'body' => $this->form->message,
+                'photo' => $path ?? null
+            ]);
+        }
 
         $this->messages = $this->contact->messages()->with('sender')->get();
         $this->dispatch('chat-scroll-down');
+        $this->dispatch('message-updated');
         $this->dispatch('refreshContactList');
 
+        $this->isEditing = false;
         $this->form->reset();
         $this->form->resetValidation();
+    }
+
+    #[On('editMessage')]
+    public function editMessage($id)
+    {
+        $this->isEditing = true;
+        $this->message = $this->messages->find($id);
+
+        $this->form->message = $this->message->body;
+        $this->form->photo = $this->message->photo;
     }
 
     #[On('deleteMessage')]
     public function deleteMessage($id)
     {
-        $message = Message::find($id);
-        $message->delete();
+        Message::destroy($id);
 
         $this->messages = $this->contact->messages()->with('sender')->get();
     }

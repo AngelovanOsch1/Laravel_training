@@ -19,7 +19,12 @@
     <div class="flex-1 overflow-y-auto space-y-4 pr-1 max-h-[693px] scrollbar-hidden" style="overflow-anchor: none;">
         @forelse($messages ?? [] as $message)
                 <div :key="$message->id" class="animate-fade-in transition duration-300">
-                    <livewire:message :loggedInUser="$loggedInUser" :message="$message" :key="$message->id" />
+                    <livewire:message
+    :loggedInUser="$loggedInUser"
+    :message="$message"
+    :key="$message->id . '-' . $message->updated_at->timestamp"
+/>
+
                 </div>
         @empty
             <div class="flex flex-col justify-center items-center h-full text-gray-400">
@@ -60,7 +65,7 @@
 
                 <x-primary-button
                     class="w-20 px-4 py-2 rounded-lg bg-white border border-teal-600 text-teal-600 hover:bg-teal-50 active:bg-teal-100 transition-colors duration-200 ease-in-out text-sm font-semibold shadow-sm"
-                    text="Send" />
+                    text="{{ $isEditing ? 'Edit' : 'Send' }}" />
             </div>
         </div>
     </form>
