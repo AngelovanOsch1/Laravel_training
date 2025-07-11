@@ -32,40 +32,34 @@
             @endif
         </div>
 
-        @if ($contact?->latestMessage)
+        @if ($contact && $contact->latestMessage)
             <div class="{{ $isCurrentUser ? 'mt-3' : 'mt-1' }} text-xs">
                 {{ $contact->latestMessage->body ?? 'Sent a photo' }}
             </div>
-        @else
+        @elseif ($contact === null)
             <span
                 class="{{ $isCurrentUser ? 'mt-3' : 'mt-1' }} px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-100 text-blue-800 w-fit">
                 {{ $user->role->name }}
             </span>
         @endif
+
     </div>
 
-@if (!$isCurrentUser)
-    <div class="relative ml-auto" @click.stop>
-        <x-primary-button xClick="openDropdownId === {{ $user->id }} ? openDropdownId = null : openDropdownId = {{ $user->id }}" class="px-2 py-1" type="button" icon="{{ $icon }}" />
-
-        <div
-            x-show="openDropdownId === {{ $user->id }}"
-            @click.away="openDropdownId = null"
-            class="absolute right-5 w-28 bg-white border border-gray-300 rounded shadow-lg z-10"
-            x-transition>
-            <x-nav-link href="{{ route('profile', ['id' => $user->id]) }}"
-                class="flex items-center w-full px-4 py-2 hover:bg-gray-100 gap-3 text-black"
-                @click="openDropdownId = null">
-                <i class="fa fa-id-badge"></i>
-                <span>Profile</span>
-            </x-nav-link>
-            @if ($contact)
+    @if (!$isCurrentUser && $contact)
+        <div x-data="{ open: false }" class="relative ml-auto" @click.stop>
+            <x-primary-button xClick="open = !open" class="px-2 py-1" type="button" icon="ellipsis-v" />
+            <div x-show="open" @click.away="open = false"
+                class="absolute right-5 w-28 bg-white border border-gray-300 rounded shadow-lg z-10">
+                <x-nav-link href="{{ route('profile', ['id' => $user->id]) }}"
+                    class="flex items-center w-full px-4 py-2 hover:bg-gray-100 gap-3 text-black"
+                    @click="openDropdownId = null">
+                    <i class="fa fa-id-badge"></i>
+                    <span>Profile</span>
+                </x-nav-link>
                 <x-primary-button class="flex items-center w-full px-4 py-2 hover:bg-gray-100 gap-3"
-                    click="toggleVisibility({{ $contact->id }})" xClick="open = false"
-                    text="Hide" icon="eye-slash" type="button" />
-            @endif
+                    click="toggleVisibility({{ $contact->id }})" xClick="open = false" text="Hide" icon="eye-slash"
+                    type="button" />
+            </div>
         </div>
-    </div>
-@endif
-
+    @endif
 </div>

@@ -37,8 +37,8 @@ class ContactList extends Component
         }
 
         if ($id === $this->activeContactId) {
-            $this->dispatch('loadChat', null);
             $this->activeContactId = null;
+            $this->dispatch('loadChat', null);
         }
 
         $contact->save();

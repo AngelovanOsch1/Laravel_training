@@ -12,6 +12,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use App\Livewire\Forms\MessageValidationForm;
 use Illuminate\Validation\ValidationException;
+use App\Events\MessageSent;
 
 class ChatScreen extends Component
 {
@@ -19,7 +20,7 @@ class ChatScreen extends Component
 
     public User $loggedInUser;
     public ?Contact $contact = null;
-    public Collection $messages;
+    public ?Collection $messages = null;
     public Message $message;
     public MessageValidationForm $form;
     public bool $isEditing = false;
@@ -33,6 +34,7 @@ class ChatScreen extends Component
             $this->loadChat($latestContactId);
         }
     }
+
     public function render()
     {
         return view('livewire.chat-screen');
@@ -42,7 +44,7 @@ class ChatScreen extends Component
     public function loadChat(?int $id)
     {
         if ($id === null) {
-            return $this->messages = collect();
+            return $this->messages = null;
         }
 
         $this->contact = Contact::with('userOne', 'userTwo', 'messages.sender')->findOrFail($id);
@@ -88,15 +90,22 @@ class ChatScreen extends Component
             ]);
             $this->activeMessageId = null;
         } else {
-            Message::create([
+            $message = Message::create([
                 'contact_id' => $this->contact->id,
                 'sender_id' => $this->loggedInUser->id,
                 'body' => $this->form->message,
                 'photo' => $path ?? null
             ]);
+
+            broadcast(new MessageSent($message));
+            $this->messages->push($message);
         }
 
-        $this->messages = $this->contact->messages()->with('sender')->get();
+        $this->contact->update([
+            'user_one_visible' => true,
+            'user_two_visible' => true,
+        ]);
+
         $this->dispatch('message-updated');
         $this->dispatch('refreshContactList');
 
