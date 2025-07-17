@@ -9,10 +9,10 @@ use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\Livewire\Forms\MessageValidationForm;
 use Illuminate\Validation\ValidationException;
-use App\Events\MessageSent;
 
 class ChatScreen extends Component
 {
@@ -25,12 +25,14 @@ class ChatScreen extends Component
     public MessageValidationForm $form;
     public bool $isEditing = false;
     public ?int $activeMessageId = null;
+    public int $contactId;
 
     public function mount(User $loggedInUser, ?int $latestContactId)
     {
         $this->loggedInUser = $loggedInUser;
 
         if ($latestContactId) {
+            $this->contactId = $latestContactId;
             $this->loadChat($latestContactId);
         }
     }
@@ -38,6 +40,13 @@ class ChatScreen extends Component
     public function render()
     {
         return view('livewire.chat-screen');
+    }
+
+    #[On('incomingMessage')]
+    public function incomingMessage($message)
+    {
+        dd($message);
+        $this->messages->push(new \App\Models\Message((array) $message));
     }
 
     #[On('loadChat')]
@@ -97,7 +106,11 @@ class ChatScreen extends Component
                 'photo' => $path ?? null
             ]);
 
-            broadcast(new MessageSent($message));
+            Log::info('MessageSent event fired');
+
+            // broadcast(new MessageSent($message))->toOthers();
+
+            Log::info('MessageSent event broadcasted');
             $this->messages->push($message);
         }
 

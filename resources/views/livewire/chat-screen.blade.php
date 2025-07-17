@@ -105,16 +105,3 @@
         </form>
     @endif
 </div>
-
-<script>
-    document.addEventListener('livewire:load', () => {
-        const userId = @json(auth()->id());  // Pass logged in user ID to JS
-
-        window.Echo.private(`chat.${userId}`)
-            .listen('MessageSent', (e) => {
-                // Dispatch a Livewire event to tell your component a new message arrived
-                Livewire.emit('messageReceived', e.message);
-            });
-    });
-</script>
-
