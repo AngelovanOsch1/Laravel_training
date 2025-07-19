@@ -30,16 +30,12 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.2'
           extensions: mbstring, pdo_mysql, bcmath, intl
           coverage: none
 
-      - name: Authenticate Composer for Laravel Nova
-        run: |
-          composer config --global --auth http-basic.nova.laravel.com nova ${{ secrets.NOVA_AUTH_TOKEN }}
-
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
+        run: composer install --prefer-dist --no-progress --no-suggest
 
       - name: Set up .env
         run: |
