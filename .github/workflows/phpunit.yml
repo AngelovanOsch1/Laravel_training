@@ -36,7 +36,7 @@ jobs:
 
       - name: Authenticate Composer for Laravel Nova
         run: |
-          composer config --global github-oauth.github.com ${{ secrets.NOVA_AUTH_TOKEN }}
+          composer config --global --auth http-basic.nova.laravel.com nova ${{ secrets.NOVA_AUTH_TOKEN }}
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
