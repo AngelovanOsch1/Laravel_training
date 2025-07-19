@@ -25,8 +25,16 @@
                 <div class="flex items-center gap-4">
                     <div class="sm:flex sm:gap-4">
                         @auth
-                            <x-primary-button text="Logout" type="button" click="logout"
-                                class="rounded-md bg-red-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-700 cursor-pointer" />
+                            <div class="flex gap-5">
+                                <x-form-select
+                                    class="w-full px-3 py-2 bg-white border border-gray-300 text-sm text-gray-800 rounded-md shadow-sm focus:outline-none cursor-pointer"
+                                    liveModel="form.selectedLanguage">
+                                    <x-form-option text="English" value="en" />
+                                    <x-form-option text="Dutch" value="nl" />
+                                </x-form-select>
+                                <x-primary-button text="{{ __('messages.logout') }}" type="button" click="logout"
+                                    class="rounded-md bg-red-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-700 cursor-pointer" />
+                            </div>
                         @endauth
                         @guest
                             <x-nav-link href="{{ route('login') }}" text="Login" :active="Route::is('login')"
