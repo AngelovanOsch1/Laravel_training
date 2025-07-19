@@ -11,11 +11,10 @@
                     </button>
 
                     <div x-show="open" @click.outside="open = false" x-transition
-                        class="absolute right-5 mt-2 w-56 rounded-md shadow-lg bg-white z-50" role="menu">
-                        <x-nav-link href="{{ route('profile') }}" text="My Profile"
-                            class="block rounded-lg px-4 py-2 text-sm" />
-
-                        <x-nav-link href="{{ route('chat') }}" text="My Chats" class="block rounded-lg px-4 py-2 text-sm" />
+                        class="absolute right-5 mt-2 w-56 rounded-md shadow-lg bg-white z-50 shadow-[#c0c0c0]" role="menu">
+                        <x-nav-link href="{{ route('profile') }}" text="My Profile" class="block px-4 py-2 text-sm hover:bg-gray-100" />
+                        <x-nav-link href="{{ route('chat') }}" text="My Chats" class="block px-4 py-2 text-sm hover:bg-gray-100" />
+                        <x-nav-link href="{{ route('contact-us') }}" text="Contact us" class="block px-4 py-2 text-sm hover:bg-gray-100" />
                     </div>
                 @endauth
 

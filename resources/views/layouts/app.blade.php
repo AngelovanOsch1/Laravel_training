@@ -16,6 +16,17 @@
     <div class="mt-20">
       <livewire:footer />
     </div>
+    @if (session()->has('success'))
+      <div
+        x-data="{ show: true }"
+        x-init="setTimeout(() => show = false, 4000)"
+        x-show="show"
+        x-transition
+        class="fixed bottom-6 right-6 bg-teal-600 text-white px-5 py-3 rounded-lg shadow-lg z-50"
+      >
+        {{ session('success') }}
+      </div>
+    @endif
     @livewireScripts
   </body>
 </html>
