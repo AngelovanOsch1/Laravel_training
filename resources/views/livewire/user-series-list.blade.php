@@ -77,8 +77,10 @@
                         <x-table-tr class="border-b border-gray-300 hover:bg-gray-50 transition">
                             <x-table-td class="p-4 font-black">{{ $loop->iteration }}</x-table-td>
                             <x-table-td>
-                                <img src="{{ asset($entry->cover_image) }}" alt="{{ $entry->title }}"
-                                    class="w-18 h-25 object-cover rounded-md" />
+                                <x-nav-link class="" href="{{ route('series', ['id' => $entry->id]) }}">
+                                    <img src="{{ asset($entry->cover_image) }}" alt="{{ $entry->title }}"
+                                        class="w-18 h-25 object-cover rounded-md" />
+                                </x-nav-link>
                             </x-table-td>
                             <x-table-td>
                                 <p>

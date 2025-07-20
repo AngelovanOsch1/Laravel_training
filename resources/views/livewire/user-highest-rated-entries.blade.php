@@ -3,8 +3,10 @@
     <div class="flex gap-5 justify-start items-center">
         @forelse ($topRatedSeries as $series)
             <div class="flex flex-col gap-2 transition-transform duration-200 hover:scale-105">
-                <img src="{{ asset($series->cover_image) }}" alt="{{ $series->title }}"
-                    class="h-30 w-auto mx-auto rounded-md shadow-sm" />
+                <x-nav-link class="" href="{{ route('series', ['id' => $series->id]) }}">
+                    <img src="{{ asset($series->cover_image) }}" alt="{{ $series->title }}"
+                        class="h-30 w-auto mx-auto rounded-md shadow-sm" />
+                </x-nav-link>
                 <div class="flex gap-2 justify-center items-center">
                     <div class="font-bold">{{ $series->pivot->score }}</div>
                     <img src="{{ asset('storage/images/star.svg') }}" class="w-7 h-7" alt="Star Icon">

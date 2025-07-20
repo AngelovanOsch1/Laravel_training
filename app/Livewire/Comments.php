@@ -21,13 +21,14 @@ class Comments extends Component
     public CommentFormValidation $form;
     public User $user;
     public User $loggedInUser;
-
+    public string $commentType;
     private string $sortBy = 'created_at';
 
-
-    public function mount($id)
+    public function mount($id, $commentType)
     {
         $this->user = User::findOrFail($id);
+        $this->commentType = $commentType;
+
         $this->loggedInUser = GlobalHelper::getLoggedInUser();
     }
 
@@ -75,7 +76,7 @@ class Comments extends Component
         Comment::create([
             'message' => $this->form->message,
             'commentable_id' => $this->user->id,
-            'commentable_type' => User::class,
+            'commentable_type' => $this->commentType,
             'photo' => $path ?? null,
             'user_id' => $this->loggedInUser->id,
         ]);

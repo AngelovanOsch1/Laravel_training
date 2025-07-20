@@ -12,5 +12,5 @@
             </div>
         </div>
     </div>
-    <livewire:comments :id="$user->id" />
+    <livewire:comments :id="$user->id" commentType="App\Models\User" />
 </div>

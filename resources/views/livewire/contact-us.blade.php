@@ -1,5 +1,5 @@
 <div class="mt-5">
-    <div class="max-w-3xl mx-auto bg-gray-100 rounded-lg shadow-lg overflow-hidden shadow-[#c0c0c0]">
+    <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg shadow-[#c0c0c0]">
         <form class="p-10 flex flex-col gap-5" wire:submit.prevent="submit">
             <h3 class="text-xl font-bold mb-3 text-left">Contact us</h3>
 
