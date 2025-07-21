@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Series extends Model
 {
@@ -17,12 +18,18 @@ class Series extends Model
         'aired_end_date',
         'score',
         'cover_image',
-        'type'
+        'type',
+        'synopsis'
     ];
 
     public function genres()
     {
         return $this->belongsToMany(Genre::class);
+    }
+
+    public function studios()
+    {
+        return $this->belongsToMany(Studio::class);
     }
 
     public function users()
@@ -38,6 +45,15 @@ class Series extends Model
             ]);
     }
 
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function reactions()
+    {
+        return $this->morphMany(Reaction::class, 'reactionable');
+    }
 
     public static function calculateSeriesTotalScore($id)
     {
@@ -51,5 +67,13 @@ class Series extends Model
         $series->update([
             'score' => $seriesScore,
         ]);
+    }
+
+    public function authUserReactedWith($type)
+    {
+        return $this->reactions
+            ->where('user_id', Auth::id())
+            ->where('type', $type)
+            ->isNotEmpty();
     }
 }

@@ -20,7 +20,7 @@
                 </label>
             </div>
             <div class="flex-grow">
-                <x-form-textarea id="message" name="form.message" placeholder="Enter up to 300 characters..."
+                <x-form-textarea id="message" name="form.message" placeholder="Enter up to 300 characters..." function="submit"
                     rows="0" liveModel="form.message" maxCharacters="300" :fileUpload="true" :value="$form->photo?->temporaryUrl()"
                     class="w-full text-sm border-0 border-b border-gray-300 focus:border-teal-600 focus:ring-0 placeholder-gray-400 pt-2 resize-none focus:outline-none" />
 
@@ -49,7 +49,7 @@
         </form>
     @endauth
     <div x-data="{ isEditing: false, }" x-on:comment-updated.window="isEditing = false">
-        @if ($commentsList->isEmpty() && auth()->id() !== $user->id)
+        @if ($commentsList->isEmpty() && (auth()->id() !== $model->id || $commentType !== 'App\Models\User'))
             <div class="flex flex-col items-center justify-center w-full">
                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100"
                     viewBox="0,0,256,256" style="fill:#737373;">
@@ -64,13 +64,13 @@
                         </g>
                     </g>
                 </svg>
-                    <p class="text-gray-400 text-lg">No comments yet. Be the first to comment!</p>
+                <p class="text-gray-400 text-lg">No comments yet. Be the first to comment!</p>
 
             </div>
         @else
             @foreach ($commentsList as $comment)
                 <div wire:key="{{ $comment->id }}" class="animate-fade-in transition duration-300">
-                    <livewire:comment :comment="$comment" :user="$user" :loggedInUser="$loggedInUser" :key="$comment->id" />
+                    <livewire:comment :comment="$comment" :model="$model" :loggedInUser="$loggedInUser" :key="$comment->id" />
                 </div>
             @endforeach
         @endif

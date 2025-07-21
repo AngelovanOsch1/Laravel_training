@@ -32,7 +32,7 @@
                     @if ($isEditing)
                         <div>
                             <x-form-textarea id="message" name="updateCommentform.message"
-                                placeholder="Enter up to 300 characters..." rows="0"
+                                placeholder="Enter up to 300 characters..." rows="0" function="updateComment"
                                 liveModel="updateCommentform.message" maxCharacters="300" :fileUpload="$comment->photo ? true : false"
                                 :value="$comment->photo"
                                 class="w-full text-sm border-0 border-b border-gray-300 focus:border-teal-600 focus:ring-0 placeholder-gray-400 pt-2 resize-none focus:outline-none" />
@@ -99,7 +99,7 @@
                                 </label>
                             </div>
                             <div class="flex-grow">
-                                <x-form-textarea id="message" name="replyForm.message"
+                                <x-form-textarea id="message" name="replyForm.message" function="submitReply"
                                     placeholder="Enter up to 300 characters..." rows="0"
                                     liveModel="replyForm.message" maxCharacters="300" :fileUpload="true"
                                     :value="$replyForm->photo"
@@ -161,7 +161,7 @@
             <div>
                 @foreach ($replies as $reply)
                     <div wire:key="{{ $reply->id }}" class="animate-fade-in transition duration-300">
-                        <livewire:comment :comment="$reply" :user="$reply->user" :loggedInUser="$loggedInUser" :key="$reply->id" />
+                        <livewire:comment :comment="$reply" :model="$reply->user" :loggedInUser="$loggedInUser" :key="$reply->id" />
                     </div>
                 @endforeach
             </div>

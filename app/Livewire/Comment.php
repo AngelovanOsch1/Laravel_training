@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use App\Models\Series;
 use Livewire\Component;
 use App\Models\Reaction;
 use Livewire\Attributes\On;
@@ -21,7 +22,7 @@ class Comment extends Component
     public CommentFormValidation $updateCommentform;
     public CommentFormValidation $replyForm;
     public CommentModel $comment;
-    public User $user;
+    public $model;
     public User $loggedInUser;
     public bool $isEditing = false;
     public $replies;
@@ -31,10 +32,10 @@ class Comment extends Component
     public $allReplies;
     public $visibleRepliesCount = 2;
 
-    public function mount(CommentModel $comment, User $user, User $loggedInUser)
+    public function mount(CommentModel $comment, $model, User $loggedInUser)
     {
         $this->comment = $comment;
-        $this->user = $user;
+        $this->model = $model;
         $this->loggedInUser = $loggedInUser;
 
         $this->loadReplies(2);
@@ -217,6 +218,6 @@ class Comment extends Component
     #[On('profilePhotoUpdated')]
     public function refreshProfilePhoto($newPhotoPath)
     {
-        $this->user->profilePhoto = $newPhotoPath;
+        $this->model->profilePhoto = $newPhotoPath;
     }
 }

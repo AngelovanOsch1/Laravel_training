@@ -48,7 +48,6 @@ class Profile extends Component
         }
     }
 
-
     public function likeUser($id)
     {
         $existingReaction = Reaction::where('user_id', $this->loggedInUser->id)

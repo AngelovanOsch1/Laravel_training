@@ -69,7 +69,6 @@ class User extends Authenticatable
         return $this->morphMany(Reaction::class, 'reactionable');
     }
 
-
     public function sessions()
     {
         return $this->hasMany(Session::class);

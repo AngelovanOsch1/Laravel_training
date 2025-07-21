@@ -23,6 +23,7 @@ class UserFactory extends Factory
             'gender_id' => Gender::factory(),
             'profile_photo' => null,
             'profile_banner' => null,
+            'description' => $this->faker->sentences(5)
         ];
     }
 }

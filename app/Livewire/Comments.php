@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use App\Models\Series;
 use App\Models\Comment;
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -19,22 +20,21 @@ class Comments extends Component
     use WithFileUploads;
 
     public CommentFormValidation $form;
-    public User $user;
+    public User|Series $model;
     public User $loggedInUser;
     public string $commentType;
     private string $sortBy = 'created_at';
 
-    public function mount($id, $commentType)
+    public function mount(int $id, string $commentType)
     {
-        $this->user = User::findOrFail($id);
         $this->commentType = $commentType;
-
+        $this->model = $this->findObject($this->commentType, $id);
         $this->loggedInUser = GlobalHelper::getLoggedInUser();
     }
 
     public function render()
     {
-        $query = $this->user->comments()
+        $query = $this->model->comments()
             ->whereNull('parent_id')
             ->withCount([
                 'reactions as likes_count' => fn($q) => $q->where('type', 'like'),
@@ -45,6 +45,14 @@ class Comments extends Component
         return view('livewire.comments', [
             'commentsList' => $commentsList,
         ]);
+    }
+
+    public function findObject(string $commenType, int $id)
+    {
+        return match (true) {
+            $commenType === 'App\Models\User' =>  User::findOrFail($id),
+            $commenType === 'App\Models\Series' =>  Series::findOrFail($id),
+        };
     }
 
     public function updatedFormPhoto()
@@ -75,7 +83,7 @@ class Comments extends Component
 
         Comment::create([
             'message' => $this->form->message,
-            'commentable_id' => $this->user->id,
+            'commentable_id' => $this->model->id,
             'commentable_type' => $this->commentType,
             'photo' => $path ?? null,
             'user_id' => $this->loggedInUser->id,

@@ -28,11 +28,13 @@ class SeriesFactory extends Factory
             'title' => $this->faker->unique()->sentence(2),
             'type' => $this->faker->randomElement(['TV', 'Movie', 'OVA']),
             'cover_image' => $this->faker->randomElement($this->images),
+            'video' => 'https://www.youtube.com/watch?v=' . $this->faker->regexify('[A-Za-z0-9_-]{11}'),
             'episode_count' => $this->faker->numberBetween(1, 100),
             'minutes_per_episode' => $this->faker->numberBetween(10, 100),
             'aired_start_date' => $this->faker->dateTimeBetween('-5 years', '-3 years'),
             'aired_end_date' => $this->faker->dateTimeBetween('-2 years', '+2 years'),
             'score' => $this->faker->numberBetween(1, 10),
+            'synopsis' => $this->faker->sentences(15)
         ];
     }
 }

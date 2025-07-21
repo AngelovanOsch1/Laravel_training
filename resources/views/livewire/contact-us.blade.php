@@ -16,7 +16,7 @@
 
             <div>
                 <x-form-label for="message" text="Your message" />
-                <x-form-textarea id="message" name="form.message" placeholder="Enter up to 500 characters..."
+                <x-form-textarea id="message" name="form.message" placeholder="Enter up to 500 characters..." function="submit"
                     rows="5" liveModel="form.message" maxCharacters="500" />
             </div>
             <x-primary-button text="Send" click="submit" icon="send"

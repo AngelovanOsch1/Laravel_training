@@ -16,11 +16,13 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->string('type')->default('TV');
             $table->string('cover_image');
+            $table->string('video');
             $table->integer('episode_count');
             $table->integer('minutes_per_episode');
             $table->date('aired_start_date');
             $table->date('aired_end_date');
             $table->decimal('score');
+            $table->text('synopsis');
             $table->timestamps();
         });
     }

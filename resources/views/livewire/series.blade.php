@@ -35,7 +35,7 @@
                 </div>
                 <div class="flex justify-between text-sm text-gray-700">
                     <span>Studios</span>
-                    <span>Madhouse</span>
+                    <span>{{ $series->studios->pluck('name')->implode(', ') }}</span>
                 </div>
                 <div class="flex justify-between text-sm text-gray-700">
                     <span>Genres</span>
@@ -48,10 +48,15 @@
             </div>
             <hr class="my-6 w-full border-t border-gray-300" />
             <div class="flex gap-4">
-                <x-primary-button type="button" text="Likes" icon="thumbs-up" iconPosition="right"
+                <x-primary-button type="button" text="Likes {{ $reactionsObject->likeCount }}" :icon="$series->authUserReactedWith('like') ? 'thumbs-up' : 'thumbs-o-up'"
+                    iconPosition="right" click="toggleReactionSeries('like')"
                     class="px-4 py-2 bg-white text-green-600 font-medium rounded border border-green-600 shadow hover:bg-green-50 flex items-center gap-2 text-sm w-full justify-center whitespace-nowrap transition-colors duration-200" />
-                <x-primary-button type="button" text="Dislikes" icon="thumbs-down" iconPosition="right"
+                <x-primary-button type="button" text="Dislikes {{ $reactionsObject->dislikeCount }}"
+                    :icon="$series->authUserReactedWith('dislike') ? 'thumbs-down' : 'thumbs-o-down'"
+ i                  iconPosition="right"
+                    click="toggleReactionSeries('dislike')"
                     class="px-4 py-2 bg-white text-rose-600 font-medium rounded border border-rose-600 shadow hover:bg-rose-50 flex items-center gap-2 text-sm w-full justify-center whitespace-nowrap transition-colors duration-200" />
+
             </div>
         </div>
         <div class="flex-grow">
@@ -69,31 +74,19 @@
                             #{{ $series->rank }}</span>
                     </div>
 
-                    <iframe width="320" height="180" src="https://www.youtube.com/embed/Iwr1aLEDpe4"
+                    <iframe width="320" height="180" src="https://www.youtube.com/embed/{{ $series->video }}"
                         title="YouTube video player" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen class="rounded-lg shadow-lg"></iframe>
+                        allowfullscreen class="rounded-lg shadow-lg">
+                    </iframe>
+
                 </div>
 
                 <hr class="my-6 w-full border-t border-gray-300" />
                 <h5 class="text-l font-bold mb-8 text-left">Synopsis</h5>
                 <p class="text-left text-sm text-gray-700">
-                    During their decade-long quest to defeat the Demon King, the members of the hero's party—Himmel
-                    himself, the priest Heiter, the dwarf warrior Eisen, and the elven mage Frieren—forge bonds through
-                    adventures and battles, creating unforgettable precious memories for most of them.
-
-                    However, the time that Frieren spends with her comrades is equivalent to merely a fraction of her
-                    life, which has lasted over a thousand years. When the party disbands after their victory, Frieren
-                    casually returns to her "usual" routine of collecting spells across the continent. Due to her
-                    different sense of time, she seemingly holds no strong feelings toward the experiences she went
-                    through.
-
-                    As the years pass, Frieren gradually realizes how her days in the hero's party truly impacted her.
-                    Witnessing the deaths of two of her former companions, Frieren begins to regret having taken their
-                    presence for granted; she vows to better understand humans and create real personal connections.
-                    Although the story of that once memorable journey has long ended, a new tale is about to begin.
+                    {{ $series->synopsis }}
                 </p>
-
             </div>
             <div
                 class="my-10 flex flex-col w-full rounded-xl bg-white px-6 py-6 text-center shadow-lg shadow-[#c0c0c0]">
