@@ -27,6 +27,11 @@ class Series extends Model
         return $this->belongsToMany(Genre::class);
     }
 
+    public function themes()
+    {
+        return $this->hasMany(Theme::class);
+    }
+
     public function studios()
     {
         return $this->belongsToMany(Studio::class);

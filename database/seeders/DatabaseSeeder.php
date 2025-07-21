@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Genre;
+use App\Models\Theme;
 use App\Models\Gender;
 use App\Models\Series;
 use App\Models\Studio;
@@ -196,6 +197,46 @@ TEXT
 
             $seriesCollection->push($series);
         }
+
+        $themesPool = collect([
+            ['title' => 'Opening 1', 'artist' => 'Artist A', 'audio_url' => 'storage/themes/theme1.mp3', 'type' => 'opening'],
+            ['title' => 'Opening 2', 'artist' => 'Artist B', 'audio_url' => 'storage/themes/theme2.mp3', 'type' => 'opening'],
+            ['title' => 'Opening 3', 'artist' => 'Artist C', 'audio_url' => 'storage/themes/theme3.mp3', 'type' => 'opening'],
+            ['title' => 'Opening 4', 'artist' => 'Artist D', 'audio_url' => 'storage/themes/theme4.mp3', 'type' => 'opening'],
+            ['title' => 'Opening 5', 'artist' => 'Artist E', 'audio_url' => 'storage/themes/theme5.mp3', 'type' => 'opening'],
+            ['title' => 'Opening 6', 'artist' => 'Artist F', 'audio_url' => 'storage/themes/theme6.mp3', 'type' => 'opening'],
+            ['title' => 'Ending 1', 'artist' => 'Artist G', 'audio_url' => 'storage/themes/theme7.mp3', 'type' => 'ending'],
+            ['title' => 'Ending 2', 'artist' => 'Artist H', 'audio_url' => 'storage/themes/theme8.mp3', 'type' => 'ending'],
+            ['title' => 'Ending 3', 'artist' => 'Artist I', 'audio_url' => 'storage/themes/theme9.mp3', 'type' => 'ending'],
+            ['title' => 'Ending 4', 'artist' => 'Artist J', 'audio_url' => 'storage/themes/theme10.mp3', 'type' => 'ending'],
+            ['title' => 'Ending 5', 'artist' => 'Artist K', 'audio_url' => 'storage/themes/theme11.mp3', 'type' => 'ending'],
+            ['title' => 'Ending 6', 'artist' => 'Artist L', 'audio_url' => 'storage/themes/theme12.mp3', 'type' => 'ending'],
+        ]);
+
+        $seriesCollection->each(function ($series) use ($themesPool) {
+            $openings = $themesPool->where('type', 'opening')->random(2);
+            $endings = $themesPool->where('type', 'ending')->random(2);
+
+            foreach ($openings as $opening) {
+                Theme::create([
+                    'series_id' => $series->id,
+                    'title' => $opening['title'],
+                    'artist' => $opening['artist'],
+                    'audio_url' => $opening['audio_url'],
+                    'type' => 'opening',
+                ]);
+            }
+
+            foreach ($endings as $ending) {
+                Theme::create([
+                    'series_id' => $series->id,
+                    'title' => $ending['title'],
+                    'artist' => $ending['artist'],
+                    'audio_url' => $ending['audio_url'],
+                    'type' => 'ending',
+                ]);
+            }
+        });
 
         $studios = collect([
             'MAPPA',
