@@ -9,9 +9,12 @@ use App\Models\Gender;
 use App\Models\Series;
 use App\Models\Studio;
 use App\Models\Country;
+use App\Models\Character;
+use App\Models\VoiceActor;
 use Faker\Factory as Faker;
 use App\Models\SeriesStatus;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -175,6 +178,43 @@ TEXT
             ],
         ];
 
+        $imagesCharacters = [
+            ['name' => 'Alphonse Elric', 'image' => 'storage/characters/alphonse_elric.jpg'],
+            ['name' => 'Edward Elric', 'image' => 'storage/characters/edward_elric.jpg'],
+            ['name' => 'Eren Yeager', 'image' => 'storage/characters/eren_yeager.jpg'],
+            ['name' => 'Fern', 'image' => 'storage/characters/fern.jpg'],
+            ['name' => 'Frieren', 'image' => 'storage/characters/frieren.jpg'],
+            ['name' => 'Girl', 'image' => 'storage/characters/girl.jpg'],
+            ['name' => 'Kurisu Makise', 'image' => 'storage/characters/kurisu_makise.jpg'],
+            ['name' => 'Levi Ackerman', 'image' => 'storage/characters/levi.jpg'],
+            ['name' => 'Marine older brother', 'image' => 'storage/characters/marine_older_brother.jpg'],
+            ['name' => 'Rintarou Okabe', 'image' => 'storage/characters/rintarou_okabe.jpg'],
+        ];
+
+        $createdCharacters = collect();
+        foreach ($imagesCharacters as $character) {
+            $createdCharacters->push(Character::create($character));
+        }
+
+        $imagesVoiceActors = [
+            ['name' => 'Ichinose Kana', 'image' => 'storage/voice_actors/ichinose_kana.jpg'],
+            ['name' => 'Imai Asami', 'image' => 'storage/voice_actors/imai_asami.jpg'],
+            ['name' => 'Kaji Yuuki', 'image' => 'storage/voice_actors/kaji_yuuki.jpg'],
+            ['name' => 'Kamiya Hiroshi', 'image' => 'storage/voice_actors/kamiya_hiroshi.jpg'],
+            ['name' => 'Kase Yasuyuki', 'image' => 'storage/voice_actors/kase_yasuyuki.jpg'],
+            ['name' => 'Kikuchi Kokoro', 'image' => 'storage/voice_actors/kikuchi_kokoro.jpg'],
+            ['name' => 'Kugimiya Rie', 'image' => 'storage/voice_actors/kugimiya_rie.jpg'],
+            ['name' => 'Miyano Mamoru', 'image' => 'storage/voice_actors/miyano_mamoru.jpg'],
+            ['name' => 'Park Romi', 'image' => 'storage/voice_actors/park_romi.jpg'],
+            ['name' => 'Tanezaki Atsumi', 'image' => 'storage/voice_actors/tanezaki_atsumi.jpg'],
+        ];
+
+        $createdVoiceActors = collect();
+        foreach ($imagesVoiceActors as $va) {
+            $createdVoiceActors->push(VoiceActor::create($va));
+        }
+
+
         $seriesCollection = collect();
 
         foreach ($images as $entry) {
@@ -195,6 +235,18 @@ TEXT
             ]);
 
             $seriesCollection->push($series);
+        }
+
+        $characterSeriesRecords = collect();
+
+        $createdCharacters->each(function ($character) use ($seriesCollection, $characterSeriesRecords) {
+            $Series = $seriesCollection->random(rand(2, 8));
+            $character->series()->attach($Series->pluck('id')->toArray());
+        });
+
+        foreach ($characterSeriesRecords as $characterSeries) {
+            $randomVoiceActors = $createdVoiceActors->random(rand(1, 2));
+            $characterSeries->voiceActors()->attach($randomVoiceActors->pluck('id')->toArray());
         }
 
         $studios = collect([

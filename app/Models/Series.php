@@ -32,6 +32,16 @@ class Series extends Model
         return $this->belongsToMany(Studio::class);
     }
 
+    public function characters()
+    {
+        return $this->belongsToMany(Character::class, 'character_series');
+    }
+
+    public function characterSeries()
+    {
+        return $this->hasMany(CharacterSeries::class);
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class)

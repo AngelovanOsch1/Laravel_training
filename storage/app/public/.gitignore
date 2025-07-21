@@ -3,5 +3,10 @@
 !images/**
 !banners/
 !photos/
+!characters/
+!characters/**
+!voice_actors/
+!voice_actors/**
 !series/
 !series/**
+!messagesPhotos/

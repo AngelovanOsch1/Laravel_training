@@ -51,10 +51,8 @@
                 <x-primary-button type="button" text="Likes {{ $reactionsObject->likeCount }}" :icon="$series->authUserReactedWith('like') ? 'thumbs-up' : 'thumbs-o-up'"
                     iconPosition="right" click="toggleReactionSeries('like')"
                     class="px-4 py-2 bg-white text-green-600 font-medium rounded border border-green-600 shadow hover:bg-green-50 flex items-center gap-2 text-sm w-full justify-center whitespace-nowrap transition-colors duration-200" />
-                <x-primary-button type="button" text="Dislikes {{ $reactionsObject->dislikeCount }}"
-                    :icon="$series->authUserReactedWith('dislike') ? 'thumbs-down' : 'thumbs-o-down'"
- i                  iconPosition="right"
-                    click="toggleReactionSeries('dislike')"
+                <x-primary-button type="button" text="Dislikes {{ $reactionsObject->dislikeCount }}" :icon="$series->authUserReactedWith('dislike') ? 'thumbs-down' : 'thumbs-o-down'"
+                    i iconPosition="right" click="toggleReactionSeries('dislike')"
                     class="px-4 py-2 bg-white text-rose-600 font-medium rounded border border-rose-600 shadow hover:bg-rose-50 flex items-center gap-2 text-sm w-full justify-center whitespace-nowrap transition-colors duration-200" />
 
             </div>
@@ -92,90 +90,29 @@
                 class="my-10 flex flex-col w-full rounded-xl bg-white px-6 py-6 text-center shadow-lg shadow-[#c0c0c0]">
                 <h3 class="text-xl font-bold mb-8 text-left">Characters & Voice Actors</h3>
                 <div class="flex flex-col gap-3">
-                    <div class="flex flex-wrap justify-between gap-6">
-                        <div
-                            class="flex items-center justify-between bg-white rounded-xl p-4 w-full md:w-[48%] shadow-lg shadow-[#c0c0c0]">
-                            <div class="flex gap-4">
-                                <img src="{{ asset($series->cover_image) }}" alt="Cover"
-                                    class="w-20 h-28 object-cover rounded-md shadow" />
-                                <p class="text-gray-800 font-semibold">Frieren</p>
-                            </div>
-                            <div class="flex gap-4">
-                                <p class="text-gray-800 font-semibold">Frieren</p>
-                                <img src="{{ asset($series->cover_image) }}" alt="Cover"
-                                    class="w-20 h-28 object-cover rounded-md shadow" />
-                            </div>
+                    @foreach ($series->characterSeries->chunk(2) as $chunk)
+                        <div class="flex flex-wrap justify-between gap-6">
+                            @foreach ($chunk as $characterSeries)
+                                <div
+                                    class="flex items-center justify-between bg-white rounded-xl p-4 w-full md:w-[48%] shadow-lg shadow-[#c0c0c0]">
+                                    <div class="flex gap-4 items-center">
+                                        <img src="{{ asset($characterSeries->character->image) }}"
+                                            alt="{{ $characterSeries->character->name }}"
+                                            class="w-20 h-28 object-cover rounded-md shadow" />
+                                        <p class="text-gray-800 font-semibold">{{ $characterSeries->character->name }}
+                                        </p>
+                                    </div>
+                                        <div class="flex gap-4 items-center">
+                                            <p class="text-gray-800 font-semibold">
+                                                {{ $characterSeries->voiceActors->first()->name }}</p>
+                                            <img src="{{ asset($characterSeries->voiceActors->first()->image) }}"
+                                                alt="{{ $characterSeries->voiceActors->first()->name }}"
+                                                class="w-20 h-28 object-cover rounded-md shadow" />
+                                        </div>
+                                </div>
+                            @endforeach
                         </div>
-                        <div
-                            class="flex items-center justify-between bg-white rounded-xl p-4 w-full md:w-[48%] shadow-lg shadow-[#c0c0c0]">
-                            <div class="flex gap-4">
-                                <img src="{{ asset($series->cover_image) }}" alt="Cover"
-                                    class="w-20 h-28 object-cover rounded-md shadow" />
-                                <p class="text-gray-800 font-semibold">Frieren</p>
-                            </div>
-                            <div class="flex gap-4">
-                                <p class="text-gray-800 font-semibold">Frieren</p>
-                                <img src="{{ asset($series->cover_image) }}" alt="Cover"
-                                    class="w-20 h-28 object-cover rounded-md shadow" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap justify-between gap-6">
-                        <div
-                            class="flex items-center justify-between bg-white rounded-xl p-4 w-full md:w-[48%] shadow-lg shadow-[#c0c0c0]">
-                            <div class="flex gap-4">
-                                <img src="{{ asset($series->cover_image) }}" alt="Cover"
-                                    class="w-20 h-28 object-cover rounded-md shadow" />
-                                <p class="text-gray-800 font-semibold">Frieren</p>
-                            </div>
-                            <div class="flex gap-4">
-                                <p class="text-gray-800 font-semibold">Frieren</p>
-                                <img src="{{ asset($series->cover_image) }}" alt="Cover"
-                                    class="w-20 h-28 object-cover rounded-md shadow" />
-                            </div>
-                        </div>
-                        <div
-                            class="flex items-center justify-between bg-white rounded-xl p-4 w-full md:w-[48%] shadow-lg shadow-[#c0c0c0]">
-                            <div class="flex gap-4">
-                                <img src="{{ asset($series->cover_image) }}" alt="Cover"
-                                    class="w-20 h-28 object-cover rounded-md shadow" />
-                                <p class="text-gray-800 font-semibold">Frieren</p>
-                            </div>
-                            <div class="flex gap-4">
-                                <p class="text-gray-800 font-semibold">Frieren</p>
-                                <img src="{{ asset($series->cover_image) }}" alt="Cover"
-                                    class="w-20 h-28 object-cover rounded-md shadow" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap justify-between gap-6">
-                        <div
-                            class="flex items-center justify-between bg-white rounded-xl p-4 w-full md:w-[48%] shadow-lg shadow-[#c0c0c0]">
-                            <div class="flex gap-4">
-                                <img src="{{ asset($series->cover_image) }}" alt="Cover"
-                                    class="w-20 h-28 object-cover rounded-md shadow" />
-                                <p class="text-gray-800 font-semibold">Frieren</p>
-                            </div>
-                            <div class="flex gap-4">
-                                <p class="text-gray-800 font-semibold">Frieren</p>
-                                <img src="{{ asset($series->cover_image) }}" alt="Cover"
-                                    class="w-20 h-28 object-cover rounded-md shadow" />
-                            </div>
-                        </div>
-                        <div
-                            class="flex items-center justify-between bg-white rounded-xl p-4 w-full md:w-[48%] shadow-lg shadow-[#c0c0c0]">
-                            <div class="flex gap-4">
-                                <img src="{{ asset($series->cover_image) }}" alt="Cover"
-                                    class="w-20 h-28 object-cover rounded-md shadow" />
-                                <p class="text-gray-800 font-semibold">Frieren</p>
-                            </div>
-                            <div class="flex gap-4">
-                                <p class="text-gray-800 font-semibold">Frieren</p>
-                                <img src="{{ asset($series->cover_image) }}" alt="Cover"
-                                    class="w-20 h-28 object-cover rounded-md shadow" />
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
             <div

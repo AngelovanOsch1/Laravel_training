@@ -9,7 +9,6 @@ use App\Models\Reaction;
 use App\Models\SeriesUser;
 use App\Support\GlobalHelper;
 use Livewire\Attributes\Layout;
-use Illuminate\Support\Facades\DB;
 use App\Models\Series as SeriesModel;
 
 #[Layout('layouts.app')]
@@ -21,7 +20,8 @@ class Series extends Component
 
     public function mount(int $id)
     {
-        $this->series = SeriesModel::with(['genres', 'studios'])->find($id);
+        $this->series = SeriesModel::with(['genres', 'studios', 'characterSeries.voiceActors'])->find($id);
+
         $this->loggedInUser = GlobalHelper::getLoggedInUser();
         $this->series->amount_of_votes = SeriesUser::where('series_id', $this->series->id)->count();
         $this->series->rank = SeriesModel::where('score', '>', $this->series->score)->count() + 1;
@@ -29,6 +29,7 @@ class Series extends Component
         $this->series->premiered = $this->getSeasonFromDate(Carbon::parse($this->series->aired_start_date));
         $this->refreshReactions();
     }
+
 
     public function render()
     {
