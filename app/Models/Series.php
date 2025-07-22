@@ -22,6 +22,14 @@ class Series extends Model
         'synopsis'
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'aired_start_date' => 'date',
+            'aired_end_date' => 'date',
+        ];
+    }
+
     public function genres()
     {
         return $this->belongsToMany(Genre::class);

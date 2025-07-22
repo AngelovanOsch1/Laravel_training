@@ -6,28 +6,26 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Image;
-use Laravel\Nova\Fields\Password;
-use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Auth\PasswordValidationRules;
 
-class User extends Resource
+class Series extends Resource
 {
-    use PasswordValidationRules;
-
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Models\User>
+     * @var class-string<\App\Models\Series>
      */
-    public static $model = \App\Models\User::class;
+    public static $model = \App\Models\Series::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -36,72 +34,76 @@ class User extends Resource
      */
     public static $search = [
         'id',
-        'first_name',
-        'last_name',
-        'email',
+        'title',
     ];
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @return array<int, \Laravel\Nova\Fields\Field|\Laravel\Nova\Panel|\Laravel\Nova\ResourceTool|\Illuminate\Http\Resources\MergeValue>
+     * @return array<int, \Laravel\Nova\Fields\Field>
      */
     public function fields(NovaRequest $request): array
     {
         return [
             ID::make()->sortable(),
 
-            Image::make('profile_photo')
+            Image::make('cover_image')
                 ->rules('required')
                 ->disk('public')
-                ->path('photos')
+                ->path('series')
                 ->creationRules('mimes:jpeg,png,webp,jpg', 'max:10240')
-                ->preview(fn($value) => $value ? "/storage/{$value}" : null)
-                ->thumbnail(fn($value) => $value ? "/storage/{$value}" : null),
+                ->preview(fn($value) => $value ? "/{$value}" : null)
+                ->thumbnail(fn($value) => $value ? "/{$value}" : null),
 
-            BelongsTo::make('role')
-                ->sortable()
-                ->rules('required')
-                ->default(1),
-
-            Text::make('first_name')
+            Text::make('title')
                 ->sortable()
                 ->rules('required'),
 
-            Text::make('last_name')
+            Text::make('type')
                 ->sortable()
                 ->rules('required'),
 
-            Text::make('email')
-                ->sortable()
-                ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
+            BelongsToMany::make('Genres'),
 
-            BelongsTo::make('gender')
+            Text::make('episode_count')
+                ->sortable()
+                ->rules('required'),
+
+            Text::make('minutes_per_episode')
                 ->sortable()
                 ->rules('required')
                 ->hideFromIndex(),
 
-            Date::make('date_of_birth')
+            Text::make('score')
+                ->sortable()
+                ->default(0),
+
+            Text::make('video')
+                ->rules('required')
+                ->hideFromIndex(),
+
+            Date::make('aired_start_date')
                 ->sortable()
                 ->rules('required', 'date')
                 ->hideFromIndex(),
 
-            BelongsTo::make('country')
+            Date::make('aired_end_date')
                 ->sortable()
-                ->rules('required')
+                ->rules('required', 'date')
                 ->hideFromIndex(),
 
-            Password::make('password')
-                ->onlyOnForms()
-                ->creationRules($this->passwordRules())
-                ->updateRules($this->optionalPasswordRules()),
+            BelongsToMany::make('studios'),
+
+            Textarea::make('synopsis')
+                ->hideFromIndex()
+                ->rules('required'),
+
+            HasMany::make('Themes'),
         ];
     }
 
     /**
-     * Get the cards available for the request.
+     * Get the cards available for the resource.
      *
      * @return array<int, \Laravel\Nova\Card>
      */
