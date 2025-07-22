@@ -237,3 +237,7 @@
     </div>
     <livewire:comments :id="$series->id" commentType="App\Models\Series" />
 </div>
+
+@push('scripts')
+    @vite('resources/js/audio-player.js')
+@endpush

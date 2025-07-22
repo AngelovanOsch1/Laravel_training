@@ -1,5 +1,4 @@
 import './bootstrap';
-import './audio-player';
 import './modal';
 
 window.Echo.private('chat.3')
