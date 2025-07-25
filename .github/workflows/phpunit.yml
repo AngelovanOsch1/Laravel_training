@@ -34,6 +34,9 @@ jobs:
           extensions: mbstring, pdo_mysql, bcmath, intl
           coverage: none
 
+      - name: Configure Nova credentials
+        run: composer config http-basic.nova.laravel.com ${{ secrets.NOVA_EMAIL }} ${{ secrets.NOVA_AUTH_TOKEN }}
+
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 

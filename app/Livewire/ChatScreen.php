@@ -42,6 +42,12 @@ class ChatScreen extends Component
         return view('livewire.chat-screen');
     }
 
+    #[On("echo:private-chat.{contactId},.MessageCreated")]
+    public function refresh()
+    {
+        $this->loadChat($this->contactId);
+    }
+
     #[On('incomingMessage')]
     public function incomingMessage($message)
     {
