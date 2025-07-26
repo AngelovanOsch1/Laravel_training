@@ -13,9 +13,4 @@ class Character extends Model
     {
         return $this->belongsToMany(Series::class, 'character_series');
     }
-
-    public function characterSeries()
-    {
-        return $this->hasMany(CharacterSeries::class);
-    }
 }

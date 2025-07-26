@@ -237,17 +237,13 @@ TEXT
             $seriesCollection->push($series);
         }
 
-        $characterSeriesRecords = collect();
+        $randomCharacters = $createdCharacters->splice(0, 4);
+        $series->characters()->attach($randomCharacters->pluck('id')->toArray());
 
-        $createdCharacters->each(function ($character) use ($seriesCollection, $characterSeriesRecords) {
-            $Series = $seriesCollection->random(rand(2, 8));
-            $character->series()->attach($Series->pluck('id')->toArray());
-        });
+        $randomVoiceActors = $createdVoiceActors->splice(0, 4);
+        $series->voiceActors()->attach($randomVoiceActors->pluck('id')->toArray());
 
-        foreach ($characterSeriesRecords as $characterSeries) {
-            $randomVoiceActors = $createdVoiceActors->random(rand(1, 2));
-            $characterSeries->voiceActors()->attach($randomVoiceActors->pluck('id')->toArray());
-        }
+        $seriesCollection->push($series);
 
         $studios = collect([
             'MAPPA',

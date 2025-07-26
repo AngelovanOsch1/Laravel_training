@@ -37,9 +37,9 @@ class Series extends Model
         return $this->belongsToMany(Character::class, 'character_series');
     }
 
-    public function characterSeries()
+    public function voiceActors()
     {
-        return $this->hasMany(CharacterSeries::class);
+        return $this->belongsToMany(VoiceActor::class);
     }
 
     public function users()
