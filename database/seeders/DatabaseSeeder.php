@@ -15,8 +15,8 @@ use App\Models\VoiceActor;
 use Faker\Factory as Faker;
 use App\Models\SeriesStatus;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\CharacterVoiceActorSeries;
 
 class DatabaseSeeder extends Seeder
 {
@@ -215,7 +215,6 @@ TEXT
             $createdVoiceActors->push(VoiceActor::create($va));
         }
 
-
         $seriesCollection = collect();
 
         foreach ($images as $entry) {
@@ -238,13 +237,24 @@ TEXT
             $seriesCollection->push($series);
         }
 
-        $randomCharacters = $createdCharacters->splice(0, 4);
-        $series->characters()->attach($randomCharacters->pluck('id')->toArray());
 
-        $randomVoiceActors = $createdVoiceActors->splice(0, 4);
-        $series->voiceActors()->attach($randomVoiceActors->pluck('id')->toArray());
+        foreach ($seriesCollection as $serie) {
+            $numCharacters = rand(4, 8);
+            $characters = $createdCharacters->random($numCharacters);
+            $voiceActors = $createdVoiceActors->shuffle();
 
-        $seriesCollection->push($series);
+            foreach ($characters as $index => $character) {
+                $voiceActor = $voiceActors[$index] ?? $voiceActors->random();
+
+                CharacterVoiceActorSeries::create([
+                    'character_id' => $character->id,
+                    'voice_actor_id' => $voiceActor->id,
+                    'series_id' => $serie->id,
+                ]);
+            }
+        }
+
+
         $themesPool = collect([
             ['title' => 'Opening 1', 'artist' => 'Artist A', 'audio_url' => 'storage/themes/theme1.mp3', 'type' => 'opening'],
             ['title' => 'Opening 2', 'artist' => 'Artist B', 'audio_url' => 'storage/themes/theme2.mp3', 'type' => 'opening'],

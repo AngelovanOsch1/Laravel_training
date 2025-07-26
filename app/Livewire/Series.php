@@ -9,10 +9,7 @@ use App\Models\Reaction;
 use App\Models\SeriesUser;
 use App\Support\GlobalHelper;
 use Livewire\Attributes\Layout;
-<<<<<<< HEAD
-=======
 use Illuminate\Support\Collection;
->>>>>>> master
 use App\Models\Series as SeriesModel;
 
 #[Layout('layouts.app')]
@@ -30,9 +27,14 @@ class Series extends Component
 
     public function mount(int $id)
     {
-        $this->series = SeriesModel::with(['genres', 'studios', 'characterSeries.voiceActors'])->find($id);
+        $this->series = SeriesModel::with([
+            'genres',
+            'studios',
+            'themes',
+            'characterVoiceActorSeries.character',
+            'characterVoiceActorSeries.voiceActor'
+        ])->find($id);
 
-        $this->series = SeriesModel::with(['genres', 'studios', 'themes'])->find($id);
         $this->openingThemes = $this->series->themes->where('type', 'opening')->values();
         $this->endingThemes = $this->series->themes->where('type', 'ending')->values();
         $this->loggedInUser = GlobalHelper::getLoggedInUser();

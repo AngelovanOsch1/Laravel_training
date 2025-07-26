@@ -9,8 +9,8 @@ class Character extends Model
 {
     use HasFactory;
 
-    public function series()
+    public function characterVoiceActorSeries()
     {
-        return $this->belongsToMany(Series::class, 'character_series');
+        return $this->hasMany(CharacterVoiceActorSeries::class);
     }
 }
