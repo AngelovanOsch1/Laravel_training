@@ -2,13 +2,14 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Auth\PasswordValidationRules;
-use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Auth\PasswordValidationRules;
 
 class User extends Resource
 {
@@ -34,7 +35,10 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'id',
+        'first_name',
+        'last_name',
+        'email',
     ];
 
     /**
@@ -47,19 +51,49 @@ class User extends Resource
         return [
             ID::make()->sortable(),
 
-            Gravatar::make()->maxWidth(50),
+            Image::make('profile_photo')
+                ->rules('required')
+                ->disk('public')
+                ->path('photos')
+                ->creationRules('mimes:jpeg,png,webp,jpg', 'max:10240')
+                ->preview(fn($value) => $value ? "/storage/{$value}" : null)
+                ->thumbnail(fn($value) => $value ? "/storage/{$value}" : null),
 
-            Text::make('Name')
+            BelongsTo::make('role')
                 ->sortable()
-                ->rules('required', 'max:255'),
+                ->rules('required')
+                ->default(1),
 
-            Text::make('Email')
+            Text::make('first_name')
+                ->sortable()
+                ->rules('required'),
+
+            Text::make('last_name')
+                ->sortable()
+                ->rules('required'),
+
+            Text::make('email')
                 ->sortable()
                 ->rules('required', 'email', 'max:254')
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}'),
 
-            Password::make('Password')
+            BelongsTo::make('gender')
+                ->sortable()
+                ->rules('required')
+                ->hideFromIndex(),
+
+            Date::make('date_of_birth')
+                ->sortable()
+                ->rules('required', 'date')
+                ->hideFromIndex(),
+
+            BelongsTo::make('country')
+                ->sortable()
+                ->rules('required')
+                ->hideFromIndex(),
+
+            Password::make('password')
                 ->onlyOnForms()
                 ->creationRules($this->passwordRules())
                 ->updateRules($this->optionalPasswordRules()),

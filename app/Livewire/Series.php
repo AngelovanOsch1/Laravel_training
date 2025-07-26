@@ -9,6 +9,10 @@ use App\Models\Reaction;
 use App\Models\SeriesUser;
 use App\Support\GlobalHelper;
 use Livewire\Attributes\Layout;
+<<<<<<< HEAD
+=======
+use Illuminate\Support\Collection;
+>>>>>>> master
 use App\Models\Series as SeriesModel;
 
 #[Layout('layouts.app')]
@@ -17,16 +21,25 @@ class Series extends Component
     public User $loggedInUser;
     public SeriesModel $series;
     public object $reactionsObject;
+    public Collection $openingThemes;
+    public Collection $endingThemes;
+    public int $amountOfVotes;
+    public int $seriesRank;
+    public string $airingStatus;
+    public string $premiered;
 
     public function mount(int $id)
     {
         $this->series = SeriesModel::with(['genres', 'studios', 'characterSeries.voiceActors'])->find($id);
 
+        $this->series = SeriesModel::with(['genres', 'studios', 'themes'])->find($id);
+        $this->openingThemes = $this->series->themes->where('type', 'opening')->values();
+        $this->endingThemes = $this->series->themes->where('type', 'ending')->values();
         $this->loggedInUser = GlobalHelper::getLoggedInUser();
-        $this->series->amount_of_votes = SeriesUser::where('series_id', $this->series->id)->count();
-        $this->series->rank = SeriesModel::where('score', '>', $this->series->score)->count() + 1;
-        $this->series->airing_status = $this->calculateAiringStatus($this->series);
-        $this->series->premiered = $this->getSeasonFromDate(Carbon::parse($this->series->aired_start_date));
+        $this->amountOfVotes = SeriesUser::where('series_id', $this->series->id)->count();
+        $this->seriesRank = SeriesModel::where('score', '>', $this->series->score)->count() + 1;
+        $this->airingStatus = $this->calculateAiringStatus($this->series);
+        $this->premiered = $this->getSeasonFromDate(Carbon::parse($this->series->aired_start_date));
         $this->refreshReactions();
     }
 

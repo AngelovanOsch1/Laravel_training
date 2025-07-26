@@ -9,4 +9,10 @@
 !voice_actors/**
 !series/
 !series/**
+<<<<<<< HEAD
 !messagesPhotos/
+=======
+!themes
+!themes/**
+!messagesPhotos
+>>>>>>> master

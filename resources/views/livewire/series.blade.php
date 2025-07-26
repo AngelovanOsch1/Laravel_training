@@ -21,7 +21,7 @@
                 </div>
                 <div class="flex justify-between text-sm text-gray-700">
                     <span>Status</span>
-                    <span>{{ $series->airing_status }}</span>
+                    <span>{{ $airingStatus }}</span>
                 </div>
                 <div class="flex justify-between text-sm text-gray-700">
                     <span>Aired</span>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="flex justify-between text-sm text-gray-700">
                     <span>Premiered</span>
-                    <span>{{ $series->premiered }}</span>
+                    <span>{{ $premiered }}</span>
                 </div>
                 <div class="flex justify-between text-sm text-gray-700">
                     <span>Studios</span>
@@ -66,10 +66,10 @@
                         <span
                             class="text-sm font-semibold bg-teal-600 text-white rounded px-6 uppercase py-1">Score</span>
                         <span class="text-3xl font-extrabold mt-3 text-gray-900">{{ $series->score }}</span>
-                        <span class="text-xs mt-1 text-gray-600">users ({{ $series->amount_of_votes }})</span>
+                        <span class="text-xs mt-1 text-gray-600">users ({{ $amountOfVotes }})</span>
                         <span
                             class="mt-3 inline-block bg-teal-600 text-white rounded-full px-3 py-1 text-xs font-semibold">Rank
-                            #{{ $series->rank }}</span>
+                            #{{ $seriesRank }}</span>
                     </div>
 
                     <iframe width="320" height="180" src="https://www.youtube.com/embed/{{ $series->video }}"
@@ -115,78 +115,68 @@
                     @endforeach
                 </div>
             </div>
-            <div
-                class="my-10 flex flex-col w-full rounded-xl bg-white px-6 py-6 text-center shadow-lg shadow-[#c0c0c0]">
-                <h3 class="text-xl font-bold mb-8 text-left">Songs</h3>
-                <div class="flex justify-between gap-10">
-                    <div class="flex flex-col text-sm text-gray-800 flex-1">
-                        <h5 class="text-base font-bold mb-1 text-left">Opening Theme</h5>
-                        <hr class="mb-4 w-full border-t border-gray-300" />
 
-                        <ul class="space-y-2 pl-2">
-                            <li class="flex items-center justify-between gap-3">
-                                <div class="flex items-start gap-3">
-                                    <div
-                                        class="w-6 h-6 flex items-center justify-center bg-teal-600 text-white rounded-full text-xs">
-                                        <i class="fa fa-play fa-sm"></i>
-                                    </div>
-                                    <p><span class="text-gray-500">1.</span> "Yuusha (勇者)" by YOASOBI</p>
-                                </div>
-                                <span
-                                    class="bg-teal-600 text-white text-[0.65rem] px-2 py-0.5 rounded-full font-semibold">MV</span>
-                            </li>
-
-                            <li class="flex items-center justify-between gap-3">
-                                <div class="flex items-start gap-3">
-                                    <div
-                                        class="w-6 h-6 flex items-center justify-center bg-teal-600 text-white rounded-full text-xs">
-                                        <i class="fa fa-play fa-sm"></i>
-                                    </div>
-                                    <p><span class="text-gray-500">2.</span> "Another Opening Title" by Another Artist
-                                    </p>
-                                </div>
-                                <span
-                                    class="bg-teal-600 text-white text-[0.65rem] px-2 py-0.5 rounded-full font-semibold">MV</span>
-                            </li>
-                        </ul>
-
-
-                    </div>
-
-                    <div class="flex flex-col text-sm text-gray-800 flex-1">
-                        <h5 class="text-base font-bold mb-1 text-left">Outro Theme</h5>
-                        <hr class="mb-4 w-full border-t border-gray-300" />
-
-                        <ul class="space-y-2 pl-2">
-                            <li class="flex items-center justify-between gap-3">
-                                <div class="flex items-start gap-3">
-                                    <div
-                                        class="w-6 h-6 flex items-center justify-center bg-teal-600 text-white rounded-full text-xs">
-                                        <i class="fa fa-play fa-sm"></i>
-                                    </div>
-                                    <p><span class="text-gray-500">1.</span> "Yuusha (勇者)" by YOASOBI</p>
-                                </div>
-                                <span
-                                    class="bg-teal-600 text-white text-[0.65rem] px-2 py-0.5 rounded-full font-semibold">MV</span>
-                            </li>
-
-                            <li class="flex items-center justify-between gap-3">
-                                <div class="flex items-start gap-3">
-                                    <div
-                                        class="w-6 h-6 flex items-center justify-center bg-teal-600 text-white rounded-full text-xs">
-                                        <i class="fa fa-play fa-sm"></i>
-                                    </div>
-                                    <p><span class="text-gray-500">2.</span> "Another Opening Title" by Another Artist
-                                    </p>
-                                </div>
-                                <span
-                                    class="bg-teal-600 text-white text-[0.65rem] px-2 py-0.5 rounded-full font-semibold">MV</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+<div
+    class="my-10 flex flex-col w-full rounded-xl bg-white px-6 py-6 text-center shadow-lg shadow-[#c0c0c0]">
+    <h3 class="text-xl font-bold mb-8 text-left">Songs</h3>
+    <div class="flex justify-between gap-10">
+        <div class="flex flex-col text-sm text-gray-800 flex-1">
+            <h5 class="text-base font-bold mb-1 text-left">Opening Theme</h5>
+            <hr class="mb-4 w-full border-t border-gray-300" />
+            <ul class="space-y-2 pl-2">
+                @foreach ($openingThemes as $theme)
+                    <li class="flex items-center justify-between gap-3">
+                        <div
+                            class="flex items-start gap-3 cursor-pointer play-btn"
+                            data-audio-id="audio-opening-{{ $theme->id }}">
+                            <div
+                                class="w-6 h-6 flex items-center justify-center bg-teal-600 text-white rounded-full text-[0.6rem] play-icon">
+                                <i class="fa fa-play fa-sm"></i>
+                            </div>
+                            <p>
+                                "{{ $theme->title }}" by {{ $theme->artist }}
+                            </p>
+                        </div>
+                        <audio id="audio-opening-{{ $theme->id }}" preload="none" style="display:none;">
+                            <source src="{{ asset($theme->audio_url) }}" type="audio/mpeg">
+                        </audio>
+                        <div class="bg-teal-600 text-white text-[0.65rem] px-2 py-0.5 rounded-full font-semibold">MV</div>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+        <div class="flex flex-col text-sm text-gray-800 flex-1">
+            <h5 class="text-base font-bold mb-1 text-left">Ending Theme</h5>
+            <hr class="mb-4 w-full border-t border-gray-300" />
+            <ul class="space-y-2 pl-2">
+                @foreach ($endingThemes as $theme)
+                    <li class="flex items-center justify-between gap-3">
+                        <div
+                            class="flex items-start gap-3 cursor-pointer play-btn"
+                            data-audio-id="audio-ending-{{ $theme->id }}">
+                            <div
+                                class="w-6 h-6 flex items-center justify-center bg-teal-600 text-white rounded-full text-[0.6rem] play-icon">
+                                <i class="fa fa-play fa-sm"></i>
+                            </div>
+                            <p>
+                                "{{ $theme->title }}" by {{ $theme->artist }}
+                            </p>
+                        </div>
+                        <audio id="audio-ending-{{ $theme->id }}" preload="none" style="display:none;">
+                            <source src="{{ asset($theme->audio_url) }}" type="audio/mpeg">
+                        </audio>
+                        <div class="bg-teal-600 text-white text-[0.65rem] px-2 py-0.5 rounded-full font-semibold">MV</div>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+</div>
         </div>
     </div>
     <livewire:comments :id="$series->id" commentType="App\Models\Series" />
 </div>
+
+@push('scripts')
+    @vite('resources/js/audio-player.js')
+@endpush
