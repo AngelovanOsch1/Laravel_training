@@ -2,9 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use App\Models\Gender;
 use App\Models\Country;
-use App\Models\Role;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,7 +24,7 @@ class UserFactory extends Factory
             'gender_id' => Gender::factory(),
             'profile_photo' => null,
             'profile_banner' => null,
-            'description' => $this->faker->sentences(5)
+            'description' => Str::limit(implode(' ', $this->faker->sentences(5)), 100),
         ];
     }
 }

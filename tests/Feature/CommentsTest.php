@@ -42,7 +42,7 @@ class CommentsTest extends TestCase
     #[Test]
     public function it_inserts_comment_record_on_user_page()
     {
-        Livewire::test(Comments::class, ['id' => $this->targetUser->id])
+        Livewire::test(Comments::class, ['id' => $this->targetUser->id, 'commentType' => 'App\Models\User'])
             ->set($this->baseFormData)
             ->call('submit');
 
@@ -66,7 +66,7 @@ class CommentsTest extends TestCase
             'form.message' => null,
         ]);
 
-        Livewire::test(Comments::class, ['id' => $this->targetUser->id])
+        Livewire::test(Comments::class, ['id' => $this->targetUser->id, 'commentType' => 'App\Models\User'])
             ->set($FormDataWithPhoto)
             ->call('submit');
 
@@ -88,7 +88,7 @@ class CommentsTest extends TestCase
             'form.message' => Str::random(301),
         ]);
 
-        Livewire::test(Comments::class, ['id' => $this->targetUser->id])
+        Livewire::test(Comments::class, ['id' => $this->targetUser->id, 'commentType' => 'App\Models\User'])
             ->set($invalidMessageData)
             ->call('submit')
             ->assertHasErrors([
@@ -101,7 +101,7 @@ class CommentsTest extends TestCase
     {
         $photo = UploadedFile::fake()->create('document.pdf', 100, 'application/pdf');
 
-        Livewire::test(Comments::class, ['id' => $this->targetUser->id])
+        Livewire::test(Comments::class, ['id' => $this->targetUser->id, 'commentType' => 'App\Models\User'])
             ->set('form.photo', $photo)
             ->assertDispatched('openWarningModal', function ($event, $param) {
                 return $param[0]['body'] === "Unsupported file format. Only JPEG, PNG, WEBP and JPG formats are supported.";
@@ -113,7 +113,7 @@ class CommentsTest extends TestCase
     {
         $photo = UploadedFile::fake()->create('large-image.jpg', 10241, 'image/jpeg');
 
-        Livewire::test(Comments::class, ['id' => $this->targetUser->id])
+        Livewire::test(Comments::class, ['id' => $this->targetUser->id, 'commentType' => 'App\Models\User'])
             ->set('form.photo', $photo)
             ->assertDispatched('openWarningModal', function ($event, $param) {
                 return $param[0]['body'] === "The file size is too large. Maximum size is 10MB.";
@@ -135,7 +135,7 @@ class CommentsTest extends TestCase
             'user_id' => $this->loggedInUser->id,
         ]);
 
-        $commentList = Livewire::test(Comments::class, ['id' => $this->targetUser->id])
+        $commentList = Livewire::test(Comments::class, ['id' => $this->targetUser->id, 'commentType' => 'App\Models\User'])
             ->set('form.sortBy', 'created_at')->viewData('commentsList');
 
         $this->assertSame($comment2->id, $commentList[0]->id);
@@ -163,7 +163,7 @@ class CommentsTest extends TestCase
             'type' => 'like',
         ]);
 
-        $commentList = Livewire::test(Comments::class, ['id' => $this->targetUser->id])
+        $commentList = Livewire::test(Comments::class, ['id' => $this->targetUser->id, 'commentType' => 'App\Models\User'])
             ->set('form.sortBy', 'likes_count')->viewData('commentsList');
 
         $this->assertSame($comment->id, $commentList[0]->id);
@@ -177,7 +177,7 @@ class CommentsTest extends TestCase
             'parent_id' => $parentComment->id,
         ]);
 
-        Livewire::test(Comments::class, ['id' => $this->targetUser->id])
+        Livewire::test(Comments::class, ['id' => $this->targetUser->id, 'commentType' => 'App\Models\User'])
             ->call('deleteComment', $childComment->id)
             ->assertDispatched("childCommentDeleted.{$parentComment->id}");
 
