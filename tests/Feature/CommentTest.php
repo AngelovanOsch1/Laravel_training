@@ -57,7 +57,7 @@ class CommentTest extends TestCase
     #[Test]
     public function it_update_comment_on_user_page_text()
     {
-        Livewire::test(Comment::class, ['comment' => $this->comment, 'user' => $this->targetUser, 'loggedInUser' => $this->loggedInUser])
+        Livewire::test(Comment::class, ['comment' => $this->comment, 'loggedInUser' => $this->loggedInUser])
             ->set($this->baseFormDataUpdatedComment)
             ->call('updateComment');
 
@@ -78,7 +78,7 @@ class CommentTest extends TestCase
             'updateCommentform.message' => null,
         ]);
 
-        Livewire::test(Comment::class, ['comment' => $this->comment, 'user' => $this->targetUser, 'loggedInUser' => $this->loggedInUser])
+        Livewire::test(Comment::class, ['comment' => $this->comment, 'loggedInUser' => $this->loggedInUser])
             ->set($FormDataWithPhoto)
             ->call('updateComment');
 
@@ -98,7 +98,7 @@ class CommentTest extends TestCase
             'updateCommentform.message' => Str::random(301),
         ]);
 
-        Livewire::test(Comment::class, ['comment' => $this->comment, 'user' => $this->targetUser, 'loggedInUser' => $this->loggedInUser])
+        Livewire::test(Comment::class, ['comment' => $this->comment, 'loggedInUser' => $this->loggedInUser])
             ->set($invalidMessageData)
             ->call('updateComment')
             ->assertHasErrors([
@@ -111,7 +111,7 @@ class CommentTest extends TestCase
     {
         $photo = UploadedFile::fake()->create('document.pdf', 100, 'application/pdf');
 
-        Livewire::test(Comment::class,  ['comment' => $this->comment, 'user' => $this->targetUser, 'loggedInUser' => $this->loggedInUser])
+        Livewire::test(Comment::class, ['comment' => $this->comment, 'loggedInUser' => $this->loggedInUser])
             ->set('updateCommentform.photo', $photo)
             ->assertDispatched('openWarningModal', function ($event, $param) {
                 return $param[0]['body'] === "Unsupported file format. Only JPEG, PNG, WEBP and JPG formats are supported.";
@@ -123,7 +123,7 @@ class CommentTest extends TestCase
     {
         $photo = UploadedFile::fake()->create('large-image.jpg', 10241, 'image/jpeg');
 
-        Livewire::test(Comment::class,  ['comment' => $this->comment, 'user' => $this->targetUser, 'loggedInUser' => $this->loggedInUser])
+        Livewire::test(Comment::class, ['comment' => $this->comment, 'loggedInUser' => $this->loggedInUser])
             ->set('updateCommentform.photo', $photo)
             ->assertDispatched('openWarningModal', function ($event, $param) {
                 return $param[0]['body'] === "The file size is too large. Maximum size is 10MB.";
@@ -134,7 +134,7 @@ class CommentTest extends TestCase
     #[Test]
     public function it_reply_comment__on_user_page_text()
     {
-        Livewire::test(Comment::class, ['comment' => $this->comment, 'user' => $this->targetUser, 'loggedInUser' => $this->loggedInUser])
+        Livewire::test(Comment::class, ['comment' => $this->comment, 'loggedInUser' => $this->loggedInUser])
             ->set($this->baseFormDataReply)
             ->call('submitReply');
 
@@ -159,7 +159,7 @@ class CommentTest extends TestCase
             'replyForm.message' => null,
         ]);
 
-        Livewire::test(Comment::class, ['comment' => $this->comment, 'user' => $this->targetUser, 'loggedInUser' => $this->loggedInUser])
+        Livewire::test(Comment::class, ['comment' => $this->comment, 'loggedInUser' => $this->loggedInUser])
             ->set($FormDataWithPhoto)
             ->call('submitReply');
 
@@ -182,7 +182,7 @@ class CommentTest extends TestCase
             'replyForm.message' => Str::random(301),
         ]);
 
-        Livewire::test(Comment::class, ['comment' => $this->comment, 'user' => $this->targetUser, 'loggedInUser' => $this->loggedInUser])
+        Livewire::test(Comment::class, ['comment' => $this->comment, 'loggedInUser' => $this->loggedInUser])
             ->set($invalidMessageData)
             ->call('submitReply')
             ->assertHasErrors([
@@ -195,7 +195,7 @@ class CommentTest extends TestCase
     {
         $photo = UploadedFile::fake()->create('document.pdf', 100, 'application/pdf');
 
-        Livewire::test(Comment::class,  ['comment' => $this->comment, 'user' => $this->targetUser, 'loggedInUser' => $this->loggedInUser])
+        Livewire::test(Comment::class, ['comment' => $this->comment, 'loggedInUser' => $this->loggedInUser])
             ->set('replyForm.photo', $photo)
             ->assertDispatched('openWarningModal', function ($event, $param) {
                 return $param[0]['body'] === "Unsupported file format. Only JPEG, PNG, WEBP and JPG formats are supported.";
@@ -207,7 +207,7 @@ class CommentTest extends TestCase
     {
         $photo = UploadedFile::fake()->create('large-image.jpg', 10241, 'image/jpeg');
 
-        Livewire::test(Comment::class,  ['comment' => $this->comment, 'user' => $this->targetUser, 'loggedInUser' => $this->loggedInUser])
+        Livewire::test(Comment::class, ['comment' => $this->comment, 'loggedInUser' => $this->loggedInUser])
             ->set('replyForm.photo', $photo)
             ->assertDispatched('openWarningModal', function ($event, $param) {
                 return $param[0]['body'] === "The file size is too large. Maximum size is 10MB.";
@@ -217,7 +217,7 @@ class CommentTest extends TestCase
     #[Test]
     public function it_toggle_reaction_on_comment_like()
     {
-        Livewire::test(Comment::class,  ['comment' => $this->comment, 'user' => $this->targetUser, 'loggedInUser' => $this->loggedInUser])
+        Livewire::test(Comment::class, ['comment' => $this->comment, 'loggedInUser' => $this->loggedInUser])
             ->call('toggleReaction', 'like');
 
         $this->assertDatabaseHas('reactions', [
@@ -231,7 +231,7 @@ class CommentTest extends TestCase
     #[Test]
     public function it_toggle_reaction_on_comment_dislike()
     {
-        Livewire::test(Comment::class,  ['comment' => $this->comment, 'user' => $this->targetUser, 'loggedInUser' => $this->loggedInUser])
+        Livewire::test(Comment::class, ['comment' => $this->comment, 'loggedInUser' => $this->loggedInUser])
             ->call('toggleReaction', 'dislike');
 
         $this->assertDatabaseHas('reactions', [
@@ -255,7 +255,7 @@ class CommentTest extends TestCase
             ]
         );
 
-        Livewire::test(Comment::class,  ['comment' => $this->comment, 'user' => $this->targetUser, 'loggedInUser' => $this->loggedInUser])
+        Livewire::test(Comment::class, ['comment' => $this->comment, 'loggedInUser' => $this->loggedInUser])
             ->call('toggleReaction', 'dislike');
 
         $this->assertDatabaseMissing('reactions', [
@@ -278,7 +278,7 @@ class CommentTest extends TestCase
             ]
         );
 
-        Livewire::test(Comment::class,  ['comment' => $this->comment, 'user' => $this->targetUser, 'loggedInUser' => $this->loggedInUser])
+        Livewire::test(Comment::class, ['comment' => $this->comment, 'loggedInUser' => $this->loggedInUser])
             ->call('toggleReaction', 'like');
 
         $this->assertDatabaseMissing('reactions', [

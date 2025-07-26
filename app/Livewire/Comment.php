@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\User;
-use App\Models\Series;
 use Livewire\Component;
 use App\Models\Reaction;
 use Livewire\Attributes\On;
@@ -12,6 +11,7 @@ use Livewire\WithFileUploads;
 use App\Models\Comment as CommentModel;
 use Illuminate\Support\Facades\Storage;
 use App\Livewire\Forms\CommentFormValidation;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 
 class Comment extends Component
@@ -22,20 +22,18 @@ class Comment extends Component
     public CommentFormValidation $updateCommentform;
     public CommentFormValidation $replyForm;
     public CommentModel $comment;
-    public $model;
     public User $loggedInUser;
     public bool $isEditing = false;
-    public $replies;
+    public Collection $replies;
 
     public bool $isReplying = false;
     public $totalRepliesCount = 0;
     public $allReplies;
     public $visibleRepliesCount = 2;
 
-    public function mount(CommentModel $comment, $model, User $loggedInUser)
+    public function mount(CommentModel $comment, User $loggedInUser)
     {
         $this->comment = $comment;
-        $this->model = $model;
         $this->loggedInUser = $loggedInUser;
 
         $this->loadReplies(2);
@@ -213,11 +211,5 @@ class Comment extends Component
             $this->replyForm->resetValidation();
             $this->replyForm->reset();
         }
-    }
-
-    #[On('profilePhotoUpdated')]
-    public function refreshProfilePhoto($newPhotoPath)
-    {
-        $this->model->profilePhoto = $newPhotoPath;
     }
 }
