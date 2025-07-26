@@ -27,7 +27,14 @@ class Series extends Component
 
     public function mount(int $id)
     {
-        $this->series = SeriesModel::with(['genres', 'studios', 'themes'])->find($id);
+        $this->series = SeriesModel::with([
+            'genres',
+            'studios',
+            'themes',
+            'characterVoiceActorSeries.character',
+            'characterVoiceActorSeries.voiceActor'
+        ])->find($id);
+
         $this->openingThemes = $this->series->themes->where('type', 'opening')->values();
         $this->endingThemes = $this->series->themes->where('type', 'ending')->values();
         $this->loggedInUser = GlobalHelper::getLoggedInUser();
@@ -37,6 +44,7 @@ class Series extends Component
         $this->premiered = $this->getSeasonFromDate(Carbon::parse($this->series->aired_start_date));
         $this->refreshReactions();
     }
+
 
     public function render()
     {
