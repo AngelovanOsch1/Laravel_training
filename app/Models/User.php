@@ -20,6 +20,7 @@ class User extends Authenticatable
         'description',
         'profile_photo',
         'profile_banner',
+        'is_blocked',
     ];
 
     protected function casts(): array
@@ -27,6 +28,7 @@ class User extends Authenticatable
         return [
             'date_of_birth' => 'date',
             'password' => 'hashed',
+            'is_blocked' => 'boolean',
         ];
     }
 

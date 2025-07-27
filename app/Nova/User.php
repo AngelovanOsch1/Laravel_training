@@ -8,6 +8,8 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Image;
+use App\Nova\Actions\BlockUsers;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\BelongsTo;
@@ -101,6 +103,8 @@ class User extends Resource
                 ->creationRules($this->passwordRules())
                 ->updateRules($this->optionalPasswordRules()),
 
+            Boolean::make('is_blocked')->sortable(),
+
             HasMany::make('Series Progress', 'seriesProgress', SeriesUser::class)
         ];
 
@@ -170,6 +174,8 @@ class User extends Resource
      */
     public function actions(NovaRequest $request): array
     {
-        return [];
+        return [
+            new BlockUsers,
+        ];
     }
 }

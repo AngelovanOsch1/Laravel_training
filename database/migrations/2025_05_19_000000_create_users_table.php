@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('profile_photo')->nullable();
             $table->text('profile_banner')->nullable();
+            $table->boolean('is_blocked')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
