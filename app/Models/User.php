@@ -45,6 +45,11 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'role_id');
     }
 
+    public function seriesProgress()
+    {
+        return $this->hasMany(SeriesUser::class);
+    }
+
     public function series()
     {
         return $this->belongsToMany(Series::class, 'series_user')
