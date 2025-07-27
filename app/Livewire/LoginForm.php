@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use App\Livewire\Forms\LoginFormValidation;
@@ -27,6 +28,12 @@ class LoginForm extends Component
     public function submit()
     {
         $this->form->validate();
+
+        $user = User::where('email', $this->form->email)->first();
+
+        if ($user && $user->is_blocked) {
+            return $this->form->addError('email', 'Your account has been blocked.');
+        }
 
         if (!Auth::attempt([
             'email' => $this->form->email,

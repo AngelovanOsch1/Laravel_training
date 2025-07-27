@@ -25,6 +25,7 @@ class UserFactory extends Factory
             'profile_photo' => null,
             'profile_banner' => null,
             'description' => Str::limit(implode(' ', $this->faker->sentences(5)), 100),
+            'is_blocked' => false,
         ];
     }
 }

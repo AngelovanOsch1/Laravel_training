@@ -14,25 +14,49 @@ class LoginFormTest extends TestCase
 {
     use RefreshDatabase;
 
-    #[Test]
-    public function it_logs_in_with_correct_credentials()
-    {
-        $user = User::factory()->create();
+    protected User $user;
+    protected array $validCredentials;
 
-        $validCredentials = [
-            'form.email' => $user->email,
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+
+        $this->user = User::factory()->create();
+
+        $this->validCredentials = [
+            'form.email' => $this->user->email,
             'form.password' => 'Password123!',
             'form.rememberMe' => true
         ];
+    }
 
+    #[Test]
+    public function it_logs_in_with_correct_credentials()
+    {
         Livewire::test(LoginForm::class)
-            ->set($validCredentials)
+            ->set($this->validCredentials)
             ->call('submit')
-            ->assertRedirect(route('profile', ['id' => $user->id]));
+            ->assertRedirect(route('profile', ['id' => $this->user->id]));
 
         $this->assertAuthenticated();
 
         $this->assertNotNull(Cookie::get(app('config')->get('auth.remember_cookie')));
+    }
+
+    #[Test]
+    public function it_user_is_blocked()
+    {
+        $this->user->is_blocked = true;
+        $this->user->save();
+
+        Livewire::test(LoginForm::class)
+            ->set($this->validCredentials)
+            ->call('submit')
+            ->assertHasErrors(['form.email' => ['Your account has been blocked.']]);
+
+        $this->assertGuest();
     }
 
     #[Test]
@@ -66,5 +90,7 @@ class LoginFormTest extends TestCase
                 'form.email' => 'required',
                 'form.password' => 'required',
             ]);
+
+        $this->assertGuest();
     }
 }
