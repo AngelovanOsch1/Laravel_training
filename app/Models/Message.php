@@ -12,11 +12,6 @@ class Message extends Model
 
     protected $fillable = ['contact_id', 'sender_id', 'body', 'photo'];
 
-    public function broadcastOn(string $event): array
-    {
-        return [new \Illuminate\Broadcasting\PrivateChannel('chat.' . $this->contact_id)];
-    }
-
     public function contact()
     {
         return $this->belongsTo(Contact::class);
