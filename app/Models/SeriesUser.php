@@ -18,6 +18,11 @@ class SeriesUser extends Pivot
         'series_status_id',
     ];
 
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

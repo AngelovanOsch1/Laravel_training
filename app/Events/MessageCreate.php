@@ -3,30 +3,29 @@
 namespace App\Events;
 
 use App\Models\Message;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class MessageSent implements ShouldBroadcast
+class MessageCreate implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
 
-    public $message;
+    public Message $message;
 
     public function __construct(Message $message)
     {
-        $this->message = $message->load('sender');
+        $this->message = $message;
     }
 
     public function broadcastOn()
     {
-        return new PrivateChannel('chat');
+        return new PrivateChannel('chat.' . $this->message->contact_id);
     }
 
     public function broadcastAs()
     {
-        return 'message.sent';
+        return 'message.create';
     }
 }

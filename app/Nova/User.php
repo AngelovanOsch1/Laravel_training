@@ -2,10 +2,13 @@
 
 namespace App\Nova;
 
+use Carbon\Carbon;
+use Laravel\Nova\Panel;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -48,7 +51,7 @@ class User extends Resource
      */
     public function fields(NovaRequest $request): array
     {
-        return [
+        $fields = [
             ID::make()->sortable(),
 
             Image::make('profile_photo')
@@ -97,7 +100,37 @@ class User extends Resource
                 ->onlyOnForms()
                 ->creationRules($this->passwordRules())
                 ->updateRules($this->optionalPasswordRules()),
+
+            HasMany::make('Series Progress', 'seriesProgress', SeriesUser::class)
         ];
+
+        if ($request->isResourceDetailRequest()) {
+            $seriesCollection = $this->resource->series()->withPivot([
+                'id',
+                'start_date',
+                'end_date',
+                'episode_count',
+                'score',
+                'series_status_id',
+            ])->get();
+
+            foreach ($seriesCollection as $index => $series) {
+                $fields[] = new Panel("Series #" . ($index + 1) . ": {$series->title}", [
+                    Text::make('Title', fn() => $series->title),
+                    Text::make('Status', fn() => $series->pivot->seriesStatus->name),
+                    Text::make(
+                        'Start - End',
+                        fn() =>
+                        Carbon::parse($series->pivot->start_date)->format('M Y') . ' - ' .
+                            Carbon::parse($series->pivot->end_date)->format('M Y')
+                    ),
+                    Text::make('Episodes', fn() => $series->pivot->episode_count),
+                    Text::make('Score', fn() => $series->pivot->score),
+                ]);
+            }
+        }
+
+        return $fields;
     }
 
     /**

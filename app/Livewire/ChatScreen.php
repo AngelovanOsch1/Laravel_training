@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Events\MessageCreate;
 use App\Models\User;
 use App\Models\Contact;
 use App\Models\Message;
@@ -9,7 +10,6 @@ use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\Livewire\Forms\MessageValidationForm;
 use Illuminate\Validation\ValidationException;
@@ -42,18 +42,19 @@ class ChatScreen extends Component
         return view('livewire.chat-screen');
     }
 
-    #[On("echo:private-chat.{contactId},.MessageCreated")]
-    public function refresh()
+    #[On('echo:private-chat.{contactId},.message.create')]
+    public function refresh($payload)
     {
-        $this->loadChat($this->contactId);
+        $id = $payload['message']['id'];
+        $message = Message::with('sender')->find($id);
+
+        if ($message->contact_id !== $this->contactId) {
+            return;
+        }
+
+        $this->messages->push($message);
     }
 
-    #[On('incomingMessage')]
-    public function incomingMessage($message)
-    {
-        dd($message);
-        $this->messages->push(new \App\Models\Message((array) $message));
-    }
 
     #[On('loadChat')]
     public function loadChat(?int $id)
@@ -62,7 +63,9 @@ class ChatScreen extends Component
             return $this->messages = null;
         }
 
-        $this->contact = Contact::with('userOne', 'userTwo', 'messages.sender')->findOrFail($id);
+        $this->contactId = $id;
+
+        $this->contact = Contact::with('userOne', 'userTwo', 'messages.sender')->findOrFail($this->contactId);
 
         Message::where('contact_id', $this->contact->id)
             ->where('sender_id', '!=', $this->loggedInUser->id)
@@ -111,12 +114,7 @@ class ChatScreen extends Component
                 'body' => $this->form->message,
                 'photo' => $path ?? null
             ]);
-
-            Log::info('MessageSent event fired');
-
-            // broadcast(new MessageSent($message))->toOthers();
-
-            Log::info('MessageSent event broadcasted');
+            broadcast(new MessageCreate($message))->toOthers();
             $this->messages->push($message);
         }
 
