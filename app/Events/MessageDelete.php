@@ -7,7 +7,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class MessageCreate implements ShouldBroadcast
+class MessageDelete implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
 
@@ -27,6 +27,6 @@ class MessageCreate implements ShouldBroadcast
 
     public function broadcastAs()
     {
-        return 'message.create';
+        return 'message.delete';
     }
 }
