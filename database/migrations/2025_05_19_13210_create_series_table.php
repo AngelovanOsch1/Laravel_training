@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('aired_end_date');
             $table->decimal('score');
             $table->text('synopsis');
+            $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
