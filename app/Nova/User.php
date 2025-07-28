@@ -15,6 +15,7 @@ use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Auth\PasswordValidationRules;
+use App\Nova\Metrics\UsersWithAndWithoutSeries;
 
 class User extends Resource
 {
@@ -144,7 +145,9 @@ class User extends Resource
      */
     public function cards(NovaRequest $request): array
     {
-        return [];
+        return [
+            new UsersWithAndWithoutSeries(),
+        ];
     }
 
     /**
