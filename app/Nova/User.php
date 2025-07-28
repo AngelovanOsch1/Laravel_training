@@ -13,6 +13,7 @@ use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\BelongsTo;
+use App\Nova\Filters\UsersWithSeries;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Auth\PasswordValidationRules;
 use App\Nova\Metrics\UsersWithAndWithoutSeries;
@@ -157,7 +158,9 @@ class User extends Resource
      */
     public function filters(NovaRequest $request): array
     {
-        return [];
+        return [
+            new UsersWithSeries(),
+        ];
     }
 
     /**
