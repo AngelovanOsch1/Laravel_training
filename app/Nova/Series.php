@@ -12,6 +12,9 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Illuminate\Contracts\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Builder as ConcreteBuilder;
+
 
 class Series extends Resource
 {
@@ -115,6 +118,16 @@ class Series extends Resource
 
             HasMany::make('Themes'),
         ];
+    }
+
+    public static function indexQuery(NovaRequest $request, EloquentBuilder $query): EloquentBuilder
+    {
+        /** @var ConcreteBuilder $query */
+        if ($request->user()->email === 'Angelo.van.Osch@hotmail.com') {
+            return $query;
+        }
+
+        return $query->where('owner_id', $request->user()->id);
     }
 
     /**
