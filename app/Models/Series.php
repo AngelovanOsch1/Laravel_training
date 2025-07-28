@@ -99,11 +99,4 @@ class Series extends Model
             ->where('type', $type)
             ->isNotEmpty();
     }
-
-    public static function booted()
-    {
-        static::creating(function ($series) {
-            $series->owner_id = Auth::id();
-        });
-    }
 }

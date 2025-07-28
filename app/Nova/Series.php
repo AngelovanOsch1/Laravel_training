@@ -93,8 +93,8 @@ class Series extends Resource
                 ->sortable()
                 ->default(0),
 
-            // Hidden::make('owner_id')
-            //     ->default(fn($request) => $request->user()->id),
+            Hidden::make('owner_id')
+                ->default(fn($request) => $request->user()->id),
 
             Text::make('video')
                 ->rules('required')
