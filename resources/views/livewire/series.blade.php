@@ -4,7 +4,7 @@
             class="my-10 flex flex-col max-h-[850px] min-w-[300px] items-center rounded-xl bg-white px-6 py-6 text-center md:max-w-md shadow-lg shadow-[#c0c0c0]">
             <div class="mb-4">
                 <label class="relative block w-56 group">
-                    <img src="{{ asset($series->cover_image) }}"
+                    <img src="{{ asset('storage/' . $series->cover_image) }}"
                         class="w-full h-auto object-contain rounded-xl pointer-events-none" alt="default-profile-photo" />
                 </label>
             </div>
@@ -96,7 +96,7 @@
                                 <div
                                     class="flex items-center justify-between bg-white rounded-xl p-4 w-full md:w-[48%] shadow-lg shadow-[#c0c0c0]">
                                     <div class="flex gap-4 items-center">
-                                        <img src="{{ asset($characterSeries->character->image) }}"
+                                        <img src="{{ asset('storage/' . $characterSeries->character->image) }}"
                                             alt="{{ $characterSeries->character->name }}"
                                             class="w-20 h-28 object-cover rounded-md shadow" />
                                         <p class="text-gray-800 font-semibold">
@@ -107,7 +107,7 @@
                                         <p class="text-gray-800 font-semibold">
                                             {{ $characterSeries->voiceActor->name }}
                                         </p>
-                                        <img src="{{ asset($characterSeries->voiceActor->image) }}"
+                                        <img src="{{ asset('storage/' . $characterSeries->voiceActor->image) }}"
                                             alt="{{ $characterSeries->voiceActor->name }}"
                                             class="w-20 h-28 object-cover rounded-md shadow" />
                                     </div>
@@ -138,7 +138,7 @@
                                         </p>
                                     </div>
                                     <audio id="audio-opening-{{ $theme->id }}" preload="none" style="display:none;">
-                                        <source src="{{ asset($theme->audio_url) }}" type="audio/mpeg">
+                                        <source src="{{ asset('storage/' . $theme->audio_url) }}" type="audio/mpeg">
                                     </audio>
                                     <div
                                         class="bg-teal-600 text-white text-[0.65rem] px-2 py-0.5 rounded-full font-semibold">
@@ -164,7 +164,7 @@
                                         </p>
                                     </div>
                                     <audio id="audio-ending-{{ $theme->id }}" preload="none" style="display:none;">
-                                        <source src="{{ asset($theme->audio_url) }}" type="audio/mpeg">
+                                        <source src="{{ asset('storage/' . $theme->audio_url) }}" type="audio/mpeg">
                                     </audio>
                                     <div
                                         class="bg-teal-600 text-white text-[0.65rem] px-2 py-0.5 rounded-full font-semibold">

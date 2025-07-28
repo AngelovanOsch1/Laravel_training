@@ -25,7 +25,7 @@
                                                 class="animate-fade-in rounded-lg bg-white p-3 shadow-lg shadow-[#c0c0c0] hover:shadow-md transition cursor-pointer border-2"
                                                 style="{{ isset($selectedSeries['id']) && $series->id === $selectedSeries['id'] ? 'border-color: #00897B;' : 'border-color: transparent;' }}">
                                                 <div class="h-48 mb-2 rounded-md overflow-hidden flex shadow-lg">
-                                                    <img src="{{ asset($series->cover_image) }}"
+                                                    <img src="{{ asset('storage/' . $series->cover_image) }}"
                                                         alt="{{ $series->title }}" class="min-w-[150px] object-cover" />
                                                 </div>
                                                 <h3 class="text-md font-semibold truncate">{{ $series->title }}</h3>
@@ -113,7 +113,7 @@
                                 </form>
                             </div>
                             <div class="w-full md:w-1/3 rounded-md overflow-hidden flex items-center justify-center">
-                                <img src="{{ asset($selectedSeries['cover_image']) }}"
+                                <img src="{{ asset('storage/' . $selectedSeries['cover_image']) }}"
                                     alt="{{ $selectedSeries['title'] }}"
                                     class="max-h-full max-w-full object-contain" />
                             </div>

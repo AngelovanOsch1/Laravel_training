@@ -11,16 +11,16 @@ class SeriesFactory extends Factory
     protected $model = Series::class;
 
     public $images = [
-        'storage/series/1.jpg',
-        'storage/series/2.jpg',
-        'storage/series/3.jpg',
-        'storage/series/4.jpg',
-        'storage/series/5.jpg',
-        'storage/series/6.jpg',
-        'storage/series/7.jpg',
-        'storage/series/8.jpg',
-        'storage/series/9.jpg',
-        'storage/series/10.jpg',
+        'series/1.jpg',
+        'series/2.jpg',
+        'series/3.jpg',
+        'series/4.jpg',
+        'series/5.jpg',
+        'series/6.jpg',
+        'series/7.jpg',
+        'series/8.jpg',
+        'series/9.jpg',
+        'series/10.jpg',
     ];
 
     public function definition()

@@ -59,10 +59,9 @@ class User extends Resource
             ID::make()->sortable(),
 
             Image::make('profile_photo')
-                ->rules('required')
+                ->rules('mimes:jpeg,png,webp,jpg', 'max:10240')
                 ->disk('public')
                 ->path('photos')
-                ->creationRules('mimes:jpeg,png,webp,jpg', 'max:10240')
                 ->preview(fn($value) => $value ? "/storage/{$value}" : null)
                 ->thumbnail(fn($value) => $value ? "/storage/{$value}" : null),
 

@@ -4,7 +4,7 @@
         @forelse ($topRatedSeries as $series)
             <div class="flex flex-col gap-2 transition-transform duration-200 hover:scale-105">
                 <x-nav-link class="" href="{{ route('series', ['id' => $series->id]) }}">
-                    <img src="{{ asset($series->cover_image) }}" alt="{{ $series->title }}"
+                    <img src="{{ asset('storage/' . $series->cover_image) }}" alt="{{ $series->title }}"
                         class="h-30 w-auto mx-auto rounded-md shadow-sm" />
                 </x-nav-link>
                 <div class="flex gap-2 justify-center items-center">

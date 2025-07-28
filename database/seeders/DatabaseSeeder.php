@@ -59,7 +59,7 @@ class DatabaseSeeder extends Seeder
         $images = [
             [
                 'title' => 'Frieren',
-                'image' => 'storage/series/1.jpg',
+                'image' => 'series/1.jpg',
                 'video' => 'ZEkwCGJ3o7M',
                 'synopsis' => <<<TEXT
 During their decade-long quest to defeat the Demon King, the members of the hero's party—Himmel himself, the priest Heiter, the dwarf warrior Eisen, and the elven mage Frieren—forge bonds through adventures and battles, creating unforgettable precious memories for most of them.
@@ -74,7 +74,7 @@ TEXT
 
             [
                 'title' => 'Fullmetal Alchemist',
-                'image' => 'storage/series/2.jpg',
+                'image' => 'series/2.jpg',
                 'video' => '1ac3_YdSSy0',
                 'synopsis' => <<<TEXT
 After a horrific alchemy experiment goes wrong in the Elric household, brothers Edward and Alphonse are left in a catastrophic new reality. Ignoring the alchemical principle banning human transmutation, the boys attempted to bring their recently deceased mother back to life. Instead, they suffered brutal personal loss: Alphonse's body disintegrated while Edward lost a leg and then sacrificed an arm to keep Alphonse's soul in the physical realm by binding it to a hulking suit of armor.
@@ -86,7 +86,7 @@ TEXT
             ],
             [
                 'title' => 'SteinsGate',
-                'image' => 'storage/series/3.jpg',
+                'image' => 'series/3.jpg',
                 'video' => '27OZc-ku6is',
                 'synopsis' => <<<TEXT
 Eccentric scientist Rintarou Okabe has a never-ending thirst for scientific exploration. Together with his ditzy but well-meaning friend Mayuri Shiina and his roommate Itaru Hashida, Okabe founds the Future Gadget Laboratory in the hopes of creating technological innovations that baffle the human psyche. Despite claims of grandeur, the only notable "gadget" the trio have created is a microwave that has the mystifying power to turn bananas into green goo.
@@ -98,7 +98,7 @@ TEXT
             ],
             [
                 'title' => 'Attack on Titan',
-                'image' => 'storage/series/4.jpg',
+                'image' => 'series/4.jpg',
                 'video' => 'LHtdKWJdif4',
                 'synopsis' => <<<TEXT
 Centuries ago, mankind was slaughtered to near extinction by monstrous humanoid creatures called Titans, forcing humans to hide in fear behind enormous concentric walls. What makes these giants truly terrifying is that their taste for human flesh is not born out of hunger but what appears to be out of pleasure. To ensure their survival, the remnants of humanity began living within defensive barriers, resulting in one hundred years without a single titan encounter. However, that fragile calm is soon shattered when a colossal Titan manages to breach the supposedly impregnable outer wall, reigniting the fight for survival against the man-eating abominations.
@@ -108,7 +108,7 @@ TEXT
             ],
             [
                 'title' => 'Gintama',
-                'image' => 'storage/series/5.jpg',
+                'image' => 'series/5.jpg',
                 'video' => 'vcb-D3FlaCg',
                 'synopsis' => <<<TEXT
 Gintoki, Shinpachi, and Kagura return as the fun-loving but broke members of the Yorozuya team! Living in an alternate-reality Edo, where swords are prohibited and alien overlords have conquered Japan, they try to thrive on doing whatever work they can get their hands on. However, Shinpachi and Kagura still haven't been paid... Does Gin-chan really spend all that cash playing pachinko?
@@ -120,7 +120,7 @@ TEXT
             ],
             [
                 'title' => 'Gintama 2',
-                'image' => 'storage/series/6.jpg',
+                'image' => 'series/6.jpg',
                 'video' => 'vcb-D3FlaCg',
                 'synopsis' => <<<TEXT
 After a one-year hiatus, Shinpachi Shimura returns to Edo, only to stumble upon a shocking surprise: Gintoki and Kagura, his fellow Yorozuya members, have become completely different characters! Fleeing from the Yorozuya headquarters in confusion, Shinpachi finds that all the denizens of Edo have undergone impossibly extreme changes, in both appearance and personality. Most unbelievably, his sister Otae has married the Shinsengumi chief and shameless stalker Isao Kondou and is pregnant with their first child.
@@ -133,7 +133,7 @@ TEXT
 
             [
                 'title' => 'One Piece',
-                'image' => 'storage/series/7.jpg',
+                'image' => 'series/7.jpg',
                 'video' => 'MewJ5bEM-5U',
                 'synopsis' => <<<TEXT
 Although the golden age of piracy is about to reach new heights, most people do not seek the glory of finding the elusive One Piece—a treasure signifying a new conqueror of all seas that was once embodied by the legendary King of the Pirates, Gol D. Roger. However, even if civilians generally despise pirates, they secretly cheer for at least one of them.
@@ -143,7 +143,7 @@ TEXT
             ],
             [
                 'title' => 'Hunter x Hunter',
-                'image' => 'storage/series/8.jpg',
+                'image' => 'series/8.jpg',
                 'video' => 'D9iTQRB4XRk',
                 'synopsis' => <<<TEXT
 Hunters devote themselves to accomplishing hazardous tasks, all from traversing the world's uncharted territories to locating rare items and monsters. Before becoming a Hunter, one must pass the Hunter Examination—a high-risk selection process in which most applicants end up handicapped or worse, deceased.
@@ -156,7 +156,7 @@ TEXT
 
             [
                 'title' => 'Gintama 3',
-                'image' => 'storage/series/9.jpg',
+                'image' => 'series/9.jpg',
                 'video' => 'vcb-D3FlaCg',
                 'synopsis' => <<<TEXT
 After joining the resistance against the bakufu, Gintoki and the gang are in hiding, along with Katsura and his Joui rebels. The Yorozuya is soon approached by Nobume Imai and two members of the Kiheitai, who explain that the Harusame pirates have turned against 7th Division Captain Kamui and their former ally Takasugi. The Kiheitai present Gintoki with a job: find Takasugi, who has been missing since his ship was ambushed in a Harusame raid. Nobume also makes a stunning revelation regarding the Tendoushuu, a secret organization pulling the strings of numerous factions, and their leader Utsuro, the shadowy figure with an uncanny resemblance to Gintoki's former teacher.
@@ -167,7 +167,7 @@ TEXT
 
             [
                 'title' => 'Kaguya-sama',
-                'image' => 'storage/series/10.jpg',
+                'image' => 'series/10.jpg',
                 'video' => 'vFN5K-iAyV0',
                 'synopsis' => <<<TEXT
 The elite members of Shuchiin Academy's student council continue their competitive day-to-day antics. Council president Miyuki Shirogane clashes daily against vice-president Kaguya Shinomiya, each fighting tooth and nail to trick the other into confessing their romantic love. Kaguya struggles within the strict confines of her wealthy, uptight family, rebelling against her cold default demeanor as she warms to Shirogane and the rest of her friends.
@@ -180,16 +180,16 @@ TEXT
         ];
 
         $imagesCharacters = [
-            ['name' => 'Alphonse Elric', 'image' => 'storage/characters/alphonse_elric.jpg'],
-            ['name' => 'Edward Elric', 'image' => 'storage/characters/edward_elric.jpg'],
-            ['name' => 'Eren Yeager', 'image' => 'storage/characters/eren_yeager.jpg'],
-            ['name' => 'Fern', 'image' => 'storage/characters/fern.jpg'],
-            ['name' => 'Frieren', 'image' => 'storage/characters/frieren.jpg'],
-            ['name' => 'Girl', 'image' => 'storage/characters/girl.jpg'],
-            ['name' => 'Kurisu Makise', 'image' => 'storage/characters/kurisu_makise.jpg'],
-            ['name' => 'Levi Ackerman', 'image' => 'storage/characters/levi.jpg'],
-            ['name' => 'Marine older brother', 'image' => 'storage/characters/marine_older_brother.jpg'],
-            ['name' => 'Rintarou Okabe', 'image' => 'storage/characters/rintarou_okabe.jpg'],
+            ['name' => 'Alphonse Elric', 'image' => 'characters/alphonse_elric.jpg'],
+            ['name' => 'Edward Elric', 'image' => 'characters/edward_elric.jpg'],
+            ['name' => 'Eren Yeager', 'image' => 'characters/eren_yeager.jpg'],
+            ['name' => 'Fern', 'image' => 'characters/fern.jpg'],
+            ['name' => 'Frieren', 'image' => 'characters/frieren.jpg'],
+            ['name' => 'Girl', 'image' => 'characters/girl.jpg'],
+            ['name' => 'Kurisu Makise', 'image' => 'characters/kurisu_makise.jpg'],
+            ['name' => 'Levi Ackerman', 'image' => 'characters/levi.jpg'],
+            ['name' => 'Marine older brother', 'image' => 'characters/marine_older_brother.jpg'],
+            ['name' => 'Rintarou Okabe', 'image' => 'characters/rintarou_okabe.jpg'],
         ];
 
         $createdCharacters = collect();
@@ -198,16 +198,16 @@ TEXT
         }
 
         $imagesVoiceActors = [
-            ['name' => 'Ichinose Kana', 'image' => 'storage/voice_actors/ichinose_kana.jpg'],
-            ['name' => 'Imai Asami', 'image' => 'storage/voice_actors/imai_asami.jpg'],
-            ['name' => 'Kaji Yuuki', 'image' => 'storage/voice_actors/kaji_yuuki.jpg'],
-            ['name' => 'Kamiya Hiroshi', 'image' => 'storage/voice_actors/kamiya_hiroshi.jpg'],
-            ['name' => 'Kase Yasuyuki', 'image' => 'storage/voice_actors/kase_yasuyuki.jpg'],
-            ['name' => 'Kikuchi Kokoro', 'image' => 'storage/voice_actors/kikuchi_kokoro.jpg'],
-            ['name' => 'Kugimiya Rie', 'image' => 'storage/voice_actors/kugimiya_rie.jpg'],
-            ['name' => 'Miyano Mamoru', 'image' => 'storage/voice_actors/miyano_mamoru.jpg'],
-            ['name' => 'Park Romi', 'image' => 'storage/voice_actors/park_romi.jpg'],
-            ['name' => 'Tanezaki Atsumi', 'image' => 'storage/voice_actors/tanezaki_atsumi.jpg'],
+            ['name' => 'Ichinose Kana', 'image' => 'voice_actors/ichinose_kana.jpg'],
+            ['name' => 'Imai Asami', 'image' => 'voice_actors/imai_asami.jpg'],
+            ['name' => 'Kaji Yuuki', 'image' => 'voice_actors/kaji_yuuki.jpg'],
+            ['name' => 'Kamiya Hiroshi', 'image' => 'voice_actors/kamiya_hiroshi.jpg'],
+            ['name' => 'Kase Yasuyuki', 'image' => 'voice_actors/kase_yasuyuki.jpg'],
+            ['name' => 'Kikuchi Kokoro', 'image' => 'voice_actors/kikuchi_kokoro.jpg'],
+            ['name' => 'Kugimiya Rie', 'image' => 'voice_actors/kugimiya_rie.jpg'],
+            ['name' => 'Miyano Mamoru', 'image' => 'voice_actors/miyano_mamoru.jpg'],
+            ['name' => 'Park Romi', 'image' => 'voice_actors/park_romi.jpg'],
+            ['name' => 'Tanezaki Atsumi', 'image' => 'voice_actors/tanezaki_atsumi.jpg'],
         ];
 
         $createdVoiceActors = collect();
@@ -257,18 +257,18 @@ TEXT
 
 
         $themesPool = collect([
-            ['title' => 'Opening 1', 'artist' => 'Artist A', 'audio_url' => 'storage/themes/theme1.mp3', 'type' => 'opening'],
-            ['title' => 'Opening 2', 'artist' => 'Artist B', 'audio_url' => 'storage/themes/theme2.mp3', 'type' => 'opening'],
-            ['title' => 'Opening 3', 'artist' => 'Artist C', 'audio_url' => 'storage/themes/theme3.mp3', 'type' => 'opening'],
-            ['title' => 'Opening 4', 'artist' => 'Artist D', 'audio_url' => 'storage/themes/theme4.mp3', 'type' => 'opening'],
-            ['title' => 'Opening 5', 'artist' => 'Artist E', 'audio_url' => 'storage/themes/theme5.mp3', 'type' => 'opening'],
-            ['title' => 'Opening 6', 'artist' => 'Artist F', 'audio_url' => 'storage/themes/theme6.mp3', 'type' => 'opening'],
-            ['title' => 'Ending 1', 'artist' => 'Artist G', 'audio_url' => 'storage/themes/theme7.mp3', 'type' => 'ending'],
-            ['title' => 'Ending 2', 'artist' => 'Artist H', 'audio_url' => 'storage/themes/theme8.mp3', 'type' => 'ending'],
-            ['title' => 'Ending 3', 'artist' => 'Artist I', 'audio_url' => 'storage/themes/theme9.mp3', 'type' => 'ending'],
-            ['title' => 'Ending 4', 'artist' => 'Artist J', 'audio_url' => 'storage/themes/theme10.mp3', 'type' => 'ending'],
-            ['title' => 'Ending 5', 'artist' => 'Artist K', 'audio_url' => 'storage/themes/theme11.mp3', 'type' => 'ending'],
-            ['title' => 'Ending 6', 'artist' => 'Artist L', 'audio_url' => 'storage/themes/theme12.mp3', 'type' => 'ending'],
+            ['title' => 'Opening 1', 'artist' => 'Artist A', 'audio_url' => 'themes/theme1.mp3', 'type' => 'opening'],
+            ['title' => 'Opening 2', 'artist' => 'Artist B', 'audio_url' => 'themes/theme2.mp3', 'type' => 'opening'],
+            ['title' => 'Opening 3', 'artist' => 'Artist C', 'audio_url' => 'themes/theme3.mp3', 'type' => 'opening'],
+            ['title' => 'Opening 4', 'artist' => 'Artist D', 'audio_url' => 'themes/theme4.mp3', 'type' => 'opening'],
+            ['title' => 'Opening 5', 'artist' => 'Artist E', 'audio_url' => 'themes/theme5.mp3', 'type' => 'opening'],
+            ['title' => 'Opening 6', 'artist' => 'Artist F', 'audio_url' => 'themes/theme6.mp3', 'type' => 'opening'],
+            ['title' => 'Ending 1', 'artist' => 'Artist G', 'audio_url' => 'themes/theme7.mp3', 'type' => 'ending'],
+            ['title' => 'Ending 2', 'artist' => 'Artist H', 'audio_url' => 'themes/theme8.mp3', 'type' => 'ending'],
+            ['title' => 'Ending 3', 'artist' => 'Artist I', 'audio_url' => 'themes/theme9.mp3', 'type' => 'ending'],
+            ['title' => 'Ending 4', 'artist' => 'Artist J', 'audio_url' => 'themes/theme10.mp3', 'type' => 'ending'],
+            ['title' => 'Ending 5', 'artist' => 'Artist K', 'audio_url' => 'themes/theme11.mp3', 'type' => 'ending'],
+            ['title' => 'Ending 6', 'artist' => 'Artist L', 'audio_url' => 'themes/theme12.mp3', 'type' => 'ending'],
         ]);
 
         $seriesCollection->each(function ($series) use ($themesPool) {
