@@ -2,12 +2,14 @@
 
 namespace App\Livewire;
 
-use App\Events\MessageCreate;
 use App\Models\User;
 use App\Models\Contact;
 use App\Models\Message;
 use Livewire\Component;
 use Livewire\Attributes\On;
+use App\Events\MessageCreate;
+use App\Events\MessageDelete;
+use App\Events\MessageUpdate;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -26,6 +28,8 @@ class ChatScreen extends Component
     public bool $isEditing = false;
     public ?int $activeMessageId = null;
     public int $contactId;
+    public int $userId;
+    public int $receiverId;
 
     public function mount(User $loggedInUser, ?int $latestContactId)
     {
@@ -34,6 +38,7 @@ class ChatScreen extends Component
         if ($latestContactId) {
             $this->contactId = $latestContactId;
             $this->loadChat($latestContactId);
+            $this->receiverId = $this->getReceiverId();
         }
     }
 
@@ -42,10 +47,10 @@ class ChatScreen extends Component
         return view('livewire.chat-screen');
     }
 
-    #[On('echo:private-chat.{contactId},.message.create')]
+    #[On('echo:private-chat.{loggedInUser.id},.message.create')]
     public function refresh($payload)
     {
-        $id = $payload['message']['id'];
+        $id = $payload['messageId'];
         $message = Message::with('sender')->find($id);
 
         if ($message->contact_id !== $this->contactId) {
@@ -53,6 +58,32 @@ class ChatScreen extends Component
         }
 
         $this->messages->push($message);
+        $this->refreshContactList();
+    }
+
+    #[On('echo:private-chat.{loggedInUser.id},.message.update')]
+    public function refreshUpdate($payload)
+    {
+        $id = $payload['messageId'];
+        $message = Message::with('sender')->find($id);
+
+        if ($message->contact_id !== $this->contactId) {
+            return;
+        }
+
+        $index = $this->messages->search(fn($message) => $message->id === $message->id);
+        $this->messages[$index] = $message;
+
+        $this->refreshContactList();
+    }
+
+    #[On('echo:private-chat.{loggedInUser.id},.message.delete')]
+    public function refreshDelete($payload)
+    {
+        $id = $payload['messageId'];
+        $this->messages = $this->messages->filter(fn($message) => $message->id !== $id)->values();
+
+        $this->refreshContactList();
     }
 
 
@@ -89,49 +120,71 @@ class ChatScreen extends Component
 
     public function submit()
     {
-        try {
-            $this->form->validateOnly('message');
-        } catch (ValidationException $e) {
-            return $this->dispatch('openWarningModal', [
-                'body' => $e->getMessage(),
-            ]);
+        if ($this->form->message === $this->message->body && $this->form->photo === $this->message->photo) {
+            $this->isEditing = false;
+            $this->form->reset();
+            $this->form->resetValidation();
+            $this->activeMessageId = null;
+            return;
         }
 
+        if (!$this->isEditing) {
+            try {
+                $this->form->validateOnly('message');
+            } catch (ValidationException $e) {
+                return $this->dispatch('openWarningModal', [
+                    'body' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        $path = null;
         if ($this->form->photo) {
             $path = Storage::disk('public')->put('messagesPhotos', $this->form->photo);
         }
 
         if ($this->isEditing) {
-            $this->message->update([
-                'body' => $this->form->message,
-                'photo' => $path ?? null
-            ]);
+            $indexMessage = $this->messages->search(fn($message) => $message->id === $this->message->id);
+
+            if (empty($this->form->message) && empty($this->form->photo)) {
+                $this->openDeleteMessageModal($this->message->id);
+            } else {
+                $this->message->update([
+                    'body' => $this->form->message,
+                    'photo' => $path,
+                ]);
+
+                $this->messages[$indexMessage] = $this->message;
+                broadcast(new MessageUpdate($this->message->id, $this->receiverId))->toOthers();
+            }
+
             $this->activeMessageId = null;
         } else {
             $message = Message::create([
                 'contact_id' => $this->contact->id,
                 'sender_id' => $this->loggedInUser->id,
                 'body' => $this->form->message,
-                'photo' => $path ?? null
+                'photo' => $path,
             ]);
-            broadcast(new MessageCreate($message))->toOthers();
+
+            broadcast(new MessageCreate($message->id, $this->receiverId))->toOthers();
             $this->messages->push($message);
         }
 
         $this->contact->update([
-            'user_one_visible' => true,
-            'user_two_visible' => true,
+            $this->contact->user_one_id === $this->receiverId
+                ? 'user_one_visible'
+                : 'user_two_visible' => true,
         ]);
 
         $this->dispatch('message-updated');
-        $this->dispatch('refreshContactList');
-
+        $this->refreshContactList();
         $this->isEditing = false;
         $this->form->reset();
         $this->form->resetValidation();
     }
 
-    public function editMessage($id)
+    public function editMessage(int $id)
     {
         $this->isEditing = true;
         $this->activeMessageId = $id;
@@ -142,7 +195,7 @@ class ChatScreen extends Component
         $this->form->photo = $this->message->photo;
     }
 
-    public function openDeleteMessageModal($id)
+    public function openDeleteMessageModal(int $id)
     {
         $data = [
             'body' => 'Are you sure you want to delete this message?',
@@ -152,11 +205,24 @@ class ChatScreen extends Component
         $this->dispatch('openWarningModal', $data);
     }
 
+    public function refreshContactList()
+    {
+        $this->dispatch('refreshContactList');
+    }
+
+    public function getReceiverId()
+    {
+        return $this->contact->user_one_id === $this->loggedInUser->id
+            ? $this->contact->user_two_id
+            : $this->contact->user_one_id;
+    }
+
     #[On('deleteMessage')]
-    public function deleteMessage($id)
+    public function deleteMessage(int $id)
     {
         Message::destroy($id);
-
         $this->messages = $this->contact->messages()->with('sender')->get();
+
+        broadcast(new MessageDelete($id, $this->receiverId))->toOthers();
     }
 }
