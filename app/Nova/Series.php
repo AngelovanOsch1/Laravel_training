@@ -85,7 +85,7 @@ class Series extends Resource
                 })
                 ->sortable(),
 
-            Text::make('score')
+            Number::make('score')
                 ->sortable()
                 ->default(0),
 
