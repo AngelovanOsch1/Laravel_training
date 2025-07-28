@@ -53,12 +53,13 @@ class Series extends Resource
             ID::make()->sortable(),
 
             Image::make('cover_image')
-                ->rules('required')
                 ->disk('public')
                 ->path('series')
-                ->creationRules('mimes:jpeg,png,webp,jpg', 'max:10240')
-                ->preview(fn($value) => $value ? "/{$value}" : null)
-                ->thumbnail(fn($value) => $value ? "/{$value}" : null),
+                ->creationRules('required', 'mimes:jpeg,png,webp,jpg', 'max:10240')
+                ->updateRules('mimes:jpeg,png,webp,jpg', 'max:10240')
+                ->preview(fn($value) => $value ? "/storage/{$value}" : null)
+                ->thumbnail(fn($value) => $value ? "/storage/{$value}" : null),
+
 
             Text::make('title')
                 ->sortable()

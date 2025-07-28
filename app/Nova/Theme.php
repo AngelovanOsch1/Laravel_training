@@ -54,10 +54,11 @@ class Theme extends Resource
                 ->rules('required'),
 
             Audio::make('audio_url')
-                ->rules('required', 'mimetypes:audio/mpeg,audio/wav', 'ends_with:.mp3,.wav')
+                ->creationRules('required', 'mimetypes:audio/mpeg,audio/wav', 'ends_with:.mp3,.wav')
+                ->updateRules('mimetypes:audio/mpeg,audio/wav', 'ends_with:.mp3,.wav')
                 ->disk('public')
                 ->path('themes')
-                ->preview(fn($value) => $value ? "/{$value}" : null)
+                ->preview(fn($value) => $value ? "/storage/{$value}" : null)
                 ->hideFromIndex(),
 
             Select::make('Type')
