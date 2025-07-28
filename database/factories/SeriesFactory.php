@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use App\Models\Series;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -35,6 +36,7 @@ class SeriesFactory extends Factory
             'aired_end_date' => $this->faker->dateTimeBetween('-2 years', '+2 years'),
             'score' => $this->faker->numberBetween(1, 10),
             'synopsis' => $this->faker->sentences(10, true),
+            'owner_id' => User::factory(),
         ];
     }
 }

@@ -232,6 +232,7 @@ TEXT
                 'aired_end_date' => $faker->dateTimeBetween('-2 years', '+2 years'),
                 'score' => $faker->numberBetween(1, 10),
                 'synopsis' => $entry['synopsis'],
+                'owner_id' => 1,
             ]);
 
             $seriesCollection->push($series);

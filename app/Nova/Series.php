@@ -6,6 +6,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Textarea;
@@ -88,6 +89,9 @@ class Series extends Resource
             Number::make('score')
                 ->sortable()
                 ->default(0),
+
+            // Hidden::make('owner_id')
+            //     ->default(fn($request) => $request->user()->id),
 
             Text::make('video')
                 ->rules('required')
