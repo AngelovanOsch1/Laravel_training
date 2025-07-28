@@ -6,6 +6,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -65,14 +66,24 @@ class Series extends Resource
 
             BelongsToMany::make('Genres'),
 
-            Text::make('episode_count')
+            Number::make('episode_count')
                 ->sortable()
                 ->rules('required'),
 
-            Text::make('minutes_per_episode')
-                ->sortable()
+            Number::make('minutes_per_episode')
                 ->rules('required')
-                ->hideFromIndex(),
+                ->hideFromIndex()
+                ->displayUsing(function ($value) {
+                    $hours = floor($value / 60);
+                    $minutes = $value % 60;
+
+                    if ($hours > 0) {
+                        return "{$hours}h {$minutes}m";
+                    }
+
+                    return "{$minutes}m";
+                })
+                ->sortable(),
 
             Text::make('score')
                 ->sortable()
