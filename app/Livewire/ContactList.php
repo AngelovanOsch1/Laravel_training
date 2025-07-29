@@ -18,11 +18,11 @@ class ContactList extends Component
     {
         $this->loggedInUser = $loggedInUser;
         $this->activeContactId = $activeContactId;
-        $this->contacts = Contact::getContactList($this->loggedInUser);
     }
 
     public function render()
     {
+        $this->contacts = Contact::getContactList($this->loggedInUser);
         return view('livewire.contact-list');
     }
 
@@ -42,7 +42,6 @@ class ContactList extends Component
         }
 
         $contact->save();
-        $this->contacts = Contact::getContactList($this->loggedInUser);
     }
 
     public function openChat($id)
@@ -55,7 +54,6 @@ class ContactList extends Component
     public function loadChat($id)
     {
         $this->activeContactId = $id;
-        $this->contacts = Contact::getContactList($this->loggedInUser);
         $this->dispatch('loadChat', $id);
     }
 

@@ -10,7 +10,7 @@ class Message extends Model
 {
     use HasFactory, BroadcastsEvents;
 
-    protected $fillable = ['contact_id', 'sender_id', 'body', 'photo'];
+    protected $fillable = ['contact_id', 'sender_id', 'body', 'photo', 'is_read', 'is_edited'];
 
     public function contact()
     {

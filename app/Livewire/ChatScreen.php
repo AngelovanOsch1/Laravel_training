@@ -23,6 +23,7 @@ class ChatScreen extends Component
     public User $loggedInUser;
     public ?Contact $contact = null;
     public ?Collection $messages = null;
+    public int $amount = 10;
     public Message $message;
     public MessageValidationForm $form;
     public bool $isEditing = false;
@@ -38,7 +39,6 @@ class ChatScreen extends Component
         if ($latestContactId) {
             $this->contactId = $latestContactId;
             $this->loadChat($latestContactId);
-            $this->receiverId = $this->getReceiverId();
         }
     }
 
@@ -53,9 +53,14 @@ class ChatScreen extends Component
         $id = $payload['messageId'];
         $message = Message::with('sender')->find($id);
 
-        if ($message->contact_id === $this->contactId) {
+        if (!is_null($this->messages) && $message->contact_id === $this->contactId) {
             $this->messages->push($message);
+        } else {
+            $message->update([
+                'is_read' => false,
+            ]);
         }
+
         $this->refreshContactList();
     }
 
@@ -92,15 +97,30 @@ class ChatScreen extends Component
         }
 
         $this->contactId = $id;
-
         $this->contact = Contact::with('userOne', 'userTwo', 'messages.sender')->findOrFail($this->contactId);
+
+        $this->receiverId = $this->getReceiverId();
 
         Message::where('contact_id', $this->contact->id)
             ->where('sender_id', '!=', $this->loggedInUser->id)
             ->where('is_read', false)
             ->update(['is_read' => true]);
 
-        $this->messages = $this->contact->messages;
+        $this->refreshContactList();
+        $this->messages = $this->contact->messages()
+            ->take($this->amount)
+            ->get();
+    }
+
+    public function loadMore()
+    {
+        $olderMessages = $this->contact->messages()
+            ->orderBy('created_at', 'asc')
+            ->skip($this->messages->count())
+            ->take($this->amount)
+            ->get();
+
+        $this->messages = $olderMessages->merge($this->messages);
     }
 
     public function updatedFormPhoto()
@@ -149,6 +169,7 @@ class ChatScreen extends Component
                 $this->message->update([
                     'body' => $this->form->message,
                     'photo' => $path,
+                    'is_edited' => true
                 ]);
 
                 $this->messages[$indexMessage] = $this->message;
