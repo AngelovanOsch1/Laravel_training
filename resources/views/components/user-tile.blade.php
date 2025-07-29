@@ -22,8 +22,6 @@
             <h2 class="{{ $isCurrentUser ? 'text-xl font-semibold' : 'text-sm font-medium' }}">
                 {{ $user->first_name . ' ' . $user->last_name }}
             </h2>
-
-            {{-- Unread messages badge --}}
             @if (!$isCurrentUser && $contact?->unread_messages_count > 0)
                 <span
                     class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full">

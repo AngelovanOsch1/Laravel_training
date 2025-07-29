@@ -1,6 +1,11 @@
 <div x-data="{ isEditing: false }" x-on:message-updated.window="isEditing = false" class="bg-white h-full flex flex-col p-8">
     <div class="flex-1 overflow-y-auto pr-1 max-h-[693px] scrollbar-hidden flex flex-col-reverse"
         style="overflow-anchor: none;">
+        <div x-intersect.full="$wire.loadMore()" style="order: 1;">
+
+            <div wire:loading wire:target="loadMore">
+            </div>
+        </div>
         @forelse(collect($messages)->reverse() as $message)
             <div :key="$message->id" class="animate-fade-in transition duration-300 pb-5">
                 <div
@@ -71,7 +76,7 @@
 
     </div>
 
-    @if(isset($messages) && $messages !== null)
+    @if (isset($messages) && $messages !== null)
         <form wire:submit.prevent="submit" class="gap-4 mt-4 border-t border-gray-300">
             @if ($form->photo?->temporaryUrl())
                 <div class="relative w-12 h-12 my-3">
@@ -85,8 +90,8 @@
 
             <div class="flex justify-center items-start gap-12 mt-5">
                 <div class="flex-grow scrollbar-hidden">
-                    <x-form-textarea id="message" name="form.message" placeholder="Write a message..." :showCharacterCount="false"
-                        rows="4" function="submit" model="form.message"
+                    <x-form-textarea id="message" name="form.message" placeholder="Write a message..."
+                        :showCharacterCount="false" rows="4" function="submit" model="form.message"
                         class="w-full text-sm rounded-lg bg-white border border-gray-300 focus:border-teal-600 focus:ring-0 placeholder-gray-500 resize-none p-3 shadow-sm focus:outline-none scrollbar-hidden" />
                 </div>
 
