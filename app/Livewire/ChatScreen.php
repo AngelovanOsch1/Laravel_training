@@ -53,11 +53,9 @@ class ChatScreen extends Component
         $id = $payload['messageId'];
         $message = Message::with('sender')->find($id);
 
-        if ($message->contact_id !== $this->contactId) {
-            return;
+        if ($message->contact_id === $this->contactId) {
+            $this->messages->push($message);
         }
-
-        $this->messages->push($message);
         $this->refreshContactList();
     }
 
@@ -67,13 +65,10 @@ class ChatScreen extends Component
         $id = $payload['messageId'];
         $message = Message::with('sender')->find($id);
 
-        if ($message->contact_id !== $this->contactId) {
-            return;
+        if ($message->contact_id === $this->contactId) {
+            $index = $this->messages->search(fn($message) => $message->id === $message->id);
+            $this->messages[$index] = $message;
         }
-
-        $index = $this->messages->search(fn($message) => $message->id === $message->id);
-        $this->messages[$index] = $message;
-
         $this->refreshContactList();
     }
 
@@ -81,11 +76,13 @@ class ChatScreen extends Component
     public function refreshDelete($payload)
     {
         $id = $payload['messageId'];
-        $this->messages = $this->messages->filter(fn($message) => $message->id !== $id)->values();
+        $message = $this->messages->first(fn($message) => $message->id === $id);
 
+        if ($message && $message->contact_id === $this->contactId) {
+            $this->messages = $this->messages->filter(fn($m) => $m->id !== $id)->values();
+        }
         $this->refreshContactList();
     }
-
 
     #[On('loadChat')]
     public function loadChat(?int $id)
@@ -120,7 +117,7 @@ class ChatScreen extends Component
 
     public function submit()
     {
-        if ($this->form->message === $this->message->body && $this->form->photo === $this->message->photo) {
+        if ($this->isEditing && $this->form->message === $this->message->body && $this->form->photo === $this->message->photo) {
             $this->isEditing = false;
             $this->form->reset();
             $this->form->resetValidation();
