@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Livewire\Forms\MessageValidationForm;
 use Illuminate\Validation\ValidationException;
 
+use function PHPUnit\Framework\isNull;
+
 class ChatScreen extends Component
 {
     use WithFileUploads;
@@ -114,13 +116,15 @@ class ChatScreen extends Component
 
     public function loadMore()
     {
-        $olderMessages = $this->contact->messages()
-            ->orderBy('created_at', 'asc')
-            ->skip($this->messages->count())
-            ->take($this->amount)
-            ->get();
+        if (!isNull($this->contact)) {
+            $olderMessages = $this->contact->messages()
+                ->orderBy('created_at', 'asc')
+                ->skip($this->messages->count())
+                ->take($this->amount)
+                ->get();
 
-        $this->messages = $olderMessages->merge($this->messages);
+            $this->messages = $olderMessages->merge($this->messages);
+        }
     }
 
     public function updatedFormPhoto()
