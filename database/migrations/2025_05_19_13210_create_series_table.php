@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('minutes_per_episode');
             $table->date('aired_start_date');
             $table->date('aired_end_date');
-            $table->decimal('score');
+            $table->decimal('score', 4, 2)->default(0.00);
             $table->text('synopsis');
             $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
