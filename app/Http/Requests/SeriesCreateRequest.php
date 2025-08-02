@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SeriesRequest extends FormRequest
+class SeriesCreateRequest extends FormRequest
 {
     public function authorize()
     {
@@ -27,6 +27,14 @@ class SeriesRequest extends FormRequest
             'studios' => 'required|array|min:1',
             'studios.*' => 'integer|exists:studios,id',
             'synopsis' => 'required|string',
+            'character_voice_actors' => 'required|array',
+            'character_voice_actors.*.character_id' => 'required|integer|exists:characters,id',
+            'character_voice_actors.*.voice_actor_id' => 'required|integer|exists:voice_actors,id',
+            'themes' => 'required|array',
+            'themes.*.title' => 'required|string',
+            'themes.*.artist' => 'required|string',
+            'themes.*.audio_url' => 'required|file|mimes:mp3,wav,ogg|max:10240',
+            'themes.*.type' => 'required|string',
         ];
     }
 }
