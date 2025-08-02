@@ -12,7 +12,7 @@ class SeriesResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'type' => $this->type,
-            'cover_image_url' => $this->cover_image ? url("storage/{$this->cover_image}") : null,
+            'cover_image_url' => url("storage/{$this->cover_image}"),
             'video' => $this->video,
             'episode_count' => $this->episode_count,
             'minutes_per_episode' => $this->minutes_per_episode,
@@ -22,6 +22,8 @@ class SeriesResource extends JsonResource
             'synopsis' => $this->synopsis,
             'genres' => GenreResource::collection($this->whenLoaded('genres')),
             'studios' => StudioResource::collection($this->whenLoaded('studios')),
+            'character_voice_actors' => CharacterVoiceActorSeriesResource::collection($this->whenLoaded('characterVoiceActorSeries')),
+            'themes' => ThemeResource::collection($this->whenLoaded('themes')),
         ];
     }
 }

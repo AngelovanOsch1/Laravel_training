@@ -19,7 +19,9 @@ class Series extends Model
         'score',
         'cover_image',
         'type',
-        'synopsis'
+        'synopsis',
+        'video',
+        'owner_id'
     ];
 
     protected function casts(): array
