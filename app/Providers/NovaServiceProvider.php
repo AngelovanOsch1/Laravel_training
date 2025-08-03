@@ -2,10 +2,21 @@
 
 namespace App\Providers;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Gate;
-use Laravel\Fortify\Features;
+use App\Nova\Role;
+use App\Nova\User;
+use App\Nova\Theme;
+use App\Nova\Gender;
+use App\Nova\Series;
+use App\Nova\Studio;
+use App\Nova\Country;
 use Laravel\Nova\Nova;
+use App\Nova\SeriesUser;
+use App\Nova\SeriesStatus;
+use Laravel\Fortify\Features;
+use Laravel\Nova\Menu\MenuItem;
+use Laravel\Nova\Dashboards\Main;
+use Laravel\Nova\Menu\MenuSection;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -17,7 +28,28 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         parent::boot();
 
-        //
+        Nova::mainMenu(function () {
+            return [
+                MenuSection::dashboard(Main::class)->icon('chart-bar'),
+
+                MenuSection::make('Resources', [
+                    MenuItem::resource(User::class),
+                    MenuItem::resource(Country::class),
+                    MenuItem::resource(Gender::class),
+                    MenuItem::resource(Role::class),
+                    MenuItem::resource(Series::class),
+                    MenuItem::resource(SeriesStatus::class),
+                    MenuItem::resource(SeriesUser::class),
+                    MenuItem::resource(Studio::class),
+                    MenuItem::resource(Theme::class),
+                ])->icon('user')->collapsable(),
+
+                MenuSection::make('API Docs', [
+                    MenuItem::externalLink('Swagger Documentation', url('/api/documentation'))
+                        ->openInNewTab(),
+                ]),
+            ];
+        });
     }
 
     /**

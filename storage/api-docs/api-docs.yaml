@@ -1,0 +1,59 @@
+openapi: 3.0.0
+info:
+  title: 'Your API Title'
+  description: 'API Documentation for your project'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://my-default-host.com'
+    description: 'API Server'
+paths:
+  /api/series:
+    get:
+      tags:
+        - Series
+      summary: 'Get series list'
+      operationId: d49a0dc5a853d966e5fc29b871ac0c32
+      responses:
+        200:
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Series'
+components:
+  schemas:
+    Series:
+      title: Series
+      required:
+        - id
+        - title
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: 'Attack on Titan'
+        genres:
+          type: array
+          items:
+            type: string
+            example: Action
+        studios:
+          type: array
+          items:
+            type: string
+            example: MAPPA
+        themes:
+          type: array
+          items:
+            type: string
+            example: Post-apocalyptic
+      type: object
+tags:
+  -
+    name: Series
+    description: 'Operations about series'
