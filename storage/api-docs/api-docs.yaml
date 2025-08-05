@@ -1,59 +1,101 @@
 openapi: 3.0.0
 info:
-  title: 'Your API Title'
-  description: 'API Documentation for your project'
+  title: My API
   version: 1.0.0
-servers:
-  -
-    url: 'http://my-default-host.com'
-    description: 'API Server'
 paths:
   /api/series:
     get:
-      tags:
-        - Series
-      summary: 'Get series list'
-      operationId: d49a0dc5a853d966e5fc29b871ac0c32
+      summary: Get paginated list of series with related genres, studios, and themes
       responses:
-        200:
-          description: 'Successful response'
+        '200':
+          description: A paginated list of series
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Series'
-components:
-  schemas:
-    Series:
-      title: Series
-      required:
-        - id
-        - title
-      properties:
-        id:
-          type: integer
-          example: 1
-        title:
-          type: string
-          example: 'Attack on Titan'
-        genres:
-          type: array
-          items:
-            type: string
-            example: Action
-        studios:
-          type: array
-          items:
-            type: string
-            example: MAPPA
-        themes:
-          type: array
-          items:
-            type: string
-            example: Post-apocalyptic
-      type: object
-tags:
-  -
-    name: Series
-    description: 'Operations about series'
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        title:
+                          type: string
+                          example: "Example Series Title"
+                        genres:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 10
+                              name:
+                                type: string
+                                example: "Action"
+                        studios:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 5
+                              name:
+                                type: string
+                                example: "Studio Ghibli"
+                        themes:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 3
+                              name:
+                                type: string
+                                example: "Adventure"
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: "/api/series?page=1"
+                      last:
+                        type: string
+                        example: "/api/series?page=10"
+                      prev:
+                        type: string
+                        nullable: true
+                        example: null
+                      next:
+                        type: string
+                        nullable: true
+                        example: "/api/series?page=2"
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 10
+                      path:
+                        type: string
+                        example: "/api/series"
+                      per_page:
+                        type: integer
+                        example: 15
+                      to:
+                        type: integer
+                        example: 15
+                      total:
+                        type: integer
+                        example: 150
