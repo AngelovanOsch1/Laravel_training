@@ -10,11 +10,14 @@ class EnsureTokenIsValid
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->header('Authorization') || $request->header('Authorization') !== env('SECRET')) {
+        $secret = env('SECRET');
+
+        if (!$secret || !$request->header('Authorization') || $request->header('Authorization') !== $secret) {
             return response()->json([
                 'error' => 'Unauthorized: Invalid token.'
             ], 401);
         }
+
         return $next($request);
     }
 }
