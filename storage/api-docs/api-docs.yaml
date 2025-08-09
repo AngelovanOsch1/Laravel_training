@@ -2,100 +2,326 @@ openapi: 3.0.0
 info:
   title: My API
   version: 1.0.0
+
+components:
+  schemas:
+    SeriesList:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "Attack on Titan"
+        type:
+          type: string
+          example: "TV"
+        cover_image_url:
+          type: string
+          format: uri
+          example: "http://api.example.com/storage/cover.jpg"
+        episode_count:
+          type: integer
+          example: 25
+        aired_start_date:
+          type: string
+          format: date
+          example: "2013-04-06"
+        aired_end_date:
+          type: string
+          format: date
+          example: "2013-09-28"
+        score:
+          type: number
+          format: float
+          example: 8.7
+
+    Theme:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        series_id:
+          type: integer
+          example: 10
+        title:
+          type: string
+          example: "Blue Bird"
+        artist:
+          type: string
+          example: "Ikimono-gakari"
+        audio_url:
+          type: string
+          example: "http://api.example.com/storage/theme.mp3"
+        type:
+          type: string
+          example: "Opening"
+
+    Series:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        title:
+          type: string
+          example: "Attack on Titan"
+        type:
+          type: string
+          example: "TV"
+        cover_image_url:
+          type: string
+          example: "http://api.example.com/storage/cover.jpg"
+        video:
+          type: string
+          example: "http://api.example.com/storage/trailer.mp4"
+        episode_count:
+          type: integer
+          example: 25
+        minutes_per_episode:
+          type: integer
+          example: 24
+        aired_start_date:
+          type: string
+          format: date
+          example: "2013-04-06"
+        aired_end_date:
+          type: string
+          format: date
+          example: "2013-09-28"
+        score:
+          type: number
+          format: float
+          example: 8.7
+        synopsis:
+          type: string
+          example: "In a world where humanity is threatened by titans..."
+        genres:
+          type: array
+          items:
+            $ref: '#/components/schemas/Genre'
+        studios:
+          type: array
+          items:
+            $ref: '#/components/schemas/Studio'
+        character_voice_actors:
+          type: array
+          items:
+            $ref: '#/components/schemas/CharacterVoiceActorSeries'
+        themes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Theme'
+
+    Genre:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Action"
+
+    Studio:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        name:
+          type: string
+          example: "Studio Ghibli"
+
+    CharacterVoiceActorSeries:
+      type: object
+      properties:
+        character:
+          type: string
+          example: "Eren Yeager"
+        voice_actor:
+          type: string
+          example: "Yuki Kaji"
+
 paths:
-  /api/series:
+  /series:
     get:
-      summary: Get paginated list of series with related genres, studios, and themes
+      summary: Get list of series
+      description: Returns a paginated list of series.
+      tags:
+        - Series
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            example: 1
+          description: Page number for pagination.
       responses:
         '200':
-          description: A paginated list of series
+          description: Successful response
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        title:
-                          type: string
-                          example: "Example Series Title"
-                        genres:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: integer
-                                example: 10
-                              name:
-                                type: string
-                                example: "Action"
-                        studios:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: integer
-                                example: 5
-                              name:
-                                type: string
-                                example: "Studio Ghibli"
-                        themes:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: integer
-                                example: 3
-                              name:
-                                type: string
-                                example: "Adventure"
-                  links:
-                    type: object
-                    properties:
-                      first:
-                        type: string
-                        example: "/api/series?page=1"
-                      last:
-                        type: string
-                        example: "/api/series?page=10"
-                      prev:
-                        type: string
-                        nullable: true
-                        example: null
-                      next:
-                        type: string
-                        nullable: true
-                        example: "/api/series?page=2"
-                  meta:
-                    type: object
-                    properties:
-                      current_page:
-                        type: integer
-                        example: 1
-                      from:
-                        type: integer
-                        example: 1
-                      last_page:
-                        type: integer
-                        example: 10
-                      path:
-                        type: string
-                        example: "/api/series"
-                      per_page:
-                        type: integer
-                        example: 15
-                      to:
-                        type: integer
-                        example: 15
-                      total:
-                        type: integer
-                        example: 150
+                type: array
+                items:
+                  $ref: '#/components/schemas/SeriesList'
+
+    post:
+      summary: Create a new series
+      description: Stores a new series in the database.
+      tags:
+        - Series
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - cover_image
+                - title
+                - type
+                - episode_count
+                - minutes_per_episode
+                - video
+                - aired_start_date
+                - aired_end_date
+                - synopsis
+              properties:
+                cover_image:
+                  type: string
+                  format: binary
+                  description: Cover image file (JPEG, PNG, WEBP)
+                title:
+                  type: string
+                  example: "Attack on Titan"
+                type:
+                  type: string
+                  example: "TV"
+                episode_count:
+                  type: integer
+                  example: 25
+                minutes_per_episode:
+                  type: integer
+                  example: 24
+                video:
+                  type: string
+                  example: "http://api.example.com/storage/trailer.mp4"
+                aired_start_date:
+                  type: string
+                  format: date
+                  example: "2013-04-06"
+                aired_end_date:
+                  type: string
+                  format: date
+                  example: "2013-09-28"
+                synopsis:
+                  type: string
+                  example: "In a world where humanity is threatened by titans..."
+      responses:
+        '201':
+          description: Series created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeriesList'
+        '422':
+          description: Validation error
+
+  /series/{id}:
+    get:
+      summary: Get a single series by ID
+      description: Returns detailed information about a series, including genres, studios, characters, voice actors, and themes.
+      tags:
+        - Series
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: The ID of the series to retrieve.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Series'
+
+    patch:
+      summary: Update an existing series
+      description: Updates the series data and optionally replaces the cover image.
+      tags:
+        - Series
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: The ID of the series to update.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                cover_image:
+                  type: string
+                  format: binary
+                  description: New cover image file (JPEG, PNG, WEBP). Optional.
+                title:
+                  type: string
+                  example: "Attack on Titan"
+                type:
+                  type: string
+                  example: "TV"
+                episode_count:
+                  type: integer
+                  example: 25
+                minutes_per_episode:
+                  type: integer
+                  example: 24
+                video:
+                  type: string
+                  example: "http://api.example.com/storage/trailer.mp4"
+                aired_start_date:
+                  type: string
+                  format: date
+                  example: "2013-04-06"
+                aired_end_date:
+                  type: string
+                  format: date
+                  example: "2013-09-28"
+                synopsis:
+                  type: string
+                  example: "In a world where humanity is threatened by titans..."
+              required: []
+      responses:
+        '200':
+          description: Series updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Series'
+
+    delete:
+      summary: Delete a series by ID
+      description: Deletes the specified series and removes its cover image.
+      tags:
+        - Series
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: The ID of the series to delete.
+      responses:
+        '204':
+          description: Series deleted successfully, no content returned.

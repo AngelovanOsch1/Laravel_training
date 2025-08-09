@@ -5,6 +5,7 @@ use App\Http\Controllers\SeriesController;
 use App\Http\Middleware\EnsureTokenIsValid;
 
 Route::middleware(EnsureTokenIsValid::class)->group(function () {
+    Route::get('/test', [SeriesController::class, 'test'])->name('series.test');
     Route::get('/series', [SeriesController::class, 'index'])->name('series.index');
     Route::get('/series/{series}', [SeriesController::class, 'show'])->name('series.show');
     Route::post('/series', [SeriesController::class, 'store'])->name('series.store');

@@ -7,7 +7,6 @@ use App\Traits\HandlesPhotos;
 use App\Http\Requests\SeriesRequest;
 use App\Http\Resources\ResponseResource;
 use App\Http\Resources\SeriesResource;
-use App\Http\Responses\SuccessResponse;
 use App\Http\Resources\SeriesListResource;
 
 class SeriesController extends Controller
@@ -16,7 +15,7 @@ class SeriesController extends Controller
 
     public function index()
     {
-        $series = Series::with(['genres', 'studios', 'themes'])->paginate(15);
+        $series = Series::paginate(15);
         return SeriesListResource::collection($series);
     }
 
@@ -59,5 +58,12 @@ class SeriesController extends Controller
         $series->delete();
 
         return new ResponseResource(ResponseResource::DELETED_SERIES);
+    }
+
+    public function test()
+    {
+        return response()->json([
+            'message' => 'Flutter is working'
+        ]);
     }
 }
