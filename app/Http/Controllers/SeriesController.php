@@ -63,7 +63,7 @@ class SeriesController extends Controller
     public function test()
     {
         return response()->json([
-            'message' => 'Flutter is working'
+            'message' => 'Connected'
         ]);
     }
 }
