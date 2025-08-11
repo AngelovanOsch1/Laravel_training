@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\User;
-use App\Jobs\ReblockUser;
+use App\Jobs\BlockUser;
 use Illuminate\Console\Command;
 
 class UnblockUsers extends Command
@@ -20,7 +20,7 @@ class UnblockUsers extends Command
         $randomUser = User::where('is_blocked', false)->inRandomOrder()->first();
 
         if ($randomUser) {
-            ReblockUser::dispatch($randomUser->id)->delay(now()->addMinutes(1));
+            BlockUser::dispatch($randomUser->id)->delay(now()->addMinutes(1));
             $this->info("⏳ Reblock job scheduled for user #{$randomUser->id} in 1 minute.");
         }
     }

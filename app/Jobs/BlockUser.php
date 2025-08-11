@@ -13,7 +13,7 @@ class BlockUser implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $userId;
+    public $userId;
 
     public function __construct(int $userId)
     {
