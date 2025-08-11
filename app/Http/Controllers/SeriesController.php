@@ -62,8 +62,6 @@ class SeriesController extends Controller
 
     public function test()
     {
-        return response()->json([
-            'message' => 'Connected'
-        ]);
+        return new ResponseResource(ResponseResource::CONNECTED);
     }
 }

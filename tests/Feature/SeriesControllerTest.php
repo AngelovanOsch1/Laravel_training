@@ -23,7 +23,7 @@ class SeriesControllerTest extends TestCase
         parent::setUp();
 
         $this->withHeaders([
-            'Authorization' => env('SECRET')
+            'Authorization' => config('app.secret'),
         ]);
 
         Storage::fake('public');

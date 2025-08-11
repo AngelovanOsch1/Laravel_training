@@ -22,4 +22,22 @@ class ResponseResource extends JsonResource
         'message' => 'Successfully deleted series',
         'data' => null,
     ];
+
+    public const UNAUTHORIZED = [
+        'status' => 'unauthorized',
+        'message' => 'Unauthorized: Invalid token',
+        'data' => null,
+    ];
+
+    public const CONNECTED = [
+        'status' => 'succes',
+        'message' => 'Connected',
+        'data' => null,
+    ];
+
+    public const NOTOKEN = [
+        'status' => 'error',
+        'message' => 'No secret found in the ENV file',
+        'data' => null,
+    ];
 }

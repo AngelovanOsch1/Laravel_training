@@ -27,7 +27,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
-
+    'secret' => env('SECRET'),
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
