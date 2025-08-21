@@ -15,13 +15,13 @@ class SeriesController extends Controller
 
     public function index()
     {
-        $series = Series::paginate(5);
+        $series = Series::paginate(3);
         return SeriesListResource::collection($series);
     }
 
     public function show(Series $series)
     {
-        $series->load(['genres', 'studios', 'themes']);
+        $series->load(['genres', 'studios', 'themes', 'characterVoiceActorSeries.character', 'characterVoiceActorSeries.voiceActor']);
         return new SeriesResource($series);
     }
 
@@ -49,7 +49,9 @@ class SeriesController extends Controller
         $validated['cover_image'] = $this->uploadPhoto($request->file('cover_image'), 'series');
 
         $series->update($validated);
-        return new SeriesResource($series->fresh(['genres', 'studios', 'themes']));
+        $series->fresh();
+
+        return new SeriesListResource($series);
     }
 
     public function destroy(Series $series)

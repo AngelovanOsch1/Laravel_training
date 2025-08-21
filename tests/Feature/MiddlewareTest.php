@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Support\Facades\Config;
-use App\Http\Resources\ResponseResource;
 
 class MiddlewareTest extends TestCase
 {
@@ -16,22 +15,43 @@ class MiddlewareTest extends TestCase
 
         $response->assertStatus(200);
 
-        $this->assertEquals(
-            ResponseResource::CONNECTED,
-            $response->json('data.response')
-        );
+        $expected = [
+            'status' => 'success',
+            'message' => 'Connected',
+            'data' => null,
+        ];
+
+        $this->assertEquals($expected, $response->json('data.response'));
     }
 
     public function test_middleware_without_token()
     {
-        $response = $this->get(route('series.test'));
+        $response = $this->withoutToken()->get(route('series.test'));
 
         $response->assertStatus(403);
 
-        $this->assertEquals(
-            ResponseResource::UNAUTHORIZED,
-            $response->json('data.response')
-        );
+        $expected = [
+            'status' => 'unauthorized',
+            'message' => 'Unauthorized: Invalid token',
+            'data' => null,
+        ];
+
+        $this->assertEquals($expected, $response->json('data.response'));
+    }
+
+    public function test_middleware_with_wrong_token()
+    {
+        $response = $this->noToken()->get(route('series.test'));
+
+        $response->assertStatus(403);
+
+        $expected = [
+            'status' => 'unauthorized',
+            'message' => 'Unauthorized: Invalid token',
+            'data' => null,
+        ];
+
+        $this->assertEquals($expected, $response->json('data.response'));
     }
 
     public function test_middleware_with_missing_secret_env()
@@ -42,9 +62,12 @@ class MiddlewareTest extends TestCase
 
         $response->assertStatus(500);
 
-        $this->assertEquals(
-            ResponseResource::NOTOKEN,
-            $response->json('data.response')
-        );
+        $expected = [
+            'status' => 'error',
+            'message' => 'No secret found in the ENV file',
+            'data' => null,
+        ];
+
+        $this->assertEquals($expected, $response->json('data.response'));
     }
 }

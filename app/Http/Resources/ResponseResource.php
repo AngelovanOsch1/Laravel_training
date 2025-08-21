@@ -30,7 +30,7 @@ class ResponseResource extends JsonResource
     ];
 
     public const CONNECTED = [
-        'status' => 'succes',
+        'status' => 'success',
         'message' => 'Connected',
         'data' => null,
     ];
