@@ -2,56 +2,58 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use Illuminate\Support\Facades\Config;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
-class MiddlewareTest extends TestCase
+class MiddlewareTest extends BaseTestCase
 {
-    public function test_middleware()
+    #[DataProvider('middlewareProvider')]
+    public function test_middleware($token, $exepectedStatusCode, $expectedData)
     {
-        $response = $this->withHeaders([
-            'Authorization' => config('app.secret'),
-        ])->get(route('series.test'));
+        if ($token != null) {
+            $headers = [
+                'Authorization' => $token,
+            ];
+        }
+        $response = $this->withHeaders($headers ?? [])->get(route('series.test'));
 
-        $response->assertStatus(200);
+        $response->assertStatus($exepectedStatusCode);
 
-        $expected = [
-            'status' => 'success',
-            'message' => 'Connected',
-            'data' => null,
-        ];
-
-        $this->assertEquals($expected, $response->json('data.response'));
+        $this->assertEquals($expectedData, $response->json('data.response'));
     }
 
-    public function test_middleware_without_token()
+    public static function middlewareProvider()
     {
-        $response = $this->withoutToken()->get(route('series.test'));
-
-        $response->assertStatus(403);
-
-        $expected = [
-            'status' => 'unauthorized',
-            'message' => 'Unauthorized: Invalid token',
-            'data' => null,
+        return [
+            'valid token' => [
+                'test-secret',
+                200,
+                [
+                    'status' => 'success',
+                    'message' => 'Connected',
+                    'data' => null,
+                ]
+            ],
+            'wrong token' => [
+                4321,
+                403,
+                [
+                    'status' => 'unauthorized',
+                    'message' => 'Unauthorized: Invalid token',
+                    'data' => null,
+                ]
+            ],
+            'no token' => [
+                null,
+                403,
+                [
+                    'status' => 'unauthorized',
+                    'message' => 'Unauthorized: Invalid token',
+                    'data' => null,
+                ]
+            ],
         ];
-
-        $this->assertEquals($expected, $response->json('data.response'));
-    }
-
-    public function test_middleware_with_wrong_token()
-    {
-        $response = $this->noToken()->get(route('series.test'));
-
-        $response->assertStatus(403);
-
-        $expected = [
-            'status' => 'unauthorized',
-            'message' => 'Unauthorized: Invalid token',
-            'data' => null,
-        ];
-
-        $this->assertEquals($expected, $response->json('data.response'));
     }
 
     public function test_middleware_with_missing_secret_env()

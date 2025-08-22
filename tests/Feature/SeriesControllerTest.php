@@ -9,6 +9,7 @@ use Faker\Factory as Faker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class SeriesControllerTest extends TestCase
 {
@@ -261,6 +262,39 @@ class SeriesControllerTest extends TestCase
         ];
 
         $this->assertEquals($expected, $response->json());
+    }
+
+
+    #[DataProvider('requiredFieldProvider')]
+    public function test_update_route_requires_required_fields(string $field)
+    {
+        $series = Series::factory()->create([
+            'cover_image' => UploadedFile::fake()->create('cover.jpg', 100, 'image/jpeg'),
+            'owner_id' => 1,
+        ]);
+
+        $data = $this->postData;
+        unset($data[$field]);
+
+        $response = $this->putJson(route('series.update', $series->id), $data);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors($field);
+    }
+
+    public static function requiredFieldProvider(): array
+    {
+        return [
+            'title is required' => ['title'],
+            'type is required' => ['type'],
+            'cover_image is required' => ['cover_image'],
+            'episode_count is required' => ['episode_count'],
+            'minutes_per_episode is required' => ['minutes_per_episode'],
+            'aired_start_date is required' => ['aired_start_date'],
+            'aired_end_date is required' => ['aired_end_date'],
+            'synopsis is required' => ['synopsis'],
+            'video is required' => ['video'],
+        ];
     }
 
     public function test_destroy_route()

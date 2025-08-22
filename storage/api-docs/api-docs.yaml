@@ -24,6 +24,9 @@ components:
         episode_count:
           type: integer
           example: 25
+        minutes_per_episode:
+          type: integer
+          example: 24
         aired_start_date:
           type: string
           format: date
@@ -36,6 +39,13 @@ components:
           type: number
           format: float
           example: 8.7
+        video:
+          type: string
+          format: uri
+          example: "http://api.example.com/storage/video.mp4"
+        synopsis:
+          type: string
+          example: "Humans fight Titans in a post-apocalyptic world."
 
     Theme:
       type: object
@@ -269,46 +279,16 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                cover_image:
-                  type: string
-                  format: binary
-                  description: New cover image file (JPEG, PNG, WEBP). Optional.
-                title:
-                  type: string
-                  example: "Attack on Titan"
-                type:
-                  type: string
-                  example: "TV"
-                episode_count:
-                  type: integer
-                  example: 25
-                minutes_per_episode:
-                  type: integer
-                  example: 24
-                video:
-                  type: string
-                  example: "http://api.example.com/storage/trailer.mp4"
-                aired_start_date:
-                  type: string
-                  format: date
-                  example: "2013-04-06"
-                aired_end_date:
-                  type: string
-                  format: date
-                  example: "2013-09-28"
-                synopsis:
-                  type: string
-                  example: "In a world where humanity is threatened by titans..."
-              required: []
+              $ref: '#/components/schemas/SeriesList'
       responses:
         '200':
           description: Series updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Series'
+                $ref: '#/components/schemas/SeriesList'
+        '422':
+          description: Validation error
 
     delete:
       summary: Delete a series by ID
