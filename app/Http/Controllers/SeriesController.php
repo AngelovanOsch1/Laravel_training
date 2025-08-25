@@ -45,8 +45,8 @@ class SeriesController extends Controller
     {
         $validated = $request->validated();
 
-        $this->deletePhoto($series->cover_image);
-        $validated['cover_image'] = $this->uploadPhoto($request->file('cover_image'), 'series');
+        // $this->deletePhoto($series->cover_image);
+        // $validated['cover_image'] = $this->uploadPhoto($request->file('cover_image'), 'series');
 
         $series->update($validated);
         $series->fresh();

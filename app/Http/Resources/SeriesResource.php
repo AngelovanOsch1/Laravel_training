@@ -12,7 +12,7 @@ class SeriesResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'type' => $this->type,
-            'cover_image_url' => url("storage/{$this->cover_image}"),
+            'cover_image' => url("storage/{$this->cover_image}"),
             'video' => $this->video,
             'episode_count' => $this->episode_count,
             'minutes_per_episode' => $this->minutes_per_episode,
