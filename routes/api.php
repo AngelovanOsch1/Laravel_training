@@ -11,4 +11,7 @@ Route::middleware(EnsureTokenIsValid::class)->group(function () {
     Route::post('/series', [SeriesController::class, 'store'])->name('series.store');
     Route::put('/series/{series}', [SeriesController::class, 'update'])->name('series.update');
     Route::delete('/series/{series}', [SeriesController::class, 'destroy'])->name('series.destroy');
+
+    Route::put('/series/cover-image/{series}', [SeriesController::class, 'updateCoverImage'])
+        ->name('series.coverImage.update');
 });

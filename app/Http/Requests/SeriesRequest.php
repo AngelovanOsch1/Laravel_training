@@ -14,7 +14,6 @@ class SeriesRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'cover_image' => 'required|file|mimes:jpeg,png,webp,jpg|max:10240',
             'title' => 'required|string',
             'type' => 'required|string',
             'episode_count' => 'required|integer|min:0',

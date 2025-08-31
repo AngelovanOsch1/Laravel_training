@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SeriesImageCoverRequest;
 use App\Models\Series;
 use App\Traits\HandlesPhotos;
 use App\Http\Requests\SeriesRequest;
 use App\Http\Resources\ResponseResource;
+use App\Http\Resources\SeriesCoverImageResource;
 use App\Http\Resources\SeriesResource;
 use App\Http\Resources\SeriesListResource;
 
@@ -29,8 +31,6 @@ class SeriesController extends Controller
     {
         $validated = $request->validated();
 
-        $validated['cover_image'] = $this->uploadPhoto($request->file('cover_image'), 'series');
-
         // $validated['owner_id'] = $request->user()->id;
         // cant do that cus you cant logged in
 
@@ -43,10 +43,8 @@ class SeriesController extends Controller
 
     public function update(SeriesRequest $request, Series $series)
     {
+        logger($series);
         $validated = $request->validated();
-
-        // $this->deletePhoto($series->cover_image);
-        // $validated['cover_image'] = $this->uploadPhoto($request->file('cover_image'), 'series');
 
         $series->update($validated);
         $series->fresh();
@@ -60,6 +58,23 @@ class SeriesController extends Controller
         $series->delete();
 
         return new ResponseResource(ResponseResource::DELETED_SERIES);
+    }
+
+    public function updateCoverImage(SeriesImageCoverRequest $request, Series $series)
+    {
+        $request->validated();
+
+        if ($series->cover_image) {
+            $this->deletePhoto($series->cover_image);
+        }
+
+        $coverImagePath = $this->uploadPhoto($request->file('cover_image'), 'series');
+
+        $series->update([
+            'cover_image' => $coverImagePath,
+        ]);
+
+        return new SeriesCoverImageResource($series);
     }
 
     public function test()

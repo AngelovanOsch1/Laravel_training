@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title')->unique();
             $table->string('type')->default('TV');
-            $table->string('cover_image');
+            $table->string('cover_image')->nullable();
             $table->string('video');
             $table->integer('episode_count');
             $table->integer('minutes_per_episode');
