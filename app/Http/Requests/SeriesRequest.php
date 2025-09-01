@@ -21,6 +21,7 @@ class SeriesRequest extends FormRequest
             'video' => 'required|string',
             'aired_start_date' => 'required|date',
             'aired_end_date' => 'required|date|after_or_equal:aired_start_date',
+            'score' => 'required|numeric',
             'synopsis' => 'required|string',
         ];
     }
