@@ -43,7 +43,6 @@ class SeriesController extends Controller
 
     public function update(SeriesRequest $request, Series $series)
     {
-        logger($series);
         $validated = $request->validated();
 
         $series->update($validated);
