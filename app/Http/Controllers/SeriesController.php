@@ -73,7 +73,7 @@ class SeriesController extends Controller
             'cover_image' => $coverImagePath,
         ]);
 
-        return new SeriesCoverImageResource($series);
+        return new SeriesListResource($series);
     }
 
     public function test()
